@@ -1,12 +1,18 @@
 <template>
-    <h1>Home Screen</h1>
-    <Navigator />
+    <v-layout class="HomeScreen">
+        <HomeLayout />
+    </v-layout>
 </template>
 
-<style scoped></style>
+<style>
+.HomeScreen {
+    width: 100%;
+    height: 100%;
+}
+</style>
 
 <script setup lang="ts">
 
-import Navigator from '~/components/Navigator.vue';
+import HomeLayout from '~/layout/HomeLayout.vue';
 
 </script>

@@ -1,22 +1,27 @@
 <template>
-    <ul>
-        <li><a @click="toOverview()">Overview</a></li>
-        <li><a @click="toDetail()">Detail</a></li>
-    </ul>
+    <v-bottom-navigation class="Navigator" v-model="activeTab" mode="shift" grow mandatory>
+        <v-btn>
+            <v-icon>mdi-calendar-today</v-icon>
+            <span>Today</span>
+        </v-btn>
+        <v-btn>
+            <v-icon>mdi-home</v-icon>
+            <span>Home</span>
+        </v-btn>
+    </v-bottom-navigation>
 </template>
 
-<style scoped></style>
+<style>
+.Navigator {
+    position: fixed !important;
+    width: 100%;
+    bottom: 0;
+    right: 0;
+}
+</style>
 
 <script setup lang="ts">
-import router from '~/router/router';
 
-// jump to /overview
-const toOverview = () => {
-    router.push('/overview');
-};
+const activeTab = defineModel();
 
-// jump to /detail
-const toDetail = () => {
-    router.push('/detail');
-};
 </script>

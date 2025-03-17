@@ -1,7 +1,7 @@
 <template>
-    <main>
+    <v-app>
         <RouterView />
-    </main>
+    </v-app>
 </template>
 
 <style scoped></style>
