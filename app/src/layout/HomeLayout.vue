@@ -16,7 +16,6 @@
 </style>
 
 <script setup lang="ts">
-
 import { ref } from 'vue';
 
 import DayLayout from '~/layout/DayLayout.vue';
@@ -24,5 +23,4 @@ import MenuLayout from '~/layout/MenuLayout.vue';
 import Navigator from '~/components/Navigator.vue';
 
 const activeTab = ref(0);
-
 </script>

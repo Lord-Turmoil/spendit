@@ -12,5 +12,4 @@ import { ref } from 'vue';
 import DaySelector from '~/components/DaySelector.vue';
 
 const activeDate = ref(new Date());
-
 </script>

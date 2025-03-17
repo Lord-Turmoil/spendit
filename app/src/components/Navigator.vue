@@ -1,5 +1,11 @@
 <template>
-    <v-bottom-navigation class="Navigator" v-model="activeTab" mode="shift" grow mandatory>
+    <v-bottom-navigation
+        class="Navigator"
+        v-model="activeTab"
+        mode="shift"
+        grow
+        mandatory
+    >
         <v-btn>
             <v-icon>mdi-calendar-today</v-icon>
             <span>Today</span>
@@ -21,7 +27,5 @@
 </style>
 
 <script setup lang="ts">
-
 const activeTab = defineModel();
-
 </script>

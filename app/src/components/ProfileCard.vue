@@ -39,24 +39,16 @@
 </style>
 
 <script setup>
-
 import { computed, ref } from 'vue';
+import { engine } from '~/engine/engine';
 
 // TODO: load from system
 
 // User information.
-const userProfile = ref({
-    name: 'Tony Skywalker',
-    title: 'Sith Lord',
-});
+const userProfile = ref(engine.getUserProfile());
 
 // System information.
-const systemProfile = ref({
-    product: 'Death Star',
-    author: "Tony's Studio",
-    version: '1.0.0',
-    code: 'Stardust'
-});
+const systemProfile = ref(engine.getSystemProfile());
 
 const displayVersion = computed(() => {
     return `${systemProfile.value.product} ${systemProfile.value.version} - ${systemProfile.value.code}`;
@@ -69,5 +61,4 @@ const displayCopyright = computed(() => {
     }
     return `Copyright © 2025 - ${currentYear} ${systemProfile.value.author}`;
 });
-
 </script>

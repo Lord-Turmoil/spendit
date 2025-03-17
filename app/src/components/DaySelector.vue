@@ -1,13 +1,31 @@
 <template>
     <div class="DaySelector">
-        <v-btn class="DaySelector__date" prepend-icon="mdi-calendar-range" size="large" @click="onDaySelectStart">
+        <v-btn
+            class="DaySelector__date"
+            prepend-icon="mdi-calendar-range"
+            size="large"
+            @click="onDaySelectStart"
+        >
             {{ displayDay }}
         </v-btn>
-        <v-btn class="DaySelector__reset" icon="mdi-restore" size="large" @click="resetDay"></v-btn>
+        <v-btn
+            class="DaySelector__reset"
+            icon="mdi-restore"
+            size="large"
+            @click="resetDay"
+        ></v-btn>
 
         <v-dialog v-model="dialogOpen">
-            <v-card max-width="400" prepend-icon="mdi-calendar-range" title="Pick a day">
-                <v-date-picker v-model="selectedDate" :max="new Date()" show-adjacent-months></v-date-picker>
+            <v-card
+                max-width="400"
+                prepend-icon="mdi-calendar-range"
+                title="Pick a day"
+            >
+                <v-date-picker
+                    v-model="selectedDate"
+                    :max="new Date()"
+                    show-adjacent-months
+                ></v-date-picker>
                 <v-card-actions>
                     <v-btn text @click="onDaySelectEnd(false)">Cancel</v-btn>
                     <v-btn text @click="onDaySelectEnd(true)">OK</v-btn>
@@ -36,7 +54,6 @@
 </style>
 
 <script setup>
-
 import { computed, ref } from 'vue';
 import { useDate } from 'vuetify';
 
@@ -76,5 +93,4 @@ const onDaySelectEnd = (confirm) => {
     }
     closeDialog();
 };
-
 </script>
