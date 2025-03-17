@@ -1,0 +1,14 @@
+{
+  "appId": "top.tony.spendit",
+  "appName": "Spendit",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true
+    }
+  },
+  "server": {
+    "hostname": "spend.tonys-studio.top",
+    "androidScheme": "https"
+  }
+}

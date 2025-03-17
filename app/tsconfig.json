@@ -1,0 +1,18 @@
+{
+    "include": [
+        "src"
+    ],
+    "exclude": [
+        "**/*.test.ts"
+    ],
+    "compilerOptions": {
+        "module": "nodenext",
+        "outDir": "build",
+        "baseUrl": ".",
+        "paths": {
+            "~/*": [
+                "src/*"
+            ]
+        }
+    },
+}

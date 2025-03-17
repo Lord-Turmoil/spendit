@@ -1,0 +1,118 @@
+:root {
+    --default-red: rgb(234, 45, 46);
+
+    --default-blue: rgb(0, 116, 189);
+    --default-blue-transparent: rgba(0, 116, 189, .1);
+    --default-blue-light: rgba(0, 116, 189, .2);
+
+    --default-grey: rgb(128, 128, 128);
+    --default-grey-transparent: rgba(128, 128, 128, .1);
+    --default-grey-light: rgba(128, 128, 128, 0.2);
+
+    --default-green: #64ba44;
+    --default-orange: #f7821a;
+    --default-purple: #a550a7;
+    --default-cyan: #008080;
+    --default-pink: #f84e9e;
+
+    --font-color: #333333;
+    --bg-color: #fbfbfc;
+    --bg-like: #fafafc;
+    --bg-grey: #eaeaea;
+    --shadow-color: #d9d9d9;
+
+    --size-xxl: 3rem;
+    --size-xl: 2rem;
+    --size-l: 1.8rem;
+    --size-m: 1.5rem;
+    --size-s: 1rem;
+    --size-xs: 0.8rem;
+    --size-xxs: 0.5rem;
+}
+
+html {
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    scroll-behavior: smooth;
+}
+
+ol,
+ul,
+li {
+    list-style: none;
+}
+
+img {
+    border: 0;
+}
+
+b,
+strong {
+    font-weight: normal;
+}
+
+i,
+em {
+    font-style: normal;
+}
+
+u,
+s,
+ins,
+del {
+    text-decoration: none;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid #000;
+}
+
+input,
+button {
+    outline: none;
+    border: none;
+}
+
+button,
+select {
+    cursor: pointer;
+}
+
+input:focus-visible,
+textarea:focus-visible {
+    outline: 0;
+}
+
+textarea {
+    border: none;
+    resize: none;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+}
+
+.leftfix {
+    float: left;
+}
+
+.rightfix {
+    float: right;
+}
+
+.clearfix::after {
+    content: "";
+    display: block;
+    clear: both;
+}
