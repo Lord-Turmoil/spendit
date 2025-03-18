@@ -2,7 +2,10 @@
     <v-card class="EntryCard" link>
         <v-card-title class="EntryCard__title">
             <h3 class="text-h5">{{ entry.title }}</h3>
-            <h4 class="text-h4 text-red-lighten-1">- {{ displayMoney }}</h4>
+            <h4 class="text-h4 text-red-lighten-1">
+                <v-icon class="text-h5" icon="mdi-minus"></v-icon>
+                <span>{{ displayMoney }}</span>
+            </h4>
         </v-card-title>
         <v-card-subtitle>{{ entry.note }}</v-card-subtitle>
         <v-card-text class="EntryCard__body">
@@ -45,6 +48,12 @@
 
 .EntryCard__title h3 {
     flex: 1;
+}
+
+.EntryCard__title h4 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .EntryCard__body {
@@ -99,10 +108,16 @@
 </style>
 
 <script setup lang="ts">
-import { Entry } from '~/engine/models.js';
 import { computed } from 'vue';
+import { Entry } from '~/engine/models.js';
+import { DefaultEntryEventHandler, EntryEventHandler } from '~/engine/events.js';
 
-const { entry } = defineProps<{ entry: Entry }>();
+interface EntryCardProps {
+    entry: Entry;
+    callback?: EntryEventHandler;
+}
+
+const { entry, callback = DefaultEntryEventHandler } = defineProps<EntryCardProps>();
 
 const displayMoney = computed(() => {
     return (entry.money * 0.01).toFixed(2);

@@ -2,7 +2,7 @@
     <div class="DayLayout">
         <DaySelector v-model="activeDate" />
         <div class="DayLayout__list">
-            <DetailView></DetailView>
+            <DetailView :dates="dates" :show-date="false"></DetailView>
         </div>
     </div>
 </template>
@@ -25,10 +25,15 @@
 </style>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import DaySelector from '~/components/DaySelector.vue';
 import DetailView from '~/view/DetailView.vue';
+import { formatTimestamp } from '~/utils/format.js';
 
 const activeDate = ref(new Date());
+
+const dates = computed(() => {
+    return [formatTimestamp(activeDate.value)];
+});
 </script>
