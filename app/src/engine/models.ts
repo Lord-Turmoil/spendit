@@ -1,7 +1,7 @@
 /**
  * @module models
  *
- * This module provide all models for the application.
+ * This module provides all models for the application.
  */
 
 // ========================================================================
@@ -99,8 +99,8 @@ export interface UserProfile {
 
 export const DummyUserProfile: UserProfile = {
     id: '',
-    name: 'Tony',
-    title: 'Premium User'
+    name: 'mascota',
+    title: 'Internal User'
 };
 
 export interface UserProfileMeta {

@@ -26,9 +26,7 @@ export class SpendEngine {
 
     selectUserProfile(userId: string) {
         if (this.profile.selectUserProfile(userId)) {
-            this.database = new DatabaseModule(
-                this.profile.getUserProfile().id
-            );
+            this.database = new DatabaseModule(this.profile.getUserProfile().id);
         }
     }
 

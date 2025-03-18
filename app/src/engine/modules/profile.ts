@@ -1,20 +1,19 @@
 import {
     CurrentSystemProfile,
-    DummyMeta,
     DummyUserProfile,
     DummyUserProfileMeta,
     SystemProfile,
     UserProfile,
     UserProfileMeta
 } from '~/engine/models.js';
-import { getNative } from '~/utils/native.js';
+import { getNative, Native } from '~/utils/native.js';
 
 export class ProfileModule {
     private userProfileMeta: UserProfileMeta = DummyUserProfileMeta;
     private userProfile: UserProfile = DummyUserProfile;
     private systemProfile: SystemProfile = CurrentSystemProfile;
 
-    private native = getNative();
+    private native: Native = getNative();
 
     constructor() {
         this.loadProfileMeta();
@@ -48,14 +47,12 @@ export class ProfileModule {
 
     updateUserProfile(userProfile: UserProfile) {
         this.userProfile = { ...userProfile, id: this.userProfile.id };
-        this.userProfileMeta.profiles = this.userProfileMeta.profiles.map(
-            (user) => {
-                if (user.id === this.userProfile.id) {
-                    return this.userProfile;
-                }
-                return user;
+        this.userProfileMeta.profiles = this.userProfileMeta.profiles.map((user) => {
+            if (user.id === this.userProfile.id) {
+                return this.userProfile;
             }
-        );
+            return user;
+        });
         this.saveProfiles();
         this.updateState();
     }
@@ -90,9 +87,7 @@ export class ProfileModule {
         }
 
         // find the user
-        let user = this.userProfileMeta.profiles.find(
-            (user) => user.id === lastUserId
-        );
+        let user = this.userProfileMeta.profiles.find((user) => user.id === lastUserId);
         if (user === undefined) {
             user = this.userProfileMeta.profiles[0];
         }
@@ -115,10 +110,7 @@ export class ProfileModule {
     }
 
     private saveProfiles(): void {
-        this.native.saveFile(
-            'profiles.json',
-            JSON.stringify(this.userProfileMeta)
-        );
+        this.native.saveFile('profiles.json', JSON.stringify(this.userProfileMeta));
     }
 
     private updateState(): void {

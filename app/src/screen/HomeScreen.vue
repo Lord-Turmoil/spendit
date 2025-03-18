@@ -1,7 +1,7 @@
 <template>
-    <v-layout class="HomeScreen">
+    <v-container class="HomeScreen">
         <HomeLayout />
-    </v-layout>
+    </v-container>
 </template>
 
 <style>

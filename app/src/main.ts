@@ -10,7 +10,7 @@ import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
 
 // custom components
-import router from '~/router/router';
+import router from '~/router/router.js';
 
 const vuetify = createVuetify({
     components,

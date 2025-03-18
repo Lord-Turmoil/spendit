@@ -44,7 +44,7 @@ export class DatabaseModule {
     private meta: DbMeta = DummyMeta;
     private tables: Map<string, DbTable> = new Map();
     private native: Native = getNative();
-    private userId: string;
+    private readonly userId: string;
 
     constructor(userId: string) {
         this.userId = userId;

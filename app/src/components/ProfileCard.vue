@@ -38,11 +38,9 @@
 }
 </style>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue';
-import { engine } from '~/engine/engine';
-
-// TODO: load from system
+import { engine } from '~/engine/engine.js';
 
 // User information.
 const userProfile = ref(engine.getUserProfile());

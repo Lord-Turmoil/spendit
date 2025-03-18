@@ -1,11 +1,11 @@
 <!-- Top-level layout -->
 <template>
-    <v-container class="HomeLayout">
+    <div class="HomeLayout">
         <DayLayout v-show="activeTab === 0" />
         <MenuLayout v-show="activeTab === 1" />
 
         <Navigator v-model="activeTab" />
-    </v-container>
+    </div>
 </template>
 
 <style>

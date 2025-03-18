@@ -16,11 +16,7 @@
         ></v-btn>
 
         <v-dialog v-model="dialogOpen">
-            <v-card
-                max-width="400"
-                prepend-icon="mdi-calendar-range"
-                title="Pick a day"
-            >
+            <v-card max-width="400" prepend-icon="mdi-calendar-range" title="Pick a day">
                 <v-date-picker
                     v-model="selectedDate"
                     :max="new Date()"
@@ -53,11 +49,11 @@
 }
 </style>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useDate } from 'vuetify';
 
-const activeDate = defineModel();
+const activeDate = defineModel<Date>();
 const adapter = useDate();
 
 const resetDay = () => {
@@ -87,7 +83,7 @@ const onDaySelectStart = () => {
     openDialog();
 };
 
-const onDaySelectEnd = (confirm) => {
+const onDaySelectEnd = (confirm: boolean) => {
     if (confirm) {
         activeDate.value = selectedDate.value;
     }
