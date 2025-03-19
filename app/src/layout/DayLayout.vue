@@ -1,8 +1,8 @@
 <template>
     <div class="DayLayout">
         <DaySelector v-model="activeDate" />
-        <div class="DayLayout__list">
-            <DetailView :dates="dates" :show-date="false"></DetailView>
+        <div class="DayLayout__list no-scrollbar">
+            <DetailView :dates="dates" :show-date="false" :key="key"></DetailView>
         </div>
     </div>
 </template>
@@ -25,15 +25,20 @@
 </style>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref, watch } from 'vue';
 
 import DaySelector from '~/components/DaySelector.vue';
 import DetailView from '~/view/DetailView.vue';
 import { formatTimestamp } from '~/utils/format.js';
+import { engine } from '~/engine/engine';
 
 const activeDate = ref(new Date());
+const dates = ref<string[]>([formatTimestamp(activeDate.value)]);
+const key = ref<number>(0);
 
-const dates = computed(() => {
-    return [formatTimestamp(activeDate.value)];
+watch(activeDate, () => {
+    engine.setFocusDate(formatTimestamp(activeDate.value));
+    dates.value = [formatTimestamp(activeDate.value)];
+    key.value++; // force re-render
 });
 </script>

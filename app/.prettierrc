@@ -4,5 +4,8 @@
     "singleQuote": true,
     "printWidth": 90,
     "tabWidth": 4,
-    "useTabs": false
+    "useTabs": false,
+    "arrowParens": "always",
+    "htmlWhitespaceSensitivity": "ignore",
+    "bracketSameLine": true
 }

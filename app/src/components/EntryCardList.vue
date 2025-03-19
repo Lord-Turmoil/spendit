@@ -3,7 +3,17 @@
         <div class="EntryCardList__timestamp text-h6" v-if="showDate">
             {{ formatTimestampToSlash(date) }}
         </div>
-        <EntryCard v-for="(item, i) in entries" :key="i" :entry="item"></EntryCard>
+        <EntryCard
+            v-for="(item, i) in entries"
+            :key="i"
+            :entry="item"
+            @click="onEditStart(item)"></EntryCard>
+        <v-dialog class="EntryCardList__dialog" v-model="dialogOpen">
+            <EditView
+                title="Edit Entry"
+                :entry="editEntry"
+                :on-close="onEditEnd"></EditView>
+        </v-dialog>
     </div>
 </template>
 
@@ -21,9 +31,19 @@
 </style>
 
 <script setup lang="ts">
+import { onMounted, onUnmounted, ref } from 'vue';
 import EntryCard from '~/components/EntryCard.vue';
+import EditView from '~/view/EditView.vue';
 import { Entry } from '~/engine/models.js';
-import { formatTimestampToSlash } from '../utils/format.js';
+import { formatTimestampToSlash } from '~/utils/format.js';
+import {
+    BusEventTypes,
+    EntryCallback,
+    EntryUpdateEvent,
+    EntryUpdateTypes
+} from '~/engine/events.js';
+import { engine } from '~/engine/engine.js';
+import { bus } from '~/extensions/emitter';
 
 interface EntryCardListProps {
     date: string;
@@ -32,19 +52,55 @@ interface EntryCardListProps {
 
 const { date, showDate = true } = defineProps<EntryCardListProps>();
 
-const entry: Entry = {
-    title: 'Bread',
-    date: '2021-10-01',
-    timestamp: 123456,
-    money: 1990,
-    category: ['Life', 'Food'],
-    people: ['mascota', 'wuswada'],
-    tags: ['food', 'bread', 'extra'],
-    note: '3 caterpillars from sandwiches, and a chocolate cake. 3 caterpillars from sandwiches, and a chocolate cake.'
+const entries = ref<Entry[]>([...engine.getDatabase().getTable(date).entries]);
+
+// dialog control
+const dialogOpen = ref(false);
+const openDialog = () => {
+    dialogOpen.value = true;
 };
 
-const entries: Entry[] = [];
-for (let i = 0; i < 5; i++) {
-    entries.push(entry);
-}
+const closeDialog = () => {
+    dialogOpen.value = false;
+};
+
+// event callback
+const onEntryUpdateEvent = (event: EntryUpdateEvent) => {
+    if (event.type === EntryUpdateTypes.CREATE) {
+        entries.value.push(event.entry);
+    } else if (event.type === EntryUpdateTypes.UPDATE) {
+        entries.value = entries.value.map((item) => {
+            if (item.timestamp === event.entry.timestamp) {
+                return event.entry;
+            }
+            return item;
+        });
+    } else {
+        // delete
+        entries.value = entries.value.filter(
+            (item) => item.timestamp !== event.entry.timestamp
+        );
+    }
+};
+
+// edit control
+const editEntry = ref(engine.createEntry());
+
+const onEditStart: EntryCallback = (entry: Entry) => {
+    editEntry.value = entry;
+    openDialog();
+};
+
+const onEditEnd = () => {
+    closeDialog();
+};
+
+// event listener
+onMounted(() => {
+    bus.on(BusEventTypes.ENTRY_UPDATE, onEntryUpdateEvent);
+});
+
+onUnmounted(() => {
+    bus.off(BusEventTypes.ENTRY_UPDATE, onEntryUpdateEvent);
+});
 </script>

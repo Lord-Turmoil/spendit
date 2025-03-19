@@ -34,6 +34,12 @@ export abstract class Native {
      * @returns The content of the file, or null if not found.
      */
     abstract loadFile(filename: string): string | null;
+
+    /**
+     * Delete the given file.
+     * @param filename The filename to delete.
+     */
+    abstract deleteFile(filename: string): void;
 }
 
 export class WebNative extends Native {
@@ -44,6 +50,10 @@ export class WebNative extends Native {
     override loadFile(filename: string): string | null {
         return localStorage.getItem(filename);
     }
+
+    override deleteFile(filename: string): void {
+        localStorage.removeItem(filename);
+    }
 }
 
 export class MobileNative extends Native {
@@ -52,6 +62,10 @@ export class MobileNative extends Native {
     }
 
     override loadFile(filename: string): string | null {
+        throw new Error('Method not implemented.');
+    }
+
+    override deleteFile(filename: string): void {
         throw new Error('Method not implemented.');
     }
 }

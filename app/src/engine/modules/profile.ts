@@ -1,15 +1,17 @@
 import {
     CurrentSystemProfile,
     DummyUserProfile,
-    DummyUserProfileMeta,
+    getDummyUserProfileMeta,
     SystemProfile,
     UserProfile,
     UserProfileMeta
 } from '~/engine/models.js';
 import { getNative, Native } from '~/utils/native.js';
 
+const PROFILE_FILE = 'profiles.json';
+
 export class ProfileModule {
-    private userProfileMeta: UserProfileMeta = DummyUserProfileMeta;
+    private userProfileMeta: UserProfileMeta = getDummyUserProfileMeta();
     private userProfile: UserProfile = DummyUserProfile;
     private systemProfile: SystemProfile = CurrentSystemProfile;
 
@@ -35,6 +37,9 @@ export class ProfileModule {
      * @returns True if the user is found, false otherwise.
      */
     selectUserProfile(userId: string): boolean {
+        if (this.userProfile.id === userId) {
+            return false;
+        }
         this.userProfileMeta.profiles.forEach((user) => {
             if (user.id === userId) {
                 this.userProfile = user;
@@ -66,10 +71,10 @@ export class ProfileModule {
     }
 
     private loadProfileMeta(): void {
-        let value = this.native.loadFile('profiles.json');
+        let value = this.native.loadFile(PROFILE_FILE);
         if (value === null) {
-            value = JSON.stringify(DummyUserProfileMeta);
-            this.saveProfiles();
+            value = JSON.stringify(getDummyUserProfileMeta());
+            this.native.saveFile(PROFILE_FILE, value);
         }
         this.userProfileMeta = JSON.parse(value);
     }
@@ -110,7 +115,7 @@ export class ProfileModule {
     }
 
     private saveProfiles(): void {
-        this.native.saveFile('profiles.json', JSON.stringify(this.userProfileMeta));
+        this.native.saveFile(PROFILE_FILE, JSON.stringify(this.userProfileMeta));
     }
 
     private updateState(): void {

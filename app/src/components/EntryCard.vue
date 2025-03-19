@@ -10,7 +10,7 @@
         <v-card-subtitle>{{ entry.note }}</v-card-subtitle>
         <v-card-text class="EntryCard__body">
             <span class="EntryCard__meta">
-                <span class="EntryCard__body_category text-h6">
+                <span class="EntryCard__body_category text-h6 text-green-darken-1">
                     {{ displayCategory }}
                 </span>
                 <span class="EntryCard__body_people tags">
@@ -24,7 +24,7 @@
             </span>
             <span class="EntryCard__body_tags tags">
                 <span class="tag" v-for="(tag, i) in entry.tags" :key="i">
-                    <v-chip variant="outlined" color="primary" size="small">
+                    <v-chip variant="outlined" color="blue-darken-2" size="small">
                         <v-icon icon="mdi-pound"></v-icon>
                         {{ tag }}
                     </v-chip>
@@ -110,20 +110,21 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { Entry } from '~/engine/models.js';
-import { DefaultEntryEventHandler, EntryEventHandler } from '~/engine/events.js';
 
 interface EntryCardProps {
     entry: Entry;
-    callback?: EntryEventHandler;
 }
 
-const { entry, callback = DefaultEntryEventHandler } = defineProps<EntryCardProps>();
+const { entry } = defineProps<EntryCardProps>();
 
 const displayMoney = computed(() => {
     return (entry.money * 0.01).toFixed(2);
 });
 
 const displayCategory = computed(() => {
-    return entry.category.join(' / ');
+    if (entry.categories.length === 0) {
+        return 'N/A';
+    }
+    return entry.categories.join(' / ');
 });
 </script>

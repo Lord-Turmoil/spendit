@@ -1,11 +1,10 @@
 <template>
     <div class="DetailView">
         <EntryCardList
-            v-for="(date, i) in dates"
+            v-for="(date, i) in sortedDates"
             :key="i"
             :date="date"
-            :show-date="showDate"
-        ></EntryCardList>
+            :show-date="showDate"></EntryCardList>
     </div>
 </template>
 
@@ -13,6 +12,7 @@
 
 <script setup lang="ts">
 import EntryCardList from '~/components/EntryCardList.vue';
+import { ref, watch } from 'vue';
 
 interface DetailViewProps {
     dates: string[];
@@ -20,6 +20,7 @@ interface DetailViewProps {
 }
 
 const { dates, showDate = true } = defineProps<DetailViewProps>();
+
 // ensure the dates are sorted in descending order
-dates.sort().reverse();
+const sortedDates = ref<string[]>(dates.sort().reverse());
 </script>

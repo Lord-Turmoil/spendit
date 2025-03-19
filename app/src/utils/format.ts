@@ -30,3 +30,23 @@ export function formatTimestampToSlash(date: string): string {
 export function formatTimeISO(date: Date): string {
     return date.toISOString();
 }
+
+/**
+ * Format raw money to string representation, e.g. 1234 -> 12.34.
+ * @param money
+ */
+export function formatMoney(money: number): string {
+    const raw = money.toString(10);
+    if (raw.length <= 2) {
+        return `0.${raw.padStart(2, '0')}`;
+    }
+    return `${raw.slice(0, -2)}.${raw.slice(-2)}`;
+}
+
+export function parseMoney(money: string): number {
+    const [integer, decimal] = money.split('.');
+    if (decimal === undefined) {
+        return parseInt(integer, 10) * 100;
+    }
+    return parseInt(integer, 10) * 100 + parseInt(decimal.padEnd(2, '0'), 10);
+}

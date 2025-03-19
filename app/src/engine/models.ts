@@ -8,6 +8,8 @@
 // Data models
 // ========================================================================
 
+import { formatTimestamp } from '~/utils/format';
+
 /**
  * The detailed information for a spend item.
  */
@@ -23,6 +25,9 @@ export interface Entry {
     /**
      * The time when this entry is created, in milliseconds since epoch.
      * This is used to sort the entries.
+     *
+     * Note that timestamp doesn't mean to be in the same day as the date.
+     * Because this is only an edit time.
      */
     timestamp: number;
 
@@ -35,17 +40,17 @@ export interface Entry {
      * Category is a ordered list, each is a sub-category of the previous one.
      * Currently, only a maximum of 2 levels is supported.
      */
-    category: string[];
+    categories: string[];
 
     /**
      * The involved people.
      */
-    people: string[];
+    people: TagList;
 
     /**
      * Well, the fancy tags.
      */
-    tags: string[];
+    tags: TagList;
 
     /**
      * Extra note for this one.
@@ -53,12 +58,18 @@ export interface Entry {
     note: string;
 }
 
-/**
- * The list of entries.
- * It can be used for a day's entries, or any other list of entries.
- */
-export interface EntryList {
-    entries: Entry[];
+export function getDummyEntry(): Entry {
+    const timestamp = new Date();
+    return {
+        title: '',
+        date: formatTimestamp(timestamp),
+        timestamp: timestamp.getTime(),
+        money: 0,
+        categories: [],
+        people: [],
+        tags: [],
+        note: ''
+    };
 }
 
 export interface DbMeta {
@@ -68,9 +79,9 @@ export interface DbMeta {
     entries: string[];
 }
 
-export const DummyMeta: DbMeta = {
-    entries: []
-};
+export function getDummyDbMeta(): DbMeta {
+    return { entries: [] };
+}
 
 /**
  * Represents data in a day.
@@ -81,11 +92,13 @@ export interface DbTable {
     entries: Entry[];
 }
 
-export const DummyTable: DbTable = {
-    timestamp: '',
-    updated: '',
-    entries: []
-};
+export function getDummyDbTable(timestamp?: string): DbTable {
+    return {
+        timestamp: timestamp || '',
+        updated: '',
+        entries: []
+    };
+}
 
 // ========================================================================
 // User models
@@ -107,9 +120,9 @@ export interface UserProfileMeta {
     profiles: UserProfile[];
 }
 
-export const DummyUserProfileMeta: UserProfileMeta = {
-    profiles: []
-};
+export function getDummyUserProfileMeta(): UserProfileMeta {
+    return { profiles: [] };
+}
 
 export interface SystemProfile {
     product: string;
@@ -124,3 +137,11 @@ export const CurrentSystemProfile: SystemProfile = {
     version: '0.1.0',
     code: 'Genesis'
 };
+
+// ========================================================================
+// Tag models
+// ========================================================================
+
+export type CategoryEntry = [string, string[]];
+export type CategoryList = CategoryEntry[];
+export type TagList = string[];

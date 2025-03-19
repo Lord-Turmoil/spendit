@@ -5,8 +5,7 @@
             v-model="activeTab"
             mode="shift"
             grow
-            mandatory
-        >
+            mandatory>
             <v-btn>
                 <v-icon>mdi-calendar-today</v-icon>
                 <span>Today</span>
@@ -20,8 +19,10 @@
             class="Navigator_plus"
             icon="mdi-plus"
             size="x-large"
-            @click="onCreate"
-        ></v-btn>
+            @click="openDialog"></v-btn>
+        <v-dialog class="Navigator_dialog" v-model="dialogOpen">
+            <EditView title="Create a New Entry" :on-close="closeDialog"></EditView>
+        </v-dialog>
     </div>
 </template>
 
@@ -44,10 +45,19 @@
 </style>
 
 <script setup lang="ts">
-interface NavigatorProps {
-    onCreate?: () => void;
-}
+import EditView from '~/view/EditView.vue';
+import { ref } from 'vue';
 
 const activeTab = defineModel();
-const { onCreate = () => {} } = defineProps<NavigatorProps>();
+
+// dialog control
+const dialogOpen = ref(false);
+
+const openDialog = () => {
+    dialogOpen.value = true;
+};
+
+const closeDialog = () => {
+    dialogOpen.value = false;
+};
 </script>

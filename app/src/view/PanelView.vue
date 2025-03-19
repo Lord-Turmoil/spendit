@@ -7,8 +7,7 @@
                     v-for="(item, i) in menuList"
                     :key="i"
                     link
-                    @click="item.action"
-                >
+                    @click="item.action">
                     <template v-slot:prepend>
                         <v-icon :icon="item.icon"></v-icon>
                     </template>

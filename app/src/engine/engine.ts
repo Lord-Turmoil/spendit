@@ -1,19 +1,36 @@
-import { UserProfile } from '~/engine/models.js';
+import { Entry, UserProfile } from '~/engine/models.js';
 import { ProfileModule } from '~/engine/modules/profile.js';
 import { DatabaseModule } from '~/engine/modules/database.js';
+import { EntryUpdateEvent, EntryUpdateTypes } from '~/engine/events.js';
+import { TagsModule } from '~/engine/modules/tags.js';
+import { en } from 'vuetify/locale';
 
 export class SpendEngine {
     private profile: ProfileModule;
     private database: DatabaseModule;
+    private tags: TagsModule;
+
+    /**
+     * The focused day in the home screen, in the format of 'YYYY-MM-DD'.
+     *
+     * It is used to create new entry with the current date.
+     *
+     * @private
+     */
+    private focusDate: string = '';
 
     constructor() {
         this.profile = new ProfileModule();
         this.database = new DatabaseModule(this.profile.getUserProfile().id);
+        this.tags = new TagsModule(this.profile.getUserProfile().id);
         console.log('Powered by SpendEngine');
     }
 
     // ========================================================================
     // User profile operations
+    // ------------------------------------------------------------------------
+    // Since the change in user will trigger updates of other modules, we can
+    // not expose the profile module directly.
     // ========================================================================
 
     getAllUserProfiles(): UserProfile[] {
@@ -27,6 +44,7 @@ export class SpendEngine {
     selectUserProfile(userId: string) {
         if (this.profile.selectUserProfile(userId)) {
             this.database = new DatabaseModule(this.profile.getUserProfile().id);
+            this.tags = new TagsModule(this.profile.getUserProfile().id);
         }
     }
 
@@ -41,8 +59,51 @@ export class SpendEngine {
     // ========================================================================
     // Database operations
     // ========================================================================
+
     getDatabase(): DatabaseModule {
         return this.database;
+    }
+
+    setFocusDate(date: string): void {
+        this.focusDate = date;
+    }
+
+    /**
+     * Create a new entry.
+     *
+     * @returns The new entry with empty fields.
+     */
+    createEntry(): Entry {
+        const entry = this.database.createEntry();
+        if (this.focusDate !== '') {
+            entry.date = this.focusDate;
+        }
+        return entry;
+    }
+
+    /**
+     * Notify the engine so that it can update the entry.
+     * @param event
+     */
+    notify(event: EntryUpdateEvent) {
+        this.database.update(event);
+        if (event.type == EntryUpdateTypes.DELETE) {
+            return;
+        }
+
+        // update category, people and tags
+        this.tags.updateCategories(event.entry.categories);
+        this.tags.updatePeople(event.entry.people);
+        this.tags.updateTags(event.entry.tags);
+        this.tags.saveTags();
+    }
+
+    // ========================================================================
+    // Tags operations
+    // ========================================================================
+
+    getTags(): TagsModule {
+        return this.tags;
     }
 }
 
