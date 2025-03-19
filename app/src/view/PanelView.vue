@@ -30,12 +30,14 @@
 </style>
 
 <script setup lang="ts">
+import router from '~/extensions/router';
+
 const menuList = [
     {
         title: 'View days',
         icon: 'mdi-calendar-range',
         action: () => {
-            console.log('View days clicked');
+            router.push('/overview');
         }
     },
     {

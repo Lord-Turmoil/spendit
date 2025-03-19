@@ -109,7 +109,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { Entry } from '~/engine/models.js';
+
+import { Entry } from '~/engine/models';
 
 interface EntryCardProps {
     entry: Entry;

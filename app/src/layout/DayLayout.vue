@@ -25,10 +25,11 @@
 </style>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-
 import DaySelector from '~/components/DaySelector.vue';
 import DetailView from '~/view/DetailView.vue';
+
+import { ref, watch } from 'vue';
+
 import { formatTimestamp } from '~/utils/format.js';
 import { engine } from '~/engine/engine';
 

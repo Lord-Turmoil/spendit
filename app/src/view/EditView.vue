@@ -157,18 +157,14 @@
 
 <script setup lang="ts">
 import { nextTick, ref, watch } from 'vue';
-import { Entry } from '~/engine/models.js';
-import { engine } from '~/engine/engine.js';
-import {
-    BusEventTypes,
-    EntryEventHandler,
-    EntryUpdateEvent,
-    EntryUpdateTypes
-} from '~/engine/events.js';
-import { formatMoney, formatTimestampToSlash, parseMoney } from '../utils/format.js';
 import { VForm } from 'vuetify/components';
-import { stall } from '~/utils/stall.js';
+
+import { Entry } from '~/engine/models';
+import { BusEventTypes, EntryUpdateEvent, EntryUpdateTypes } from '~/engine/events';
+import { engine } from '~/engine/engine';
 import { bus } from '~/extensions/emitter';
+import { formatMoney, formatTimestampToSlash, parseMoney } from '~/utils/format';
+import { stall } from '~/utils/stall';
 
 // ============================================================================
 // Component properties.

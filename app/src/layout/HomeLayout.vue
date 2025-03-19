@@ -16,11 +16,18 @@
 </style>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-
 import DayLayout from '~/layout/DayLayout.vue';
 import MenuLayout from '~/layout/MenuLayout.vue';
 import Navigator from '~/components/Navigator.vue';
 
-const activeTab = ref(0);
+import { ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
+
+import router from '~/extensions/router';
+
+const activeTab = ref(useRoute().query.tab === '1' ? 1 : 0);
+
+watch(activeTab, () => {
+    router.replace({ query: { tab: activeTab.value.toString() } });
+});
 </script>

@@ -12,7 +12,8 @@
 
 <script setup lang="ts">
 import EntryCardList from '~/components/EntryCardList.vue';
-import { ref, watch } from 'vue';
+
+import { ref } from 'vue';
 
 interface DetailViewProps {
     dates: string[];

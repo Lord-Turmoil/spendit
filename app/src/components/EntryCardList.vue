@@ -31,19 +31,21 @@
 </style>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue';
 import EntryCard from '~/components/EntryCard.vue';
 import EditView from '~/view/EditView.vue';
-import { Entry } from '~/engine/models.js';
-import { formatTimestampToSlash } from '~/utils/format.js';
+
+import { onMounted, onUnmounted, ref } from 'vue';
+
+import { Entry } from '~/engine/models';
+import { engine } from '~/engine/engine';
 import {
     BusEventTypes,
     EntryCallback,
     EntryUpdateEvent,
     EntryUpdateTypes
-} from '~/engine/events.js';
-import { engine } from '~/engine/engine.js';
+} from '~/engine/events';
 import { bus } from '~/extensions/emitter';
+import { formatTimestampToSlash } from '~/utils/format';
 
 interface EntryCardListProps {
     date: string;

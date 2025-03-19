@@ -46,6 +46,7 @@
 
 <script setup lang="ts">
 import EditView from '~/view/EditView.vue';
+
 import { ref } from 'vue';
 
 const activeTab = defineModel();
