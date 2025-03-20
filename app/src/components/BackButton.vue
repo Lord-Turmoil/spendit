@@ -1,5 +1,13 @@
 <template>
-    <v-btn class="BackButton" size="large" @click="onClickBack" block>返回</v-btn>
+    <v-btn
+        class="BackButton"
+        size="large"
+        @click="onClickBack"
+        variant="flat"
+        color="deep-orange-darken-1"
+        block>
+        返回
+    </v-btn>
 </template>
 
 <style scoped>

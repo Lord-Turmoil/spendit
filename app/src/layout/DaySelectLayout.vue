@@ -6,6 +6,8 @@
             @click="onConfirmSelection"
             :loading="!overviewReady"
             size="large"
+            variant="flat"
+            color="orange-darken-1"
             block>
             统计
         </v-btn>

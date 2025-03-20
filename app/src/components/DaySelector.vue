@@ -4,13 +4,17 @@
             class="DaySelector__date text-h6"
             prepend-icon="mdi-calendar-range"
             size="x-large"
+            variant="outlined"
+            color="light-blue-darken-1"
             @click="onDaySelectStart">
-            {{ formatTimestampToSlash(formatTimestamp(activeDate)) }}
+            {{ displayDate }}
         </v-btn>
         <v-btn
             class="DaySelector__reset"
             icon="mdi-restore"
             size="large"
+            variant="flat"
+            color="orange-darken-1"
             @click="resetDay"></v-btn>
 
         <v-dialog class="DaySelector__dialog" v-model="dialogOpen">
@@ -62,14 +66,21 @@
 </style>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { formatTimestamp, formatTimestampToSlash } from '~/utils/format';
+import { ref, watch } from 'vue';
+import { useDate } from 'vuetify';
 
 const activeDate = defineModel<Date>();
 
 const resetDay = () => {
     activeDate.value = new Date();
 };
+
+const adapter = useDate();
+const displayDate = ref(adapter.format(activeDate.value, 'fullDateWithWeekday'));
+
+watch(activeDate, () => {
+    displayDate.value = adapter.format(activeDate.value, 'fullDateWithWeekday');
+});
 
 // dialog status control
 const dialogOpen = ref(false);

@@ -5,7 +5,7 @@
  */
 import { Entry, Statistics } from '~/engine/models';
 
-const UnknownCategory = 'N/A';
+const UnknownCategory = '未分类';
 
 export class StatisticsModule {
     sum(entries: Entry[]): Statistics {

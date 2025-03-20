@@ -9,7 +9,11 @@
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.DetailView {
+    width: 100%;
+}
+</style>
 
 <script setup lang="ts">
 import EntryCardList from '~/components/EntryCardList.vue';

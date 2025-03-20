@@ -4,7 +4,10 @@
             <div class="title split-wrapper">
                 <h4 class="text-h5 split-primary">{{ category[0] }}</h4>
                 <h5 class="text-h5 text-red-lighten-1">
-                    <v-icon class="text-h5" icon="mdi-minus"></v-icon>
+                    <v-icon
+                        v-if="category[1] > 0"
+                        class="text-h5"
+                        icon="mdi-minus"></v-icon>
                     <span>{{ formatMoney(category[1]) }}</span>
                 </h5>
             </div>
@@ -16,7 +19,10 @@
                     <div class="split-wrapper">
                         <h5 class="text-h6 split-primary">{{ subCategory[0] }}</h5>
                         <h6 class="text-h6 text-red-lighten-2">
-                            <v-icon class="text-h6" icon="mdi-minus"></v-icon>
+                            <v-icon
+                                v-if="subCategory[1] > 0"
+                                class="text-h6"
+                                icon="mdi-minus"></v-icon>
                             <span>{{ formatMoney(subCategory[1]) }}</span>
                         </h6>
                     </div>

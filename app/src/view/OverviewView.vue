@@ -1,9 +1,12 @@
 <template>
-    <v-card class="OverviewView">
+    <v-card class="OverviewView" variant="flat">
         <v-card-title class="OverviewView__title split-wrapper">
             <h3 class="text-h4 split-primary">Total</h3>
-            <h4 class="text-h4 text-red-lighten-1">
-                <v-icon class="text-h4" icon="mdi-minus"></v-icon>
+            <h4 class="text-h4 text-red-darken-1">
+                <v-icon
+                    v-if="statistics.total > 0"
+                    class="text-h4"
+                    icon="mdi-minus"></v-icon>
                 <span>{{ formatMoney(statistics.total) }}</span>
             </h4>
         </v-card-title>
@@ -22,7 +25,13 @@
             <v-divider class="divider"></v-divider>
             <SpendList :spends="statistics.spends"></SpendList>
             <v-divider class="divider"></v-divider>
-            <v-btn class="detail" @click="onClickDetail" size="large" block>
+            <v-btn
+                class="detail"
+                @click="onClickDetail"
+                variant="text"
+                color="blue-darken-1"
+                size="large"
+                block>
                 查看详细消费记录
             </v-btn>
         </v-card-text>

@@ -97,14 +97,23 @@
             <v-btn
                 v-if="!create"
                 color="error"
+                size="large"
                 :loading="isLoading"
                 @click="onClickConfirm(true)">
                 删除
             </v-btn>
-            <v-btn color="primary" :loading="isLoading" @click="onClickCancel">
+            <v-btn
+                color="primary"
+                size="large"
+                :loading="isLoading"
+                @click="onClickCancel">
                 取消
             </v-btn>
-            <v-btn color="success" :loading="isLoading" @click="onClickConfirm(false)">
+            <v-btn
+                color="success"
+                size="large"
+                :loading="isLoading"
+                @click="onClickConfirm(false)">
                 确认
             </v-btn>
         </v-card-actions>
@@ -113,8 +122,12 @@
         <v-card class="EditView__confirm" prepend-icon="mdi-alert" title="确认删除">
             <v-card-text>删除后将无法恢复，确定要删除这条记录吗？</v-card-text>
             <v-card-actions>
-                <v-btn color="error" @click="onConfirmDelete(true)">删除</v-btn>
-                <v-btn color="primary" @click="onConfirmDelete(false)">取消</v-btn>
+                <v-btn color="error" size="large" @click="onConfirmDelete(true)">
+                    删除
+                </v-btn>
+                <v-btn color="primary" size="large" @click="onConfirmDelete(false)">
+                    取消
+                </v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>

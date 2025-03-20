@@ -1,20 +1,25 @@
 <template>
-    <div class="ProfileCard">
-        <v-card>
-            <v-container>
-                <div class="ProfileCard__user">
-                    <h2 class="text-h5">{{ userProfile.name }}</h2>
-                    <!-- TODO: make it a chip badge -->
-                    <span>{{ userProfile.title }}</span>
-                </div>
-                <v-divider class="ProfileCard__divider"></v-divider>
-                <div class="ProfileCard__system">
-                    <span>{{ displayVersion }}</span>
-                    <span>{{ displayCopyright }}</span>
-                </div>
-            </v-container>
-        </v-card>
-    </div>
+    <v-card
+        class="ProfileCard"
+        variant="flat"
+        color="purple-darken-1"
+        link
+        href="https://spendit.tonys-studio.top/"
+        target="_blank">
+        <v-container>
+            <div class="ProfileCard__user">
+                <h2 class="text-h5">{{ userProfile.name }}</h2>
+                <!-- TODO: make it a chip badge -->
+                <span>{{ userProfile.title }}</span>
+            </div>
+            <v-divider class="ProfileCard__divider"></v-divider>
+            <div class="ProfileCard__system">
+                <span>{{ displayVersion }}</span>
+                <span>{{ displayCopyright }}</span>
+                <v-icon class="icon" icon="mdi-open-in-new"></v-icon>
+            </div>
+        </v-container>
+    </v-card>
 </template>
 
 <style scoped>
@@ -33,8 +38,19 @@
     margin: 10px auto;
 }
 
+.ProfileCard__system {
+    position: relative;
+}
+
 .ProfileCard__system span {
     display: block;
+}
+
+.ProfileCard__system .icon {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
 }
 </style>
 

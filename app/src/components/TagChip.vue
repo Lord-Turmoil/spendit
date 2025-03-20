@@ -1,5 +1,5 @@
 <template>
-    <v-chip variant="outlined" color="blue-darken-2" size="small">
+    <v-chip variant="outlined" color="blue-darken-1" size="small">
         <v-icon icon="mdi-pound"></v-icon>
         {{ tag }}
     </v-chip>

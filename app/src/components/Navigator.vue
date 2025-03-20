@@ -6,11 +6,11 @@
             mode="shift"
             grow
             mandatory>
-            <v-btn>
+            <v-btn size="x-large" variant="flat">
                 <v-icon>mdi-calendar-today</v-icon>
                 <span>今日</span>
             </v-btn>
-            <v-btn>
+            <v-btn size="x-large" variant="flat">
                 <v-icon>mdi-home</v-icon>
                 <span>菜单</span>
             </v-btn>
@@ -19,6 +19,8 @@
             class="Navigator_plus"
             icon="mdi-plus"
             size="x-large"
+            variant="flat"
+            color="green-darken-1"
             @click="openDialog"></v-btn>
         <v-dialog class="Navigator_dialog" v-model="dialogOpen" persistent>
             <EditView title="新建消费记录" :on-close="closeDialog"></EditView>

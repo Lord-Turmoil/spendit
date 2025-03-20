@@ -5,16 +5,20 @@
                 class="date"
                 prepend-icon="mdi-calendar-range"
                 size="large"
+                variant="outlined"
+                color="light-blue-darken-1"
                 @click="onSelectStartDate">
-                {{ formatTimestampToSlash(model.startDate) }}
+                {{ displayStartDate }}
             </v-btn>
             <span>至</span>
             <v-btn
                 class="date"
                 prepend-icon="mdi-calendar-range"
                 size="large"
+                variant="outlined"
+                color="light-blue-darken-1"
                 @click="onSelectEndDate">
-                {{ formatTimestampToSlash(model.endDate) }}
+                {{ displayEndDate }}
             </v-btn>
         </div>
         <v-dialog class="RangeSelector__dialog" v-model="startDialogOpen">
@@ -81,7 +85,8 @@
 </style>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import { useDate } from 'vuetify';
 import { formatTimestamp, formatTimestampToSlash, parseTimestamp } from '~/utils/format';
 
 interface RangeSelectorModel {
@@ -90,6 +95,10 @@ interface RangeSelectorModel {
 }
 
 const model = defineModel<RangeSelectorModel>();
+
+const adapter = useDate();
+const displayStartDate = ref(adapter.format(model.value.startDate, 'fullDate'));
+const displayEndDate = ref(adapter.format(model.value.endDate, 'fullDate'));
 
 // edit data
 const selectedDate = ref<Date>(new Date());
@@ -106,6 +115,7 @@ const onSelectStartDate = () => {
 const onSelectStartEnd = (confirm: boolean) => {
     if (confirm) {
         model.value.startDate = formatTimestamp(selectedDate.value);
+        displayStartDate.value = adapter.format(selectedDate.value, 'fullDate');
     }
     startDialogOpen.value = false;
 };
@@ -118,6 +128,7 @@ const onSelectEndDate = () => {
 const onSelectEndEnd = (confirm: boolean) => {
     if (confirm) {
         model.value.endDate = formatTimestamp(selectedDate.value);
+        displayEndDate.value = adapter.format(selectedDate.value, 'fullDate');
     }
     endDialogOpen.value = false;
 };

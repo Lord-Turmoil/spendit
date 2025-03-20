@@ -1,10 +1,13 @@
 <template>
-    <v-card class="PanelView" title="实用功能">
+    <v-card class="PanelView" title="实用功能" variant="flat">
         <v-list class="PanelView__list">
-            <v-list-item v-for="(item, i) in menuList" :key="i" link @click="item.action">
-                <template v-slot:prepend>
-                    <v-icon :icon="item.icon" size="x-large"></v-icon>
-                </template>
+            <v-list-item
+                v-for="(item, i) in menuList"
+                :key="i"
+                link
+                @click="item.action"
+                :prepend-icon="item.icon"
+                append-icon="mdi-chevron-right">
                 <v-list-item-title
                     class="text-h6"
                     v-text="item.title"></v-list-item-title>
