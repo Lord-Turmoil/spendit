@@ -1,11 +1,11 @@
 <template>
     <v-card class="OverviewView" variant="flat">
         <v-card-title class="OverviewView__title split-wrapper">
-            <h3 class="text-h4 split-primary">Total</h3>
-            <h4 class="text-h4 text-red-darken-1">
+            <h3 class="text-h6 split-primary">消费总计</h3>
+            <h4 class="text-h6 text-red-darken-1">
                 <v-icon
                     v-if="statistics.total > 0"
-                    class="text-h4"
+                    class="text-h6"
                     icon="mdi-minus"></v-icon>
                 <span>{{ formatMoney(statistics.total) }}</span>
             </h4>
@@ -30,7 +30,6 @@
                 @click="onClickDetail"
                 variant="text"
                 color="blue-darken-1"
-                size="large"
                 block>
                 查看详细消费记录
             </v-btn>
@@ -55,7 +54,6 @@
 
 .OverviewView__body .tags {
     flex: 1;
-    margin: 8px;
 }
 
 .OverviewView__body .tags .tag {
@@ -101,7 +99,8 @@ const entries = ref<Entry[]>([]);
 const prepareStatistics = async () => {
     let list: Entry[] = [];
     for (const date of dates) {
-        list.push(...engine.getDatabase().getTable(date).entries);
+        const table = await engine.getDatabase().getTable(date);
+        list.push(...table.entries);
     }
     statistics.value = engine.getStatistics().sum(list);
     entries.value = list;

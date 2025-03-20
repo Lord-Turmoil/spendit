@@ -13,6 +13,7 @@ export enum EntryUpdateTypes {
 
 export interface EntryUpdateEvent {
     type: EntryUpdateTypes;
+    handled: boolean;
     entry: Entry;
 }
 

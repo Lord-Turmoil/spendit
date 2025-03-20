@@ -1,6 +1,6 @@
 <template>
     <div v-if="entries.length > 0" class="EntryCardList scrollable">
-        <div class="EntryCardList__timestamp text-h6" v-if="showDate">
+        <div class="EntryCardList__timestamp text-body-1" v-if="showDate">
             {{ formatTimestampToSlash(date) }}
         </div>
         <EntryCard
@@ -62,7 +62,7 @@ interface EntryCardListProps {
 
 const { date, showDate = true, showEmpty = false } = defineProps<EntryCardListProps>();
 
-const entries = ref<Entry[]>([...engine.getDatabase().getTable(date).entries]);
+const entries = ref<Entry[]>([]);
 
 // dialog control
 const dialogOpen = ref(false);
@@ -108,6 +108,12 @@ const onEditEnd = () => {
 // event listener
 onMounted(() => {
     bus.on(BusEventTypes.ENTRY_UPDATE, onEntryUpdateEvent);
+    engine
+        .getDatabase()
+        .getTable(date)
+        .then((table) => {
+            entries.value = [...table.entries];
+        });
 });
 
 onUnmounted(() => {

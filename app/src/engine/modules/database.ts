@@ -12,7 +12,7 @@ import {
     getDummyDbTable,
     getDummyEntry
 } from '~/engine/models.js';
-import { formatTimeISO, formatTimestamp } from '~/utils/format.js';
+import { formatTimeISO } from '~/utils/format.js';
 import { getNative, Native } from '~/utils/native.js';
 import { EntryUpdateEvent, EntryUpdateTypes } from '~/engine/events.js';
 
@@ -39,7 +39,7 @@ meta.json:
 
 <entry_id>.json:
 {
-    timestamp: 
+    timestamp:
     entries: [
         {
             ...
@@ -56,6 +56,7 @@ export class DatabaseModule {
 
     constructor(userId: string) {
         this.userId = userId;
+        // TODO: handle async result.
         this.loadMeta();
     }
 
@@ -63,20 +64,11 @@ export class DatabaseModule {
      * Get the table for the given timestamp (YYYY-MM-DD).
      * @param timestamp The timestamp of the table.
      */
-    getTable(timestamp: string): DbTable {
+    async getTable(timestamp: string): Promise<DbTable> {
         if (this.tables.has(timestamp)) {
             return this.tables.get(timestamp);
         }
-        return this.loadTable(timestamp);
-    }
-
-    /**
-     * Create a new entry.
-     *
-     * @returns The new entry.
-     */
-    createEntry(): Entry {
-        return getDummyEntry();
+        return await this.loadTable(timestamp);
     }
 
     /**
@@ -86,47 +78,54 @@ export class DatabaseModule {
      *
      * @param event The event to update the entry.
      */
-    update(event: EntryUpdateEvent): void {
+    async update(event: EntryUpdateEvent): Promise<void> {
         switch (event.type) {
             case EntryUpdateTypes.CREATE:
-                this.handleCreate(event.entry);
+                await this.handleCreate(event.entry);
                 break;
             case EntryUpdateTypes.UPDATE:
-                this.handleUpdate(event.entry);
+                await this.handleUpdate(event.entry);
                 break;
             case EntryUpdateTypes.DELETE:
-                this.handleDelete(event.entry);
+                await this.handleDelete(event.entry);
                 break;
             default:
                 break;
         }
     }
 
-    private handleCreate(entry: Entry): void {
-        const table = this.getTable(entry.date);
+    private async handleCreate(entry: Entry): Promise<void> {
+        const table = await this.getTable(entry.date);
+        for (const e of table.entries) {
+            if (e.timestamp === entry.timestamp) {
+                // prevent multiple entries with the same timestamp.
+                console.error('Entry already exists:', e, entry);
+                return;
+            }
+        }
         table.entries.push(entry);
-        this.saveTable(table);
+        await this.saveTable(table);
     }
 
-    private handleUpdate(entry: Entry): void {
-        const table = this.getTable(entry.date);
+    private async handleUpdate(entry: Entry): Promise<void> {
+        const table = await this.getTable(entry.date);
         table.entries = table.entries.map((e) =>
             e.timestamp === entry.timestamp ? entry : e
         );
-        this.saveTable(table);
+        await this.saveTable(table);
     }
 
-    private handleDelete(entry: Entry): void {
-        const table = this.getTable(entry.date);
+    private async handleDelete(entry: Entry): Promise<void> {
+        const table = await this.getTable(entry.date);
         table.entries = table.entries.filter((e) => e.timestamp !== entry.timestamp);
-        this.saveTable(table);
+        await this.saveTable(table);
     }
 
-    private loadMeta() {
-        let value = this.native.loadFile(this.getFilePath('meta.json'));
+    private async loadMeta(): Promise<void> {
+        let value = await this.native.loadFile(this.getFilePath('meta.json'));
         if (value === null) {
             value = JSON.stringify(getDummyDbMeta());
-            this.saveMeta();
+            await this.saveMeta();
         }
         this.meta = JSON.parse(value);
     }
@@ -136,13 +135,13 @@ export class DatabaseModule {
      * @param timestamp The timestamp of the table.
      * @private
      */
-    private loadTable(timestamp: string): DbTable {
+    private async loadTable(timestamp: string): Promise<DbTable> {
         let table: DbTable;
         if (!this.meta.entries.includes(timestamp)) {
             table = getDummyDbTable(timestamp);
         } else {
             const path = this.getFilePath(`${timestamp}.json`);
-            const value = this.native.loadFile(path);
+            const value = await this.native.loadFile(path);
             if (value !== null) {
                 table = JSON.parse(value);
             } else {
@@ -162,9 +161,9 @@ export class DatabaseModule {
     /**
      * Save the metadata to disk.
      */
-    private saveMeta(): void {
+    private async saveMeta(): Promise<void> {
         const path = this.getFilePath('meta.json');
-        this.native.saveFile(path, JSON.stringify(this.meta));
+        await this.native.saveFile(path, JSON.stringify(this.meta));
     }
 
     /**
@@ -172,14 +171,14 @@ export class DatabaseModule {
      *
      * @param table The table to save.
      */
-    private saveTable(table: DbTable): void {
+    private async saveTable(table: DbTable): Promise<void> {
         // If the table is empty, remove it from the meta and disk.
         if (table.entries.length === 0) {
             this.meta.entries = this.meta.entries.filter((e) => e !== table.timestamp);
-            this.saveMeta();
+            await this.saveMeta();
 
             const path = this.getFilePath(`${table.timestamp}.json`);
-            this.native.deleteFile(path);
+            await this.native.deleteFile(path);
 
             return;
         }
@@ -188,12 +187,12 @@ export class DatabaseModule {
         if (!this.meta.entries.includes(table.timestamp)) {
             this.meta.entries.push(table.timestamp);
             this.meta.entries.sort();
-            this.saveMeta();
+            await this.saveMeta();
         }
 
         // save the table to disk.
         table.updated = formatTimeISO(new Date());
         const path = this.getFilePath(`${table.timestamp}.json`);
-        this.native.saveFile(path, JSON.stringify(table));
+        await this.native.saveFile(path, JSON.stringify(table));
     }
 }

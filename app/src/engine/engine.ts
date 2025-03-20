@@ -1,4 +1,4 @@
-import { Entry, UserProfile } from '~/engine/models';
+import { Entry, getDummyEntry, UserProfile } from '~/engine/models';
 import { ProfileModule } from '~/engine/modules/profile';
 import { DatabaseModule } from '~/engine/modules/database';
 import { EntryUpdateEvent, EntryUpdateTypes } from '~/engine/events';
@@ -23,10 +23,13 @@ export class SpendEngine {
 
     constructor() {
         this.profile = new ProfileModule();
-        this.database = new DatabaseModule(this.profile.getUserProfile().id);
-        this.tags = new TagsModule(this.profile.getUserProfile().id);
         this.statistics = new StatisticsModule();
-        console.log('Powered by SpendEngine');
+
+        this.profile.init().then(() => {
+            this.database = new DatabaseModule(this.profile.getUserProfile().id);
+            this.tags = new TagsModule(this.profile.getUserProfile().id);
+            console.log('Powered by SpendEngine');
+        });
     }
 
     // ========================================================================
@@ -77,7 +80,7 @@ export class SpendEngine {
      * @returns The new entry with empty fields.
      */
     createEntry(): Entry {
-        const entry = this.database.createEntry();
+        const entry = getDummyEntry();
         if (this.focusDate !== '') {
             entry.date = this.focusDate;
         }
@@ -88,8 +91,8 @@ export class SpendEngine {
      * Notify the engine so that it can update the entry.
      * @param event
      */
-    notify(event: EntryUpdateEvent) {
-        this.database.update(event);
+    async notify(event: EntryUpdateEvent): Promise<void> {
+        await this.database.update(event);
         if (event.type == EntryUpdateTypes.DELETE) {
             return;
         }
@@ -98,7 +101,7 @@ export class SpendEngine {
         this.tags.updateCategories(event.entry.categories);
         this.tags.updatePeople(event.entry.people);
         this.tags.updateTags(event.entry.tags);
-        this.tags.saveTags();
+        await this.tags.saveTags();
     }
 
     // ========================================================================

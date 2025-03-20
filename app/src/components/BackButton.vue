@@ -1,11 +1,9 @@
 <template>
     <v-btn
         class="BackButton"
-        size="large"
         @click="onClickBack"
         variant="flat"
-        color="deep-orange-darken-1"
-        block>
+        color="deep-orange-darken-1">
         返回
     </v-btn>
 </template>
@@ -14,6 +12,7 @@
 .BackButton {
     max-height: 44px;
     margin-top: 16px;
+    width: 100%;
 }
 </style>
 

@@ -2,23 +2,19 @@
     <div class="RangeSelector">
         <div class="RangeSelector__main">
             <v-btn
-                class="date"
-                prepend-icon="mdi-calendar-range"
-                size="large"
+                class="date text-body-1"
                 variant="outlined"
                 color="light-blue-darken-1"
                 @click="onSelectStartDate">
-                {{ displayStartDate }}
+                {{ formatTimestampToSlash(model.startDate) }}
             </v-btn>
             <span>至</span>
             <v-btn
-                class="date"
-                prepend-icon="mdi-calendar-range"
-                size="large"
+                class="date text-body-1"
                 variant="outlined"
                 color="light-blue-darken-1"
                 @click="onSelectEndDate">
-                {{ displayEndDate }}
+                {{ formatTimestampToSlash(model.endDate) }}
             </v-btn>
         </div>
         <v-dialog class="RangeSelector__dialog" v-model="startDialogOpen">

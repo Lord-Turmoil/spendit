@@ -28,6 +28,7 @@ export class TagsModule {
     constructor(userId: string) {
         this.path = `${userId}/${TAGS_FILE}`;
         this.data = DummyTagData;
+        // TODO: handle async result.
         this.loadTags();
     }
 
@@ -102,7 +103,6 @@ export class TagsModule {
     deleteTag(tag: string): void {
         if (this.data.tags.includes(tag)) {
             this.data.tags = this.data.tags.filter((t) => t !== tag);
-            this.saveTags();
         }
     }
 
@@ -128,7 +128,6 @@ export class TagsModule {
     deletePerson(person: string): void {
         if (this.data.people.includes(person)) {
             this.data.people = this.data.people.filter((p) => p !== person);
-            this.saveTags();
         }
     }
 
@@ -136,11 +135,11 @@ export class TagsModule {
     // Storage
     // ========================================================================
 
-    private loadTags(): void {
-        let value = this.native.loadFile(this.path);
+    private async loadTags(): Promise<void> {
+        let value = await this.native.loadFile(this.path);
         if (value === null) {
             value = JSON.stringify(DummyTagData);
-            this.native.saveFile(this.path, value);
+            await this.native.saveFile(this.path, value);
         }
         this.data = JSON.parse(value);
     }
@@ -148,7 +147,7 @@ export class TagsModule {
     /**
      * This must be manually called to save the tags.
      */
-    saveTags(): void {
-        this.native.saveFile(this.path, JSON.stringify(this.data));
+    async saveTags(): Promise<void> {
+        await this.native.saveFile(this.path, JSON.stringify(this.data));
     }
 }

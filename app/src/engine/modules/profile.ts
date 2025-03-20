@@ -17,9 +17,11 @@ export class ProfileModule {
 
     private native: Native = getNative();
 
-    constructor() {
-        this.loadProfileMeta();
-        this.loadProfile();
+    constructor() {}
+
+    async init(): Promise<void> {
+        await this.loadProfileMeta();
+        await this.loadProfile();
     }
 
     getUserProfiles(): UserProfile[] {
@@ -50,7 +52,7 @@ export class ProfileModule {
         return false;
     }
 
-    updateUserProfile(userProfile: UserProfile) {
+    async updateUserProfile(userProfile: UserProfile): Promise<void> {
         this.userProfile = { ...userProfile, id: this.userProfile.id };
         this.userProfileMeta.profiles = this.userProfileMeta.profiles.map((user) => {
             if (user.id === this.userProfile.id) {
@@ -58,7 +60,7 @@ export class ProfileModule {
             }
             return user;
         });
-        this.saveProfiles();
+        await this.saveProfiles();
         this.updateState();
     }
 
@@ -70,19 +72,19 @@ export class ProfileModule {
         return Math.random().toString(36).substring(2, 15);
     }
 
-    private loadProfileMeta(): void {
-        let value = this.native.loadFile(PROFILE_FILE);
+    private async loadProfileMeta(): Promise<void> {
+        let value = await this.native.loadFile(PROFILE_FILE);
         if (value === null) {
             value = JSON.stringify(getDummyUserProfileMeta());
-            this.native.saveFile(PROFILE_FILE, value);
+            await this.native.saveFile(PROFILE_FILE, value);
         }
         this.userProfileMeta = JSON.parse(value);
     }
 
-    private loadProfile(): void {
+    private async loadProfile(): Promise<void> {
         // ensure at least one profile exists
         if (this.userProfileMeta.profiles.length === 0) {
-            this.initProfile();
+            await this.initProfile();
         }
 
         // load the last user
@@ -104,18 +106,18 @@ export class ProfileModule {
     /**
      * Create the first user and add it to the profile.
      */
-    private initProfile(): void {
+    private async initProfile(): Promise<void> {
         const user = DummyUserProfile;
         user.id = this.generateUserId();
 
         this.userProfileMeta.profiles.push(user);
         this.userProfile = user;
 
-        this.saveProfiles();
+        await this.saveProfiles();
     }
 
-    private saveProfiles(): void {
-        this.native.saveFile(PROFILE_FILE, JSON.stringify(this.userProfileMeta));
+    private async saveProfiles(): Promise<void> {
+        await this.native.saveFile(PROFILE_FILE, JSON.stringify(this.userProfileMeta));
     }
 
     private updateState(): void {

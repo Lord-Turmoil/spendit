@@ -14,6 +14,9 @@ import { engine } from '~/engine/engine';
 
 // Ensure there is only one notify for each event.
 bus.on(BusEventTypes.ENTRY_UPDATE, (event: EntryUpdateEvent) => {
-    engine.notify(event);
+    if (!event.handled) {
+        event.handled = true;
+        engine.notify(event);
+    }
 });
 </script>

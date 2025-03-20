@@ -13,7 +13,7 @@
                 <span>{{ userProfile.title }}</span>
             </div>
             <v-divider class="ProfileCard__divider"></v-divider>
-            <div class="ProfileCard__system">
+            <div class="ProfileCard__system text-caption">
                 <span>{{ displayVersion }}</span>
                 <span>{{ displayCopyright }}</span>
                 <v-icon class="icon" icon="mdi-open-in-new"></v-icon>

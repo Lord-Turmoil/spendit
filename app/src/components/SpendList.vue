@@ -2,11 +2,11 @@
     <div class="SpendList">
         <div v-for="(category, i) in spends" :key="i" class="SpendList__category">
             <div class="title split-wrapper">
-                <h4 class="text-h5 split-primary">{{ category[0] }}</h4>
-                <h5 class="text-h5 text-red-lighten-1">
+                <h4 class="text-h6 split-primary">{{ category[0] }}</h4>
+                <h5 class="text-h6 text-red-lighten-1">
                     <v-icon
                         v-if="category[1] > 0"
-                        class="text-h5"
+                        class="text-h6"
                         icon="mdi-minus"></v-icon>
                     <span>{{ formatMoney(category[1]) }}</span>
                 </h5>
@@ -17,11 +17,13 @@
                     :key="j"
                     class="SpendList__sub">
                     <div class="split-wrapper">
-                        <h5 class="text-h6 split-primary">{{ subCategory[0] }}</h5>
-                        <h6 class="text-h6 text-red-lighten-2">
+                        <h5 class="text-body-1 split-primary text-grey-darken-4">
+                            {{ subCategory[0] }}
+                        </h5>
+                        <h6 class="text-body-1 text-red-lighten-2">
                             <v-icon
                                 v-if="subCategory[1] > 0"
-                                class="text-h6"
+                                class="text-body-1"
                                 icon="mdi-minus"></v-icon>
                             <span>{{ formatMoney(subCategory[1]) }}</span>
                         </h6>

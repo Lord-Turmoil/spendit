@@ -6,19 +6,19 @@
             mode="shift"
             grow
             mandatory>
-            <v-btn size="x-large" variant="flat">
+            <v-btn variant="flat">
                 <v-icon>mdi-calendar-today</v-icon>
                 <span>今日</span>
             </v-btn>
-            <v-btn size="x-large" variant="flat">
+            <v-btn variant="flat">
                 <v-icon>mdi-home</v-icon>
                 <span>菜单</span>
             </v-btn>
         </v-bottom-navigation>
         <v-btn
-            class="Navigator_plus"
+            class="Navigator_plus text-h5"
             icon="mdi-plus"
-            size="x-large"
+            size="large"
             variant="flat"
             color="green-darken-1"
             @click="openDialog"></v-btn>

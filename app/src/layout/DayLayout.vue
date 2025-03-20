@@ -25,7 +25,7 @@
     /* make some room for the top bar */
     margin-top: 16px;
     /* compensate for the navbar */
-    padding-bottom: 70px;
+    padding-bottom: 56px;
 }
 </style>
 

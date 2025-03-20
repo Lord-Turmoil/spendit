@@ -1,9 +1,9 @@
 <template>
     <div class="DaySelector">
         <v-btn
-            class="DaySelector__date text-h6"
+            class="DaySelector__date text-body-1"
             prepend-icon="mdi-calendar-range"
-            size="x-large"
+            size="large"
             variant="outlined"
             color="light-blue-darken-1"
             @click="onDaySelectStart">
@@ -12,7 +12,7 @@
         <v-btn
             class="DaySelector__reset"
             icon="mdi-restore"
-            size="large"
+            size="default"
             variant="flat"
             color="orange-darken-1"
             @click="resetDay"></v-btn>
@@ -76,10 +76,10 @@ const resetDay = () => {
 };
 
 const adapter = useDate();
-const displayDate = ref(adapter.format(activeDate.value, 'fullDateWithWeekday'));
+const displayDate = ref(adapter.format(activeDate.value, 'fullDate'));
 
 watch(activeDate, () => {
-    displayDate.value = adapter.format(activeDate.value, 'fullDateWithWeekday');
+    displayDate.value = adapter.format(activeDate.value, 'fullDate');
 });
 
 // dialog status control

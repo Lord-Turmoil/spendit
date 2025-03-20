@@ -1,141 +1,145 @@
 <template>
-    <v-card class="EditView" :title="title">
-        <v-container>
-            <v-form ref="form">
-                <div class="EditView__form">
-                    <!-- title -->
-                    <v-text-field
-                        label="消费项目"
-                        variant="outlined"
-                        placeholder="消费项目"
-                        :rules="rules.title"
-                        v-model="data.title"></v-text-field>
-                    <!-- date and money -->
-                    <div class="date-and-money">
-                        <span class="date text-h6">
-                            {{ formatTimestampToSlash(data.date) }}
-                        </span>
-                        <span class="money">
-                            <v-icon
-                                class="icon text-h4 text-red-lighten-1"
-                                icon="mdi-minus"></v-icon>
-                            <span class="input text-red-lighten-1">
-                                <v-text-field
-                                    label="消费金额"
-                                    variant="outlined"
-                                    placeholder="Money"
-                                    :rules="rules.money"
-                                    v-model="moneyData"></v-text-field>
+    <div class="EditView scrollable">
+        <v-card class="EditView__card" :title="title">
+            <v-container>
+                <v-form ref="form">
+                    <div class="EditView__form">
+                        <!-- title -->
+                        <v-text-field
+                            :label="`消费项目 ${formatTimestampToSlash(data.date)}`"
+                            variant="outlined"
+                            :placeholder="`消费项目 ${formatTimestampToSlash(data.date)}`"
+                            :rules="rules.title"
+                            v-model="data.title"></v-text-field>
+                        <!-- date and money -->
+                        <div class="date-and-money">
+                            <span class="money">
+                                <v-icon
+                                    class="icon text-h6 text-red-lighten-1"
+                                    icon="mdi-minus"></v-icon>
+                                <span class="input text-red-lighten-1">
+                                    <v-text-field
+                                        label="消费金额"
+                                        variant="outlined"
+                                        placeholder="Money"
+                                        :rules="rules.money"
+                                        v-model="moneyData"></v-text-field>
+                                </span>
                             </span>
-                        </span>
+                        </div>
+                        <!-- category -->
+                        <v-combobox
+                            v-model="categoryChips"
+                            :items="categoryList"
+                            variant="outlined"
+                            label="分类"
+                            placeholder="分类"
+                            chips
+                            clearable
+                            closable-chips
+                            multiple>
+                            <template v-slot:chip="{ props, item }">
+                                <v-chip
+                                    prepend-icon="mdi-slash-forward"
+                                    v-bind="props"
+                                    size="x-small"
+                                    color="green-darken-1"
+                                    variant="outlined">
+                                    {{ item.raw }}
+                                </v-chip>
+                            </template>
+                        </v-combobox>
+                        <!-- people list -->
+                        <v-combobox
+                            v-model="peopleChips"
+                            :items="peopleList"
+                            variant="outlined"
+                            label="谁的消费"
+                            placeholder="谁的消费"
+                            chips
+                            clearable
+                            closable-chips
+                            multiple>
+                            <template v-slot:chip="{ props, item }">
+                                <PeopleChip :name="item.raw"></PeopleChip>
+                            </template>
+                        </v-combobox>
+                        <!-- tag list -->
+                        <v-combobox
+                            v-model="tagChips"
+                            :items="tagList"
+                            variant="outlined"
+                            label="消费标签"
+                            placeholder="消费标签"
+                            chips
+                            clearable
+                            closable-chips
+                            multiple>
+                            <template v-slot:chip="{ props, item }">
+                                <TagChip :tag="item.raw"></TagChip>
+                            </template>
+                        </v-combobox>
+                        <!-- note -->
+                        <v-textarea
+                            class="note"
+                            v-model="data.note"
+                            variant="outlined"
+                            label="消费备注"
+                            placeholder="消费备注"
+                            rows="2"
+                            auto-grow
+                            clearable></v-textarea>
                     </div>
-                    <!-- category -->
-                    <v-combobox
-                        v-model="categoryChips"
-                        :items="categoryList"
-                        variant="outlined"
-                        label="分类"
-                        placeholder="分类"
-                        chips
-                        clearable
-                        closable-chips
-                        multiple>
-                        <template v-slot:chip="{ props, item }">
-                            <v-chip
-                                prepend-icon="mdi-slash-forward"
-                                v-bind="props"
-                                color="green-darken-1"
-                                variant="outlined">
-                                <strong>{{ item.raw }}</strong>
-                            </v-chip>
-                        </template>
-                    </v-combobox>
-                    <!-- people list -->
-                    <v-combobox
-                        v-model="peopleChips"
-                        :items="peopleList"
-                        variant="outlined"
-                        label="谁的消费"
-                        placeholder="谁的消费"
-                        chips
-                        clearable
-                        closable-chips
-                        multiple>
-                        <template v-slot:chip="{ props, item }">
-                            <PeopleChip :name="item.raw"></PeopleChip>
-                        </template>
-                    </v-combobox>
-                    <!-- tag list -->
-                    <v-combobox
-                        v-model="tagChips"
-                        :items="tagList"
-                        variant="outlined"
-                        label="消费标签"
-                        placeholder="消费标签"
-                        chips
-                        clearable
-                        closable-chips
-                        multiple>
-                        <template v-slot:chip="{ props, item }">
-                            <TagChip :tag="item.raw"></TagChip>
-                        </template>
-                    </v-combobox>
-                    <!-- note -->
-                    <v-textarea
-                        class="note"
-                        v-model="data.note"
-                        variant="outlined"
-                        label="消费备注"
-                        placeholder="消费备注"
-                        rows="2"
-                        auto-grow
-                        clearable></v-textarea>
-                </div>
-            </v-form>
-        </v-container>
-        <v-card-actions>
-            <v-btn
-                v-if="!create"
-                color="error"
-                size="large"
-                :loading="isLoading"
-                @click="onClickConfirm(true)">
-                删除
-            </v-btn>
-            <v-btn
-                color="primary"
-                size="large"
-                :loading="isLoading"
-                @click="onClickCancel">
-                取消
-            </v-btn>
-            <v-btn
-                color="success"
-                size="large"
-                :loading="isLoading"
-                @click="onClickConfirm(false)">
-                确认
-            </v-btn>
-        </v-card-actions>
-    </v-card>
-    <v-dialog v-model="confirmDialog">
-        <v-card class="EditView__confirm" prepend-icon="mdi-alert" title="确认删除">
-            <v-card-text>删除后将无法恢复，确定要删除这条记录吗？</v-card-text>
-            <v-card-actions>
-                <v-btn color="error" size="large" @click="onConfirmDelete(true)">
+                </v-form>
+            </v-container>
+            <v-card-actions class="actions">
+                <v-btn
+                    v-if="!create"
+                    color="error"
+                    size="large"
+                    :loading="isLoading"
+                    @click="onClickConfirm(true)">
                     删除
                 </v-btn>
-                <v-btn color="primary" size="large" @click="onConfirmDelete(false)">
+                <v-btn
+                    color="primary"
+                    size="large"
+                    :loading="isLoading"
+                    @click="onClickCancel">
                     取消
+                </v-btn>
+                <v-btn
+                    color="success"
+                    size="large"
+                    :loading="isLoading"
+                    @click="onClickConfirm(false)">
+                    确认
                 </v-btn>
             </v-card-actions>
         </v-card>
-    </v-dialog>
+        <v-dialog v-model="confirmDialog">
+            <v-card class="EditView__confirm" prepend-icon="mdi-alert" title="确认删除">
+                <v-card-text>删除后将无法恢复，确定要删除这条记录吗？</v-card-text>
+                <v-card-actions>
+                    <v-btn color="error" size="large" @click="onConfirmDelete(true)">
+                        删除
+                    </v-btn>
+                    <v-btn color="primary" size="large" @click="onConfirmDelete(false)">
+                        取消
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+    </div>
 </template>
 
 <style>
-.EditView {
+.EditView__card {
     padding-top: 8px;
+}
+
+.EditView__card .actions {
+    justify-content: right;
 }
 
 .EditView__form .date-and-money {
@@ -151,7 +155,6 @@
 
 .EditView__form .date-and-money .money {
     flex: 1;
-    max-width: 60%;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -164,12 +167,11 @@
 }
 
 .EditView__form .date-and-money .money .icon {
-    transform: translateY(-30%);
+    transform: translateY(-40%);
 }
 
 .EditView__form .date-and-money .money .input input {
     text-align: right;
-    font-size: x-large;
 }
 
 .EditView__confirm {
@@ -307,6 +309,7 @@ const onConfirmDelete = (confirm: boolean) => {
     if (confirm) {
         invokeEmitEvent({
             type: EntryUpdateTypes.DELETE,
+            handled: false,
             entry: data.value
         });
         invokeOnClose();
@@ -326,19 +329,18 @@ const onClickConfirm = (isDelete: boolean) => {
     isLoading.value = true;
     validateForm()
         .then((valid: boolean) => {
-            if (!valid) {
-                alert('Please correct the form errors.');
-            } else {
+            if (valid) {
                 const event: EntryUpdateEvent = {
                     type: create ? EntryUpdateTypes.CREATE : EntryUpdateTypes.UPDATE,
+                    handled: false,
                     entry: getEditedEntry()
                 };
                 invokeEmitEvent(event);
+                invokeOnClose();
             }
         })
         .finally(() => {
             isLoading.value = false;
-            invokeOnClose();
         });
 };
 </script>
