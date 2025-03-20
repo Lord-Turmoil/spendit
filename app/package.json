@@ -1,14 +1,15 @@
 {
   "name": "spendit",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "format": "prettier --config .prettierrc *.ts src/**/*.ts src/**/*.vue --write",
     "sync": "npm run build && cap sync",
-    "open": "cap open android"
+    "open": "cap open android",
+    "version": "python scripts/bump_version.py"
   },
   "dependencies": {
     "@capacitor/android": "^7.1.0",
@@ -28,7 +29,7 @@
     "typescript": "~5.7.2",
     "vite": "^6.2.0",
     "vite-plugin-vuetify": "^2.1.0",
-    "vue-eslint-parser": "^10.1.1",
+    "vue-eslint-parser": "^10.1.2",
     "vue-tsc": "^2.2.4",
     "vuetify": "^3.7.16"
   }

@@ -22,4 +22,16 @@ const vuetify = createVuetify({
     }
 });
 
-createApp(App).use(vuetify).use(router).mount('#app');
+try {
+    createApp(App).use(vuetify).use(router).mount('#app');
+} catch (error) {
+    const app = document.getElementById('app');
+    document.body.removeChild(app);
+
+    // get complete error frames
+    const stack = error.stack
+
+    document.getElementById('error-message').innerHTML = error;
+    document.getElementById('error-stack').innerHTML = stack;
+    document.getElementById('error').style.display = 'block';
+}

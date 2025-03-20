@@ -1,6 +1,6 @@
 <template>
     <v-container class="DetailScreen scrollable split-wrapper">
-        <DetailView class="split-primary" :dates="dates" :show-date="true"></DetailView>
+        <DetailView class="split-primary" :dates="dates" show-date></DetailView>
         <BackButton></BackButton>
     </v-container>
 </template>

@@ -7,13 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Spendit</title>
     <link rel="stylesheet" href="./src/assets/css/index.css">
-    <link rel="stylesheet" href="./src/assets/css/splash.css">
 </head>
 
 <body>
     <div id="splash">
         <img src="/favicon.png" alt="logo">
         <h1>Spendit</h1>
+    </div>
+
+    <div id="error" style="display: none;">
+        <h2>Unexpected Error</h2>
+        <p id="error-message"></p>
+        <p id="error-stack"></p>
+        <hr style="margin: 16px auto;">
+        <p style="color: black;">Report this to the developer for further assistance.</p>
     </div>
 
     <div id="app" style="display: none;"></div>
@@ -25,7 +32,9 @@
 
         window.onload = () => {
             splash.style.display = 'none';
-            app.style.display = 'block';
+            if (app !== null) {
+                app.style.display = 'block';
+            }
         }
     </script>
 </body>
