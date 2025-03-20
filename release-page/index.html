@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spendit Release Page</title>
+    <link rel="icon" href="favicon.png" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        li {
+            list-style-position: inside;
+        }
+
+        .wrapper {
+            width: 100%;
+        }
+
+        .container {
+            padding: 16px;
+        }
+
+        .title {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .title img {
+            width: 72px;
+            transform: translateX(10%);
+        }
+
+        .description .section {
+            margin-bottom: 16px;
+        }
+
+        .description .section h2 {
+            margin-bottom: 8px;
+        }
+
+        .footer {
+            margin-top: 16px;
+        }
+
+        .footer p {
+            text-align: center;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="title container">
+            <img src="favicon.png" alt="Spendit Logo">
+            <h1>Spendit</h1>
+        </div>
+        <hr>
+        <div class="description container">
+            <div class="section">
+                <h2>Overview</h2>
+                <p>Spendit is a utility app to record everything you spend.</p>
+            </div>
+            <div class="section">
+                <h2>Features</h2>
+                <ul>
+                    <li>Record your expenses everyday</li>
+                    <li>View your expenses and summary</li>
+                    <li>Organize with category, people and tags</li>
+                </ul>
+            </div>
+            <div class="section">
+                <h2>Download</h2>
+                <ul id="download" class="list">
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <div class="footer">
+            <p>Copyright &copy; Tony's Studio 2025</p>
+        </div>
+    </div>
+    <script>
+        const download = document.getElementById('download');
+        const links = [
+            {
+                name: 'spendit-0.1.2.apk (pre-release)',
+                url: 'https://tonys-studio-1308383348.cos.ap-beijing.myqcloud.com/apps/spendit/spendit-0.1.2.apk'
+            }
+        ];
+        links.forEach(link => {
+            const a = document.createElement('a');
+            a.href = link.url;
+            a.textContent = link.name;
+            a.target = '_blank';
+
+            const li = document.createElement('li');
+            li.appendChild(a);
+
+            download.appendChild(li);
+        });
+    </script>
+</body>
+
+</html>
