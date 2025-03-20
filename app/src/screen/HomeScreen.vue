@@ -4,7 +4,7 @@
     </v-container>
 </template>
 
-<style>
+<style scoped>
 .HomeScreen {
     width: 100%;
     height: 100%;

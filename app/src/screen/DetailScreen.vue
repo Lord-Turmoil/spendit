@@ -1,7 +1,22 @@
 <template>
-    <h1>Detail Screen</h1>
+    <v-container class="DetailScreen scrollable split-wrapper">
+        <DetailView class="split-left" :dates="dates" :show-date="true"></DetailView>
+        <BackButton></BackButton>
+    </v-container>
 </template>
 
-<style scoped></style>
+<style scoped>
+.DetailScreen {
+    min-height: 100vh;
+    flex-direction: column;
+}
+</style>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import BackButton from '~/components/BackButton.vue';
+import DetailView from '~/view/DetailView.vue';
+
+import { engine } from '~/engine/engine';
+
+const dates = engine.getSelectedDates();
+</script>

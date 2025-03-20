@@ -1,14 +1,15 @@
-import { Entry, UserProfile } from '~/engine/models.js';
-import { ProfileModule } from '~/engine/modules/profile.js';
-import { DatabaseModule } from '~/engine/modules/database.js';
-import { EntryUpdateEvent, EntryUpdateTypes } from '~/engine/events.js';
-import { TagsModule } from '~/engine/modules/tags.js';
-import { en } from 'vuetify/locale';
+import { Entry, UserProfile } from '~/engine/models';
+import { ProfileModule } from '~/engine/modules/profile';
+import { DatabaseModule } from '~/engine/modules/database';
+import { EntryUpdateEvent, EntryUpdateTypes } from '~/engine/events';
+import { StatisticsModule } from '~/engine/modules/statistics';
+import { TagsModule } from '~/engine/modules/tags';
 
 export class SpendEngine {
     private profile: ProfileModule;
     private database: DatabaseModule;
     private tags: TagsModule;
+    private readonly statistics: StatisticsModule;
 
     /**
      * The focused day in the home screen, in the format of 'YYYY-MM-DD'.
@@ -18,11 +19,13 @@ export class SpendEngine {
      * @private
      */
     private focusDate: string = '';
+    private selectedDates: string[] = [];
 
     constructor() {
         this.profile = new ProfileModule();
         this.database = new DatabaseModule(this.profile.getUserProfile().id);
         this.tags = new TagsModule(this.profile.getUserProfile().id);
+        this.statistics = new StatisticsModule();
         console.log('Powered by SpendEngine');
     }
 
@@ -104,6 +107,26 @@ export class SpendEngine {
 
     getTags(): TagsModule {
         return this.tags;
+    }
+
+    // ========================================================================
+    // Statistics operations
+    // ========================================================================
+
+    getStatistics(): StatisticsModule {
+        return this.statistics;
+    }
+
+    // ========================================================================
+    // Extra states
+    // ========================================================================
+
+    setSelectedDates(date: string[]): void {
+        this.selectedDates = date;
+    }
+
+    getSelectedDates(): string[] {
+        return this.selectedDates;
     }
 }
 

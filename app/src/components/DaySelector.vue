@@ -13,7 +13,7 @@
             size="large"
             @click="resetDay"></v-btn>
 
-        <v-dialog class="DaySelector__selector" v-model="dialogOpen">
+        <v-dialog class="DaySelector__dialog" v-model="dialogOpen">
             <v-card class="card" prepend-icon="mdi-calendar-range" title="Select a Day">
                 <v-date-picker
                     class="selector"
@@ -46,15 +46,15 @@
     margin-left: 20px;
 }
 
-.DaySelector__selector .card {
+.DaySelector__dialog .card {
     margin: 0 auto;
 }
 
-.DaySelector__selector .selector {
+.DaySelector__dialog .selector {
     margin: 0 auto;
 }
 
-.DaySelector__selector .selector .v-picker-title {
+.DaySelector__dialog .selector .v-picker-title {
     display: none;
 }
 </style>

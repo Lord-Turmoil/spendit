@@ -1,5 +1,5 @@
 <template>
-    <div class="EntryCardList">
+    <div v-if="entries.length > 0" class="EntryCardList scrollable">
         <div class="EntryCardList__timestamp text-h6" v-if="showDate">
             {{ formatTimestampToSlash(date) }}
         </div>
@@ -8,7 +8,7 @@
             :key="i"
             :entry="item"
             @click="onEditStart(item)"></EntryCard>
-        <v-dialog class="EntryCardList__dialog" v-model="dialogOpen">
+        <v-dialog class="EntryCardList__dialog" v-model="dialogOpen" persistent>
             <EditView
                 title="Edit Entry"
                 :entry="editEntry"
@@ -22,7 +22,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: auto;
 }
 
 .EntryCardList__timestamp {

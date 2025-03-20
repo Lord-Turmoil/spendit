@@ -20,7 +20,7 @@
             icon="mdi-plus"
             size="x-large"
             @click="openDialog"></v-btn>
-        <v-dialog class="Navigator_dialog" v-model="dialogOpen">
+        <v-dialog class="Navigator_dialog" v-model="dialogOpen" persistent>
             <EditView title="Create a New Entry" :on-close="closeDialog"></EditView>
         </v-dialog>
     </div>

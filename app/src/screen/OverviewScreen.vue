@@ -1,10 +1,18 @@
 <template>
-    <h1>Overview Screen</h1>
-    <DaySelectLayout></DaySelectLayout>
+    <v-container class="OverviewScreen scrollable split-wrapper">
+        <DaySelectLayout class="split-left"></DaySelectLayout>
+        <BackButton></BackButton>
+    </v-container>
 </template>
 
-<style scoped></style>
+<style scoped>
+.OverviewScreen {
+    min-height: 100vh;
+    flex-direction: column;
+}
+</style>
 
 <script setup lang="ts">
+import BackButton from '~/components/BackButton.vue';
 import DaySelectLayout from '~/layout/DaySelectLayout.vue';
 </script>

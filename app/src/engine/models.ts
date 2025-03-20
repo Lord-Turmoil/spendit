@@ -133,7 +133,7 @@ export interface SystemProfile {
 
 export const CurrentSystemProfile: SystemProfile = {
     product: 'Spendit',
-    author: "Tony's Studio",
+    author: 'Tony\'s Studio',
     version: '0.1.0',
     code: 'Genesis'
 };
@@ -145,3 +145,23 @@ export const CurrentSystemProfile: SystemProfile = {
 export type CategoryEntry = [string, string[]];
 export type CategoryList = CategoryEntry[];
 export type TagList = string[];
+
+// ========================================================================
+// Statistics models
+// ========================================================================
+export interface Statistics {
+    total: number;
+    people: string[];
+    tags: string[];
+    spends: CategorySpend[];
+}
+
+export type CategorySpend = [string, number, SubCategorySpend[]];
+export type SubCategorySpend = [string, number];
+
+export const DummyStatistics: Statistics = {
+    total: 0,
+    people: [],
+    tags: [],
+    spends: []
+};

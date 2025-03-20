@@ -63,13 +63,7 @@
                         closable-chips
                         multiple>
                         <template v-slot:chip="{ props, item }">
-                            <v-chip
-                                prepend-icon="mdi-at"
-                                v-bind="props"
-                                color="pink"
-                                variant="outlined">
-                                <strong>{{ item.raw }}</strong>
-                            </v-chip>
+                            <PeopleChip :name="item.raw"></PeopleChip>
                         </template>
                     </v-combobox>
                     <!-- tag list -->
@@ -84,13 +78,7 @@
                         closable-chips
                         multiple>
                         <template v-slot:chip="{ props, item }">
-                            <v-chip
-                                prepend-icon="mdi-pound"
-                                v-bind="props"
-                                color="blue-darken-2"
-                                variant="outlined">
-                                <strong>{{ item.raw }}</strong>
-                            </v-chip>
+                            <TagChip :tag="item.raw"></TagChip>
                         </template>
                     </v-combobox>
                     <!-- note -->
@@ -156,6 +144,9 @@
 </style>
 
 <script setup lang="ts">
+import PeopleChip from '~/components/PeopleChip.vue';
+import TagChip from '~/components/TagChip.vue';
+
 import { nextTick, ref, watch } from 'vue';
 import { VForm } from 'vuetify/components';
 

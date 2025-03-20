@@ -1,10 +1,10 @@
 <template>
     <v-card class="EntryCard" link>
-        <v-card-title class="EntryCard__title">
-            <h3 class="text-h5">{{ entry.title }}</h3>
+        <v-card-title class="EntryCard__title split-wrapper">
+            <h3 class="text-h5 split-left">{{ entry.title }}</h3>
             <h4 class="text-h4 text-red-lighten-1">
                 <v-icon class="text-h5" icon="mdi-minus"></v-icon>
-                <span>{{ displayMoney }}</span>
+                <span>{{ formatMoney(entry.money) }}</span>
             </h4>
         </v-card-title>
         <v-card-subtitle>{{ entry.note }}</v-card-subtitle>
@@ -15,19 +15,13 @@
                 </span>
                 <span class="EntryCard__body_people tags">
                     <span class="tag" v-for="(name, i) in entry.people" :key="i">
-                        <v-chip variant="outlined" color="pink" size="small">
-                            <v-icon icon="mdi-at"></v-icon>
-                            {{ name }}
-                        </v-chip>
+                        <PeopleChip :name="name"></PeopleChip>
                     </span>
                 </span>
             </span>
             <span class="EntryCard__body_tags tags">
                 <span class="tag" v-for="(tag, i) in entry.tags" :key="i">
-                    <v-chip variant="outlined" color="blue-darken-2" size="small">
-                        <v-icon icon="mdi-pound"></v-icon>
-                        {{ tag }}
-                    </v-chip>
+                    <TagChip :tag="tag"></TagChip>
                 </span>
             </span>
         </v-card-text>
@@ -38,16 +32,6 @@
 .EntryCard {
     width: 100%;
     margin: 8px auto;
-}
-
-.EntryCard__title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.EntryCard__title h3 {
-    flex: 1;
 }
 
 .EntryCard__title h4 {
@@ -109,18 +93,17 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import PeopleChip from '~/components/PeopleChip.vue';
+import TagChip from '~/components/TagChip.vue';
 
 import { Entry } from '~/engine/models';
+import { formatMoney } from '~/utils/format';
 
 interface EntryCardProps {
     entry: Entry;
 }
 
 const { entry } = defineProps<EntryCardProps>();
-
-const displayMoney = computed(() => {
-    return (entry.money * 0.01).toFixed(2);
-});
 
 const displayCategory = computed(() => {
     if (entry.categories.length === 0) {

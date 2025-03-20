@@ -12,6 +12,14 @@ export function formatTimestamp(date: Date): string {
 }
 
 /**
+ * Parse the given timestamp to date. From YYYY-MM-DD to Date.
+ * @param timestamp The timestamp to parse.
+ */
+export function parseTimestamp(timestamp: string): Date {
+    return new Date(timestamp);
+}
+
+/**
  * Convert YYYY-MM-DD to YYYY/MM/DD.
  *
  * @param date The date to format.

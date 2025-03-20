@@ -16,6 +16,22 @@
     display: none;
 }
 
+/* Split content to left and right */
+.split-wrapper {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.split-wrapper .split-left {
+    flex: 1;
+}
+
+.scrollable {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 /* For development only */
 .v-application {
     background-color: lightblue !important;
