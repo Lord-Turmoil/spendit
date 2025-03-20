@@ -23,13 +23,18 @@
     align-items: center;
 }
 
-.split-wrapper .split-left {
+.split-wrapper .split-primary {
     flex: 1;
 }
 
 .scrollable {
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+.expand {
+    height: 100%;
+    min-height: 100%;
 }
 
 /* For development only */

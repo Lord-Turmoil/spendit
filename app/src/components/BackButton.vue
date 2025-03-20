@@ -1,5 +1,5 @@
 <template>
-    <v-btn class="BackButton" size="large" @click="onClickBack" block>Back</v-btn>
+    <v-btn class="BackButton" size="large" @click="onClickBack" block>返回</v-btn>
 </template>
 
 <style scoped>

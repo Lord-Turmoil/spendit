@@ -1,7 +1,7 @@
 <template>
     <v-card class="OverviewView">
         <v-card-title class="OverviewView__title split-wrapper">
-            <h3 class="text-h4 split-left">Total</h3>
+            <h3 class="text-h4 split-primary">Total</h3>
             <h4 class="text-h4 text-red-lighten-1">
                 <v-icon class="text-h4" icon="mdi-minus"></v-icon>
                 <span>{{ formatMoney(statistics.total) }}</span>
@@ -10,22 +10,24 @@
         <v-card-text v-if="entries.length > 0" class="OverviewView__body">
             <v-divider class="divider"></v-divider>
             <div class="tags">
-                    <span class="tag" v-for="(name, i) in statistics.people" :key="i">
-                        <PeopleChip :name="name"></PeopleChip>
-                    </span>
+                <span class="tag" v-for="(name, i) in statistics.people" :key="i">
+                    <PeopleChip :name="name"></PeopleChip>
+                </span>
             </div>
             <div class="tags">
-                    <span class="tag" v-for="(tag, i) in statistics.tags" :key="i">
-                        <TagChip :tag="tag"></TagChip>
-                    </span>
+                <span class="tag" v-for="(tag, i) in statistics.tags" :key="i">
+                    <TagChip :tag="tag"></TagChip>
+                </span>
             </div>
             <v-divider class="divider"></v-divider>
             <SpendList :spends="statistics.spends"></SpendList>
             <v-divider class="divider"></v-divider>
-            <v-btn class="detail" @click="onClickDetail" size="large" block>See details</v-btn>
+            <v-btn class="detail" @click="onClickDetail" size="large" block>
+                查看详细消费记录
+            </v-btn>
         </v-card-text>
-        <v-card-text v-else>
-            <p class="text-h6 text-center">No entry available.</p>
+        <v-card-text v-else class="OverviewView__empty">
+            <EmptyCard></EmptyCard>
         </v-card-text>
     </v-card>
 </template>
@@ -60,9 +62,13 @@
     margin-top: 16px;
 }
 
+.OverviewView__empty {
+    padding: 16px 0;
+}
 </style>
 
 <script setup lang="ts">
+import EmptyCard from '~/components/EmptyCard.vue';
 import PeopleChip from '~/components/PeopleChip.vue';
 import SpendList from '~/components/SpendList.vue';
 import TagChip from '~/components/TagChip.vue';
@@ -101,5 +107,4 @@ const onClickDetail = () => {
 onMounted(() => {
     prepareStatistics();
 });
-
 </script>

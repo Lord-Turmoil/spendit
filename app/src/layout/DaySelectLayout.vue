@@ -1,7 +1,14 @@
 <template>
     <div class="DaySelectLayout">
         <RangeSelector v-model="model"></RangeSelector>
-        <v-btn class="confirm" @click="onConfirmSelection" :loading="!overviewReady" size="large" block>Confirm</v-btn>
+        <v-btn
+            class="confirm"
+            @click="onConfirmSelection"
+            :loading="!overviewReady"
+            size="large"
+            block>
+            统计
+        </v-btn>
         <OverviewView
             v-model="overviewReady"
             :dates="selectedDates"
@@ -32,7 +39,7 @@ import { formatTimestamp } from '~/utils/format';
 const currentTimestamp = formatTimestamp(new Date());
 const native = getNative();
 
-const parseQuery = (): { startDate: string, endDate: string } => {
+const parseQuery = (): { startDate: string; endDate: string } => {
     const pattern = /^\d{4}-\d{2}-\d{2}$/;
     let startDate = native.getLocalStorage('startDate') || currentTimestamp;
     let endDate = native.getLocalStorage('endDate') || currentTimestamp;
@@ -81,5 +88,4 @@ onConfirmSelection();
 watch(overviewReady, () => {
     displayOverview.value = overviewReady.value;
 });
-
 </script>

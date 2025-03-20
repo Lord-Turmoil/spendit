@@ -8,11 +8,11 @@
             mandatory>
             <v-btn>
                 <v-icon>mdi-calendar-today</v-icon>
-                <span>Today</span>
+                <span>今日</span>
             </v-btn>
             <v-btn>
                 <v-icon>mdi-home</v-icon>
-                <span>Home</span>
+                <span>菜单</span>
             </v-btn>
         </v-bottom-navigation>
         <v-btn
@@ -21,7 +21,7 @@
             size="x-large"
             @click="openDialog"></v-btn>
         <v-dialog class="Navigator_dialog" v-model="dialogOpen" persistent>
-            <EditView title="Create a New Entry" :on-close="closeDialog"></EditView>
+            <EditView title="新建消费记录" :on-close="closeDialog"></EditView>
         </v-dialog>
     </div>
 </template>

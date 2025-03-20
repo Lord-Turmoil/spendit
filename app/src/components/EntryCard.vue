@@ -1,7 +1,7 @@
 <template>
     <v-card class="EntryCard" link>
         <v-card-title class="EntryCard__title split-wrapper">
-            <h3 class="text-h5 split-left">{{ entry.title }}</h3>
+            <h3 class="text-h5 split-primary">{{ entry.title }}</h3>
             <h4 class="text-h4 text-red-lighten-1">
                 <v-icon class="text-h5" icon="mdi-minus"></v-icon>
                 <span>{{ formatMoney(entry.money) }}</span>

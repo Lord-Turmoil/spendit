@@ -8,7 +8,7 @@
                 @click="onSelectStartDate">
                 {{ formatTimestampToSlash(model.startDate) }}
             </v-btn>
-            <span>To</span>
+            <span>至</span>
             <v-btn
                 class="date"
                 prepend-icon="mdi-calendar-range"
@@ -48,6 +48,10 @@
 </template>
 
 <style scoped>
+.RangeSelector {
+    width: 100%;
+}
+
 .RangeSelector__main {
     display: flex;
     flex-direction: row;

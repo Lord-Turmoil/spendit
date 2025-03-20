@@ -1,6 +1,6 @@
 <template>
     <v-container class="OverviewScreen scrollable split-wrapper">
-        <DaySelectLayout class="split-left"></DaySelectLayout>
+        <DaySelectLayout class="split-primary"></DaySelectLayout>
         <BackButton></BackButton>
     </v-container>
 </template>

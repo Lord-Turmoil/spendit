@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import { zhHans } from 'vuetify/locale';
 
 import App from './App.vue';
 
@@ -10,11 +11,15 @@ import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
 
 // custom components
-import router from '~/extensions/router.js';
+import router from '~/extensions/router';
 
 const vuetify = createVuetify({
     components,
-    directives
+    directives,
+    locale: {
+        locale: 'zhHans',
+        messages: { zhHans }
+    }
 });
 
 createApp(App).use(vuetify).use(router).mount('#app');

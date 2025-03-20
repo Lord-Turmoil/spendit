@@ -1,11 +1,11 @@
 <template>
     <div class="DaySelector">
         <v-btn
-            class="DaySelector__date"
+            class="DaySelector__date text-h6"
             prepend-icon="mdi-calendar-range"
-            size="large"
+            size="x-large"
             @click="onDaySelectStart">
-            {{ displayDay }}
+            {{ formatTimestampToSlash(formatTimestamp(activeDate)) }}
         </v-btn>
         <v-btn
             class="DaySelector__reset"
@@ -14,15 +14,17 @@
             @click="resetDay"></v-btn>
 
         <v-dialog class="DaySelector__dialog" v-model="dialogOpen">
-            <v-card class="card" prepend-icon="mdi-calendar-range" title="Select a Day">
+            <v-card class="card" prepend-icon="mdi-calendar-range" title="选择日期">
                 <v-date-picker
                     class="selector"
                     v-model="selectedDate"
                     :max="new Date()"
                     show-adjacent-months></v-date-picker>
                 <v-card-actions>
-                    <v-btn text @click="onDaySelectEnd(false)">Cancel</v-btn>
-                    <v-btn text @click="onDaySelectEnd(true)">OK</v-btn>
+                    <v-btn text color="primary" @click="onDaySelectEnd(false)">
+                        取消
+                    </v-btn>
+                    <v-btn text color="success" @click="onDaySelectEnd(true)">确定</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -60,19 +62,14 @@
 </style>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { useDate } from 'vuetify';
+import { ref } from 'vue';
+import { formatTimestamp, formatTimestampToSlash } from '~/utils/format';
 
 const activeDate = defineModel<Date>();
-const adapter = useDate();
 
 const resetDay = () => {
     activeDate.value = new Date();
 };
-
-const displayDay = computed(() => {
-    return adapter.format(activeDate.value, 'keyboardDate');
-});
 
 // dialog status control
 const dialogOpen = ref(false);

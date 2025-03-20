@@ -1,14 +1,13 @@
 <template>
-    <v-card class="EditView">
-        <v-card-title>{{ title }}</v-card-title>
+    <v-card class="EditView" :title="title">
         <v-container>
             <v-form ref="form">
                 <div class="EditView__form">
                     <!-- title -->
                     <v-text-field
-                        label="Spend Item"
+                        label="消费项目"
                         variant="outlined"
-                        placeholder="Spend Item"
+                        placeholder="消费项目"
                         :rules="rules.title"
                         v-model="data.title"></v-text-field>
                     <!-- date and money -->
@@ -22,7 +21,7 @@
                                 icon="mdi-minus"></v-icon>
                             <span class="input text-red-lighten-1">
                                 <v-text-field
-                                    label="Money"
+                                    label="消费金额"
                                     variant="outlined"
                                     placeholder="Money"
                                     :rules="rules.money"
@@ -35,8 +34,8 @@
                         v-model="categoryChips"
                         :items="categoryList"
                         variant="outlined"
-                        label="Categories"
-                        placeholder="Categories"
+                        label="分类"
+                        placeholder="分类"
                         chips
                         clearable
                         closable-chips
@@ -56,8 +55,8 @@
                         v-model="peopleChips"
                         :items="peopleList"
                         variant="outlined"
-                        label="People"
-                        placeholder="People"
+                        label="谁的消费"
+                        placeholder="谁的消费"
                         chips
                         clearable
                         closable-chips
@@ -71,8 +70,8 @@
                         v-model="tagChips"
                         :items="tagList"
                         variant="outlined"
-                        label="Tags"
-                        placeholder="Tags"
+                        label="消费标签"
+                        placeholder="消费标签"
                         chips
                         clearable
                         closable-chips
@@ -86,7 +85,8 @@
                         class="note"
                         v-model="data.note"
                         variant="outlined"
-                        label="Note"
+                        label="消费备注"
+                        placeholder="消费备注"
                         rows="2"
                         auto-grow
                         clearable></v-textarea>
@@ -94,20 +94,37 @@
             </v-form>
         </v-container>
         <v-card-actions>
-            <v-btn color="error" :loading="isLoading" @click="onClickConfirm(true)">
-                Delete
+            <v-btn
+                v-if="!create"
+                color="error"
+                :loading="isLoading"
+                @click="onClickConfirm(true)">
+                删除
             </v-btn>
             <v-btn color="primary" :loading="isLoading" @click="onClickCancel">
-                Cancel
+                取消
             </v-btn>
             <v-btn color="success" :loading="isLoading" @click="onClickConfirm(false)">
-                Confirm
+                确认
             </v-btn>
         </v-card-actions>
     </v-card>
+    <v-dialog v-model="confirmDialog">
+        <v-card class="EditView__confirm" prepend-icon="mdi-alert" title="确认删除">
+            <v-card-text>删除后将无法恢复，确定要删除这条记录吗？</v-card-text>
+            <v-card-actions>
+                <v-btn color="error" @click="onConfirmDelete(true)">删除</v-btn>
+                <v-btn color="primary" @click="onConfirmDelete(false)">取消</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </template>
 
 <style>
+.EditView {
+    padding-top: 8px;
+}
+
 .EditView__form .date-and-money {
     display: flex;
     flex-direction: row;
@@ -140,6 +157,11 @@
 .EditView__form .date-and-money .money .input input {
     text-align: right;
     font-size: x-large;
+}
+
+.EditView__confirm {
+    width: 90%;
+    margin: 0 auto;
 }
 </style>
 
@@ -179,17 +201,17 @@ const data = ref<Entry>(entry ? { ...entry } : engine.createEntry());
 const form = ref<VForm>();
 const rules = {
     title: [
-        (v: string) => !!v || 'You must enter a title.',
-        (v: string) => (v && v.length > 0) || 'You must enter a title.'
+        (v: string) => !!v || '消费项目不能为空',
+        (v: string) => (v && v.length > 0) || '消费项目不能为空'
     ],
     money: [
-        (v: string) => !!v || 'You must enter a money amount.',
+        (v: string) => !!v || '消费金额不能为空',
         (v: string) => {
             // money must be in dd.dd format
             if (v && v.length > 0 && /^\d+(\.\d{0,2})?$/.test(v)) {
                 return true;
             }
-            return 'You must enter a valid money amount.';
+            return '消费金额格式不正确';
         }
     ]
 };
@@ -257,17 +279,34 @@ const invokeEmitEvent = (event: EntryUpdateEvent) => {
     bus.emit(BusEventTypes.ENTRY_UPDATE, event);
 };
 
+const confirmDialog = ref(false);
+
+const showConfirmDialog = () => {
+    confirmDialog.value = true;
+};
+
+const closeConfirmDialog = () => {
+    confirmDialog.value = false;
+};
+
+const onConfirmDelete = (confirm: boolean) => {
+    closeConfirmDialog();
+    if (confirm) {
+        invokeEmitEvent({
+            type: EntryUpdateTypes.DELETE,
+            entry: data.value
+        });
+        invokeOnClose();
+    }
+};
+
 const onClickCancel = () => {
     invokeOnClose();
 };
 
 const onClickConfirm = (isDelete: boolean) => {
     if (isDelete) {
-        invokeEmitEvent({
-            type: EntryUpdateTypes.DELETE,
-            entry: data.value
-        });
-        invokeOnClose();
+        showConfirmDialog();
         return;
     }
 

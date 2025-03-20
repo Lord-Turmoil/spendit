@@ -10,10 +10,13 @@
             @click="onEditStart(item)"></EntryCard>
         <v-dialog class="EntryCardList__dialog" v-model="dialogOpen" persistent>
             <EditView
-                title="Edit Entry"
+                title="编辑消费项目"
                 :entry="editEntry"
                 :on-close="onEditEnd"></EditView>
         </v-dialog>
+    </div>
+    <div v-else-if="showEmpty" class="EntryCardList__empty">
+        <EmptyCard :show-hint="true"></EmptyCard>
     </div>
 </template>
 
@@ -27,9 +30,14 @@
 .EntryCardList__timestamp {
     margin: 8px 0;
 }
+
+.EntryCardList__empty {
+    height: 100%;
+}
 </style>
 
 <script setup lang="ts">
+import EmptyCard from '~/components/EmptyCard.vue';
 import EntryCard from '~/components/EntryCard.vue';
 import EditView from '~/view/EditView.vue';
 
@@ -49,9 +57,10 @@ import { formatTimestampToSlash } from '~/utils/format';
 interface EntryCardListProps {
     date: string;
     showDate?: boolean;
+    showEmpty?: boolean;
 }
 
-const { date, showDate = true } = defineProps<EntryCardListProps>();
+const { date, showDate = true, showEmpty = false } = defineProps<EntryCardListProps>();
 
 const entries = ref<Entry[]>([...engine.getDatabase().getTable(date).entries]);
 

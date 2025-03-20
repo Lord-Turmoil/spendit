@@ -2,7 +2,12 @@
     <div class="DayLayout">
         <DaySelector v-model="activeDate" />
         <div class="DayLayout__list no-scrollbar">
-            <DetailView :dates="dates" :show-date="false" :key="key"></DetailView>
+            <DetailView
+                class="expand"
+                :dates="dates"
+                :show-date="false"
+                :show-empty="true"
+                :key="key"></DetailView>
         </div>
     </div>
 </template>
