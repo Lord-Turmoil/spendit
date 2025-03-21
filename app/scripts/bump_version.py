@@ -18,6 +18,6 @@ OLD_VERSION = data["version"]
 for file in AFFECTED_FILES:
     with open(file, "r") as f:
         content = f.read()
-    content = content.replace(OLD_VERSION, NEW_VERSION)
+    content = content.replace(OLD_VERSION, NEW_VERSION, 1)
     with open(file, "w") as f:
         f.write(content)

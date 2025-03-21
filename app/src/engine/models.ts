@@ -134,7 +134,7 @@ export interface SystemProfile {
 export const CurrentSystemProfile: SystemProfile = {
     product: 'Spendit',
     author: "Tony's Studio",
-    version: '0.1.2',
+    version: '0.1.3',
     code: 'Genesis'
 };
 
