@@ -37,7 +37,7 @@ import router from '~/extensions/router';
 const menuList = [
     {
         title: '消费统计',
-        icon: 'mdi-calendar-range',
+        icon: 'mdi-chart-bar',
         action: () => {
             router.push('/overview');
         }

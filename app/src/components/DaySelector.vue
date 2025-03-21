@@ -17,7 +17,7 @@
             color="orange-darken-1"
             @click="resetDay"></v-btn>
 
-        <v-dialog class="DaySelector__dialog" v-model="dialogOpen">
+        <v-dialog class="DaySelector__dialog day-selector" v-model="dialogOpen">
             <v-card class="card" prepend-icon="mdi-calendar-range" title="选择日期">
                 <v-date-picker
                     class="selector"

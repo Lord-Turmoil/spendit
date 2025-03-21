@@ -7,5 +7,7 @@ build/
 
 android/
 resources/android/**/*
+publish/
 
 .env
+secret.json

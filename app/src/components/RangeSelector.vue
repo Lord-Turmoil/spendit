@@ -17,21 +17,25 @@
                 {{ formatTimestampToSlash(model.endDate) }}
             </v-btn>
         </div>
-        <v-dialog class="RangeSelector__dialog" v-model="startDialogOpen">
-            <v-card class="card" prepend-icon="mdi-calendar-range" title="Select a Day">
+        <v-dialog class="RangeSelector__dialog day-selector" v-model="startDialogOpen">
+            <v-card class="card" prepend-icon="mdi-calendar-range" title="选择起始日期">
                 <v-date-picker
                     class="selector"
                     v-model="selectedDate"
                     :max="model.endDate"
                     show-adjacent-months></v-date-picker>
                 <v-card-actions>
-                    <v-btn text @click="onSelectStartEnd(false)">Cancel</v-btn>
-                    <v-btn text @click="onSelectStartEnd(true)">OK</v-btn>
+                    <v-btn text color="primary" @click="onSelectStartEnd(false)">
+                        取消
+                    </v-btn>
+                    <v-btn text color="success" @click="onSelectStartEnd(true)">
+                        确定
+                    </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        <v-dialog class="RangeSelector__dialog" v-model="endDialogOpen">
-            <v-card class="card" prepend-icon="mdi-calendar-range" title="Select a Day">
+        <v-dialog class="RangeSelector__dialog day-selector" v-model="endDialogOpen">
+            <v-card class="card" prepend-icon="mdi-calendar-range" title="选择结束日期">
                 <v-date-picker
                     class="selector"
                     v-model="selectedDate"
@@ -39,8 +43,10 @@
                     :max="new Date()"
                     show-adjacent-months></v-date-picker>
                 <v-card-actions>
-                    <v-btn text @click="onSelectEndEnd(false)">Cancel</v-btn>
-                    <v-btn text @click="onSelectEndEnd(true)">OK</v-btn>
+                    <v-btn text color="primary" @click="onSelectEndEnd(false)">
+                        取消
+                    </v-btn>
+                    <v-btn text color="success" @click="onSelectEndEnd(true)">确定</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>

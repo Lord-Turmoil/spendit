@@ -38,6 +38,17 @@
     min-height: 100%;
 }
 
+@media (max-width: 400px) {
+    .day-selector .v-overlay__content {
+        width: auto !important;
+        max-width: none !important;
+    }
+
+    .day-selector .card {
+        scale: 0.9;
+    }
+}
+
 #splash {
     display: flex;
     width: 100vw;
