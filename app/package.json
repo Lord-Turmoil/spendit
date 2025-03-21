@@ -9,7 +9,8 @@
     "format": "prettier --config .prettierrc *.ts src/**/*.ts src/**/*.vue --write",
     "sync": "npm run build && cap sync",
     "open": "cap open android",
-    "version": "python scripts/bump_version.py"
+    "version": "python scripts/bump_version.py",
+    "publish": "npm run build && pwsh deploy.ps1"
   },
   "dependencies": {
     "@capacitor/android": "^7.1.0",

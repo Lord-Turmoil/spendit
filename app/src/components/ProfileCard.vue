@@ -4,7 +4,7 @@
         variant="flat"
         color="purple-darken-1"
         link
-        href="https://spendit.tonys-studio.top/"
+        href="https://spendit.tonys-studio.top/release/"
         target="_blank">
         <v-container>
             <div class="ProfileCard__user">

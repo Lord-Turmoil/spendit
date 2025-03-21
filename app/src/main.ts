@@ -29,7 +29,7 @@ try {
     document.body.removeChild(app);
 
     // get complete error frames
-    const stack = error.stack
+    const stack = error.stack;
 
     document.getElementById('error-message').innerHTML = error;
     document.getElementById('error-stack').innerHTML = stack;

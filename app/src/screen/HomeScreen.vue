@@ -12,5 +12,8 @@
 </style>
 
 <script setup lang="ts">
+import router from '~/extensions/router';
 import HomeLayout from '~/layout/HomeLayout.vue';
+
+router.replace({ path: '/home' });
 </script>

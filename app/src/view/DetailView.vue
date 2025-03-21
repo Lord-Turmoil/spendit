@@ -11,6 +11,7 @@
 
 <style scoped>
 .DetailView {
+    position: relative;
     width: 100%;
 }
 </style>

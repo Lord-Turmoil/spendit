@@ -7,3 +7,5 @@ build/
 
 android/
 resources/android/**/*
+
+.env

@@ -22,6 +22,10 @@ const router = createRouter({
         {
             path: '/detail',
             component: DetailScreen
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            redirect: '/home'
         }
     ]
 });

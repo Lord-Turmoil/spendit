@@ -3,9 +3,16 @@
         <div class="EntryCardList__timestamp text-body-1" v-if="showDate">
             {{ formatTimestampToSlash(date) }}
         </div>
-        <EntryCard v-for="(item, i) in entries" :key="i" :entry="item" @click="onEditStart(item)"></EntryCard>
+        <EntryCard
+            v-for="(item, i) in entries"
+            :key="i"
+            :entry="item"
+            @click="onEditStart(item)"></EntryCard>
         <v-dialog class="EntryCardList__dialog" v-model="dialogOpen" persistent>
-            <EditView title="编辑消费项目" :entry="editEntry" :on-close="onEditEnd"></EditView>
+            <EditView
+                title="编辑消费项目"
+                :entry="editEntry"
+                :on-close="onEditEnd"></EditView>
         </v-dialog>
     </div>
     <div v-else-if="showEmpty" class="EntryCardList__empty">
@@ -25,6 +32,7 @@
 }
 
 .EntryCardList__empty {
+    width: 100%;
     height: 100%;
 }
 
