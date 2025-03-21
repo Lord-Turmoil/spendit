@@ -27,7 +27,7 @@ if (Test-Path dist) {
 }
 New-Item -ItemType Directory -Force -Path dist
 Copy-Item index.html dist
-Copy-Item favicon.png dist
+Copy-Item logo.png dist
 Write-Host "Build completed" -ForegroundColor Green
 
 # Read first and second line from .env file and raise error if not found
