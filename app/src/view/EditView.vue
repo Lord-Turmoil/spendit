@@ -5,114 +5,57 @@
                 <v-form ref="form">
                     <div class="EditView__form">
                         <!-- title -->
-                        <v-text-field
-                            :label="`消费项目 ${formatTimestampToSlash(data.date)}`"
-                            variant="outlined"
-                            :placeholder="`消费项目 ${formatTimestampToSlash(data.date)}`"
-                            :rules="rules.title"
+                        <v-text-field :label="`消费项目 ${formatTimestampToSlash(data.date)}`" variant="outlined"
+                            :placeholder="`消费项目 ${formatTimestampToSlash(data.date)}`" :rules="rules.title"
                             v-model="data.title"></v-text-field>
                         <!-- date and money -->
                         <div class="date-and-money">
                             <span class="money">
-                                <v-icon
-                                    class="icon text-h6 text-red-lighten-1"
-                                    icon="mdi-minus"></v-icon>
+                                <v-icon class="icon text-h6 text-red-lighten-1" icon="mdi-minus"></v-icon>
                                 <span class="input text-red-lighten-1">
-                                    <v-text-field
-                                        label="消费金额"
-                                        variant="outlined"
-                                        placeholder="Money"
-                                        :rules="rules.money"
-                                        v-model="moneyData"></v-text-field>
+                                    <v-text-field label="消费金额" variant="outlined" placeholder="0.00"
+                                        :rules="rules.money" v-model="moneyData"></v-text-field>
                                 </span>
                             </span>
                         </div>
                         <!-- category -->
-                        <v-combobox
-                            v-model="categoryChips"
-                            :items="categoryList"
-                            variant="outlined"
-                            label="分类"
-                            placeholder="分类"
-                            chips
-                            clearable
-                            closable-chips
-                            multiple>
+                        <v-combobox v-model="categoryChips" :items="categoryList" variant="outlined" label="分类"
+                            placeholder="分类" chips clearable closable-chips multiple>
                             <template v-slot:chip="{ props, item }">
-                                <v-chip
-                                    prepend-icon="mdi-slash-forward"
-                                    v-bind="props"
-                                    size="x-small"
-                                    color="green-darken-1"
-                                    variant="outlined">
+                                <v-chip prepend-icon="mdi-slash-forward" v-bind="props" size="x-small"
+                                    color="green-darken-1" variant="outlined">
                                     {{ item.raw }}
                                 </v-chip>
                             </template>
                         </v-combobox>
                         <!-- people list -->
-                        <v-combobox
-                            v-model="peopleChips"
-                            :items="peopleList"
-                            variant="outlined"
-                            label="谁的消费"
-                            placeholder="谁的消费"
-                            chips
-                            clearable
-                            closable-chips
-                            multiple>
+                        <v-combobox v-model="peopleChips" :items="peopleList" variant="outlined" label="谁的消费"
+                            placeholder="谁的消费" chips clearable closable-chips multiple>
                             <template v-slot:chip="{ props, item }">
                                 <PeopleChip :name="item.raw"></PeopleChip>
                             </template>
                         </v-combobox>
                         <!-- tag list -->
-                        <v-combobox
-                            v-model="tagChips"
-                            :items="tagList"
-                            variant="outlined"
-                            label="消费标签"
-                            placeholder="消费标签"
-                            chips
-                            clearable
-                            closable-chips
-                            multiple>
+                        <v-combobox v-model="tagChips" :items="tagList" variant="outlined" label="消费标签"
+                            placeholder="消费标签" chips clearable closable-chips multiple>
                             <template v-slot:chip="{ props, item }">
                                 <TagChip :tag="item.raw"></TagChip>
                             </template>
                         </v-combobox>
                         <!-- note -->
-                        <v-textarea
-                            class="note"
-                            v-model="data.note"
-                            variant="outlined"
-                            label="消费备注"
-                            placeholder="消费备注"
-                            rows="2"
-                            auto-grow
-                            clearable></v-textarea>
+                        <v-textarea class="note" v-model="data.note" variant="outlined" label="消费备注" placeholder="消费备注"
+                            rows="2" auto-grow clearable></v-textarea>
                     </div>
                 </v-form>
             </v-container>
             <v-card-actions class="actions">
-                <v-btn
-                    v-if="!create"
-                    color="error"
-                    size="large"
-                    :loading="isLoading"
-                    @click="onClickConfirm(true)">
+                <v-btn v-if="!create" color="error" size="large" :loading="isLoading" @click="onClickConfirm(true)">
                     删除
                 </v-btn>
-                <v-btn
-                    color="primary"
-                    size="large"
-                    :loading="isLoading"
-                    @click="onClickCancel">
+                <v-btn color="primary" size="large" :loading="isLoading" @click="onClickCancel">
                     取消
                 </v-btn>
-                <v-btn
-                    color="success"
-                    size="large"
-                    :loading="isLoading"
-                    @click="onClickConfirm(false)">
+                <v-btn color="success" size="large" :loading="isLoading" @click="onClickConfirm(false)">
                     确认
                 </v-btn>
             </v-card-actions>
@@ -241,7 +184,7 @@ async function validateForm() {
 // ============================================================================
 
 // money
-const moneyData = ref<string>(formatMoney(data.value.money));
+const moneyData = ref<string>(create ? '' : formatMoney(data.value.money));
 
 // categories
 const categoryList = ref(engine.getTags().getFirstCategories());
