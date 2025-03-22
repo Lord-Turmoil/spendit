@@ -8,6 +8,8 @@
 >
 > THIS PROJECT IS CURRENTLY UNDER DEVELOPMENT.
 
+[![Build](https://github.com/Lord-Turmoil/spendit/actions/workflows/static.yml/badge.svg?branch=main)](https://github.com/Lord-Turmoil/spendit/actions/workflows/static.yml)
+
 Spendit, stands for "spend it", is a dedicated mobile app for you to take a note of where you spend your money.
 
 ## Visions
