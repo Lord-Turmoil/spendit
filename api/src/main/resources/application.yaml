@@ -23,6 +23,7 @@ cors:
   allowed-origins:
     - http://${DOMAIN}
     - https://${DOMAIN}
+    - http://localhost:5173
   allowed-methods:
     - GET
     - POST

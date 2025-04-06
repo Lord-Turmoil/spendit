@@ -106,7 +106,7 @@ public class EntrySyncService extends BaseService {
         try {
             return mergeImpl(id, hint, map);
         } catch (IOException e) {
-            throw new InternalServerErrorException("文件 I/O 失败");
+            throw new InternalServerErrorException("无云端数据，请先推送数据");
         }
     }
 
