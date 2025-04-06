@@ -104,7 +104,16 @@ public class Medias {
      * Save content to the given path.
      */
     public static void save(Path path, String content) throws IOException {
+        ensureParentPath(path);
         Files.writeString(path, content);
+    }
+
+    public static String read(String path) throws IOException {
+        return read(Path.of(path));
+    }
+
+    public static String read(Path path) throws IOException {
+        return Files.readString(path);
     }
 
     public static void remove(String path) throws IOException {
