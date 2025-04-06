@@ -32,7 +32,6 @@ if (-not $deployPath) {
     Write-Host "Error: deployPath not found in .env file" -ForegroundColor Red
     exit 1
 }
-$tempPath = "$deployPath/tmp"
 $app = $envFile[2]
 if (-not $app) {
     Write-Host "Error: app not found in .env file" -ForegroundColor Red
@@ -57,9 +56,9 @@ scp $archiveName ${hostConnection}:/tmp/$archiveName
 # Execute remote commands:
 Write-Host "Executing deploy commands"
 $commands= @(
-    " rm -rf $tempPath/$build $deployPath/$app",
-    " && tar -xzf /tmp/$archiveName -C $tempPath --overwrite",
-    " && mv $tempPath/$build $deployPath/$app",
+    " rm -rf /tmp/$build $deployPath/$app",
+    " && tar -xzf /tmp/$archiveName -C /tmp --overwrite",
+    " && mv /tmp/$build $deployPath/$app",
     " && rm /tmp/$archiveName"
 )
 ssh $hostConnection $commands

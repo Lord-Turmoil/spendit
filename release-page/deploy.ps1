@@ -42,7 +42,7 @@ if (-not $deployPath) {
     Write-Host "Error: deployPath not found in .env file" -ForegroundColor Red
     exit 1
 }
-$tempPath = "$deployPath/tmp"
+$tempPath = "/tmp"
 $app = $envFile[2]
 if (-not $app) {
     Write-Host "Error: app not found in .env file" -ForegroundColor Red
