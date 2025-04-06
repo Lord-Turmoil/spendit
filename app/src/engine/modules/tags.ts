@@ -77,9 +77,9 @@ export class TagsModule {
             }
         }
         if (second === undefined) {
-            this.data.categories.push([first, []]);
+            this.data.categories.push({ primary: first, secondaries: [] });
         } else {
-            this.data.categories.push([first, [second]]);
+            this.data.categories.push({ primary: first, secondaries: [second] });
         }
     }
 

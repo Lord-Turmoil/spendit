@@ -144,7 +144,11 @@ export const CurrentSystemProfile: SystemProfile = {
 // Tag models
 // ========================================================================
 
-export type CategoryEntry = [string, string[]];
+export interface CategoryEntry {
+    primary: string,
+    secondaries: string[],
+}
+
 export type CategoryList = CategoryEntry[];
 export type TagList = string[];
 
