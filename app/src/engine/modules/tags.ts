@@ -10,12 +10,14 @@ interface TagData {
     categories: CategoryList;
     tags: TagList;
     people: TagList;
+    updated: string; // ISO string
 }
 
 const DummyTagData: TagData = {
     categories: [],
     tags: [],
-    people: []
+    people: [],
+    updated: ''
 };
 
 const TAGS_FILE = 'tags.json';
@@ -139,15 +141,18 @@ export class TagsModule {
         let value = await this.native.loadFile(this.path);
         if (value === null) {
             value = JSON.stringify(DummyTagData);
-            await this.native.saveFile(this.path, value);
+            this.data = JSON.parse(value);
+            await this.saveTags();
+        } else {
+            this.data = JSON.parse(value);
         }
-        this.data = JSON.parse(value);
     }
 
     /**
      * This must be manually called to save the tags.
      */
     async saveTags(): Promise<void> {
+        this.data.updated = new Date().toISOString();
         await this.native.saveFile(this.path, JSON.stringify(this.data));
     }
 }
