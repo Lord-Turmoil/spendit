@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) Tony's Studio 2025.
+ */
+
 package top.tony.spendit.api.modules.sync.services;
 
 import com.fasterxml.jackson.core.JsonParseException;

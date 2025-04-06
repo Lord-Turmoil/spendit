@@ -1,6 +1,5 @@
 /*
- * Copyright (C) Patpat Online 2024
- * Made with love by Tony Skywalker
+ * Copyright (C) Tony's Studio 2025.
  */
 
 package top.tony.spendit.api.extensions.cookies;

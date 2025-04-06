@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) Tony's Studio 2025.
+ */
+
 package top.tony.spendit.api.modules.invitation.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;

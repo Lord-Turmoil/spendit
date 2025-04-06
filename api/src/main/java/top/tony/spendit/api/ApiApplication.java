@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) Tony's Studio 2025.
+ */
+
 package top.tony.spendit.api;
 
 import org.springframework.boot.SpringApplication;
