@@ -8,7 +8,7 @@
             variant="flat"
             color="orange-darken-1"
             block>
-            统计
+            更新统计数据
         </v-btn>
         <OverviewView
             v-model="overviewReady"
@@ -38,12 +38,13 @@ import { ref, watch } from 'vue';
 import { formatTimestamp } from '~/utils/format';
 
 const currentTimestamp = formatTimestamp(new Date());
+const firstDayTimestamp = currentTimestamp.substring(0, 8) + '01';
 const native = getNative();
 
 const parseQuery = (): { startDate: string; endDate: string } => {
     const pattern = /^\d{4}-\d{2}-\d{2}$/;
-    let startDate = native.getLocalStorage('startDate') || currentTimestamp;
-    let endDate = native.getLocalStorage('endDate') || currentTimestamp;
+    let startDate = native.getCookies('startDate') || firstDayTimestamp;
+    let endDate = native.getCookies('endDate') || currentTimestamp;
 
     if (!pattern.test(startDate) || !pattern.test(endDate)) {
         return { startDate: currentTimestamp, endDate: currentTimestamp };
@@ -80,8 +81,8 @@ const onConfirmSelection = async () => {
     }
     selectedDates.value = dates;
     key.value++; // force re-render
-    native.setLocalStorage('startDate', model.value.startDate);
-    native.setLocalStorage('endDate', model.value.endDate);
+    native.setCookies('startDate', model.value.startDate, 6);
+    native.setCookies('endDate', model.value.endDate, 6);
 };
 
 onConfirmSelection();

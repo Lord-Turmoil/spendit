@@ -50,9 +50,9 @@ meta.json:
 */
 
 interface Hint {
-    modify: string[],
-    send: string[],
-    receive: string[]
+    modify: string[];
+    send: string[];
+    receive: string[];
 }
 
 export class DatabaseModule {
@@ -66,9 +66,12 @@ export class DatabaseModule {
         // TODO: handle async result.
         this.loadMeta();
 
-        setInterval(() => {
-            this.clearCache();
-        }, 1000 * 60 * 5); // clear the cache every 5 minutes
+        setInterval(
+            () => {
+                this.clearCache();
+            },
+            1000 * 60 * 5
+        ); // clear the cache every 5 minutes
     }
 
     /**
@@ -181,8 +184,9 @@ export class DatabaseModule {
      * Save the table to disk, and updates the meta if necessary.
      *
      * @param table The table to save.
+     * @param keepUpdated If true, the table will be saved to disk, but not updated in the meta.
      */
-    private async saveTable(table: DbTable): Promise<void> {
+    private async saveTable(table: DbTable, keepUpdated: boolean = false): Promise<void> {
         // If the table is empty, remove it from the meta and disk.
         if (table.entries.length === 0) {
             this.meta.entries = this.meta.entries.filter((e) => e !== table.timestamp);
@@ -202,7 +206,9 @@ export class DatabaseModule {
         }
 
         // save the table to disk.
-        table.updated = formatTimeISO(new Date());
+        if (!keepUpdated) {
+            table.updated = formatTimeISO(new Date());
+        }
         const path = this.getFilePath(`${table.timestamp}.json`);
         await this.native.saveFile(path, JSON.stringify(table));
     }
@@ -221,7 +227,8 @@ export class DatabaseModule {
             const table = await this.getTable(timestamp);
             entries.push(table);
         }
-        await api.post('/sync/entry/push', { entries: entries })
+        await api
+            .post('/sync/entry/push', { entries: entries })
             .then((response: ApiResponse) => {
                 if (response.status !== 200) {
                     throw new Error(response.message);
@@ -230,17 +237,16 @@ export class DatabaseModule {
     }
 
     async pull(): Promise<void> {
-        await api.get('/sync/entry/pull')
-            .then((response: ApiResponse) => {
-                if (response.status !== 200) {
-                    throw new Error(response.message);
-                }
-                const entries = response.data.entries as DbTable[];
-                this.meta.entries = [];
-                for (const entry of entries) {
-                    this.saveTable(entry);
-                }
-            });
+        await api.get('/sync/entry/pull').then((response: ApiResponse) => {
+            if (response.status !== 200) {
+                throw new Error(response.message);
+            }
+            const entries = response.data.entries as DbTable[];
+            this.meta.entries = [];
+            for (const entry of entries) {
+                this.saveTable(entry, true);
+            }
+        });
         this.clearCache();
     }
 
@@ -253,14 +259,15 @@ export class DatabaseModule {
         for (const timestamp of hint.send) {
             entries.push(await this.getTable(timestamp));
         }
-        await api.post('/sync/entry/merge', { hint: hint, entries: entries })
+        await api
+            .post('/sync/entry/merge', { hint: hint, entries: entries })
             .then((response: ApiResponse) => {
                 if (response.status !== 200) {
                     throw new Error(response.message);
                 }
                 const entries = response.data.entries as DbTable[];
                 for (const entry of entries) {
-                    this.saveTable(entry);
+                    this.saveTable(entry, true);
                 }
             });
         this.clearCache();
@@ -273,7 +280,8 @@ export class DatabaseModule {
             entries.push({ timestamp: timestamp, updated: table.updated });
         }
 
-        return await api.post('/sync/entry/merge/hint', { meta: { entries: entries } })
+        return await api
+            .post('/sync/entry/merge/hint', { meta: { entries: entries } })
             .then((response: ApiResponse) => {
                 if (response.status !== 200) {
                     throw new Error(response.message);

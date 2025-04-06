@@ -1,7 +1,11 @@
 <template>
     <div class="LoginLayout">
         <RegisterView v-model="isRegister" v-if="isRegister"></RegisterView>
-        <LoginView v-model="isRegister" :type="title" :can-logout="canLogout" v-else></LoginView>
+        <LoginView
+            v-model="isRegister"
+            :type="title"
+            :can-logout="canLogout"
+            v-else></LoginView>
     </div>
 </template>
 
@@ -32,5 +36,4 @@ const title = computed(() => {
 const canLogout = computed(() => {
     return engine.isLoggedIn();
 });
-
 </script>

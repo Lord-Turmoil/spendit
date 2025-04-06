@@ -147,24 +147,27 @@ interface RegisterData {
 const onClickRegister = async () => {
     isLoading.value = true;
 
-    if (!await validateForm()) {
+    if (!(await validateForm())) {
         isLoading.value = false;
         return;
     }
 
-    await api.post('/auth/register', {
-        code: code.value,
-        username: username.value,
-        password: password.value
-    }).then((response: ApiResponse) => {
-        if (response.status === 200) {
-            onRegisterSuccess(response.data as RegisterData);
-        } else {
-            onRegisterError(response);
-        }
-    }).finally(() => {
-        isLoading.value = false;
-    });
+    await api
+        .post('/auth/register', {
+            code: code.value,
+            username: username.value,
+            password: password.value
+        })
+        .then((response: ApiResponse) => {
+            if (response.status === 200) {
+                onRegisterSuccess(response.data as RegisterData);
+            } else {
+                onRegisterError(response);
+            }
+        })
+        .finally(() => {
+            isLoading.value = false;
+        });
 };
 
 const onRegisterSuccess = async (data: RegisterData) => {
@@ -179,16 +182,18 @@ const onRegisterError = (response: ApiResponse) => {
 };
 
 const tryLogin = async (data: RegisterData) => {
-    return await api.post('/auth/login', {
-        username: username.value,
-        password: password.value
-    }).then((response: ApiResponse) => {
-        if (response.status === 200) {
-            onLoginSuccess(response.data as RegisterData);
-        } else {
-            onLoginError(response);
-        }
-    });
+    return await api
+        .post('/auth/login', {
+            username: username.value,
+            password: password.value
+        })
+        .then((response: ApiResponse) => {
+            if (response.status === 200) {
+                onLoginSuccess(response.data as RegisterData);
+            } else {
+                onLoginError(response);
+            }
+        });
 };
 
 const onLoginSuccess = async (data: RegisterData) => {
@@ -206,5 +211,4 @@ const onLoginError = (response: ApiResponse) => {
     alertify.error('自动登录失败，请手动登录');
     isRegister.value = false;
 };
-
 </script>

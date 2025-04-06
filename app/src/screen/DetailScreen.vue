@@ -1,19 +1,19 @@
 <template>
-    <v-container class="DetailScreen scrollable split-wrapper">
-        <DetailView class="split-primary" :dates="dates" show-date></DetailView>
-        <BackButton></BackButton>
+    <v-container class="DetailScreen scrollable">
+        <DetailView :dates="dates" show-date style="margin-bottom: 36px"></DetailView>
+        <FabBackButton></FabBackButton>
     </v-container>
 </template>
 
 <style scoped>
 .DetailScreen {
-    min-height: 100vh;
+    height: 100vh;
     flex-direction: column;
 }
 </style>
 
 <script setup lang="ts">
-import BackButton from '~/components/BackButton.vue';
+import FabBackButton from '~/components/FabBackButton.vue';
 import DetailView from '~/view/DetailView.vue';
 
 import { engine } from '~/engine/engine';

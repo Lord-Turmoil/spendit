@@ -42,9 +42,7 @@ const router = createRouter({
     ]
 });
 
-const AUTH_ROUTES = [
-    '/sync'
-];
+const AUTH_ROUTES = ['/sync'];
 router.beforeEach((to, from, next) => {
     if (AUTH_ROUTES.includes(to.path) && !engine.isLoggedIn()) {
         alertify.error('请先登录');

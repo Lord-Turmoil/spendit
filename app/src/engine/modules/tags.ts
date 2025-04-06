@@ -71,9 +71,9 @@ export class TagsModule {
         }
 
         for (const category of this.data.categories) {
-            if (category[0] === first) {
-                if (second !== undefined && !category[1].includes(second)) {
-                    category[1].push(second);
+            if (category.primary === first) {
+                if (second !== undefined && !category.secondaries.includes(second)) {
+                    category.secondaries.push(second);
                 }
                 return;
             }
@@ -153,8 +153,10 @@ export class TagsModule {
     /**
      * This must be manually called to save the tags.
      */
-    async saveTags(): Promise<void> {
-        this.data.updated = new Date().toISOString();
+    async saveTags(keepUpdated: boolean = false): Promise<void> {
+        if (!keepUpdated) {
+            this.data.updated = new Date().toISOString();
+        }
         await this.native.saveFile(this.path, JSON.stringify(this.data));
     }
 
@@ -163,7 +165,8 @@ export class TagsModule {
     // ========================================================================
 
     async push(): Promise<void> {
-        await api.post('/sync/tags/push', { tags: this.data })
+        await api
+            .post('/sync/tags/push', { tags: this.data })
             .then((response: ApiResponse) => {
                 if (response.status !== 200) {
                     throw new Error(response.message);
@@ -172,23 +175,23 @@ export class TagsModule {
     }
 
     async pull(): Promise<void> {
-        await api.get('/sync/tags/pull')
-            .then((response: ApiResponse) => {
-                if (response.status === 200) {
-                    this.data = response.data;
-                    this.saveTags();
-                } else {
-                    throw new Error(response.message);
-                }
-            });
+        await api.get('/sync/tags/pull').then((response: ApiResponse) => {
+            if (response.status === 200) {
+                this.data = response.data;
+                this.saveTags(true);
+            } else {
+                throw new Error(response.message);
+            }
+        });
     }
 
     async merge(): Promise<void> {
-        await api.post('/sync/tags/merge', { tags: this.data })
+        await api
+            .post('/sync/tags/merge', { tags: this.data })
             .then((response: ApiResponse) => {
                 if (response.status === 200) {
                     this.data = response.data;
-                    this.saveTags();
+                    this.saveTags(true);
                 } else {
                     throw new Error(response.message);
                 }

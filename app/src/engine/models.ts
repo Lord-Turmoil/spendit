@@ -135,9 +135,9 @@ export interface SystemProfile {
 
 export const CurrentSystemProfile: SystemProfile = {
     product: 'Spendit',
-    author: 'Tony\'s Studio',
-    version: '0.1.3',
-    code: 'Genesis'
+    author: "Tony's Studio",
+    version: '0.2.1',
+    code: 'Tornado'
 };
 
 // ========================================================================
@@ -145,8 +145,8 @@ export const CurrentSystemProfile: SystemProfile = {
 // ========================================================================
 
 export interface CategoryEntry {
-    primary: string,
-    secondaries: string[],
+    primary: string;
+    secondaries: string[];
 }
 
 export type CategoryList = CategoryEntry[];

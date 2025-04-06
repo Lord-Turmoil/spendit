@@ -1,7 +1,7 @@
 <template>
     <v-container class="OverviewScreen scrollable split-wrapper">
         <DaySelectLayout class="split-primary"></DaySelectLayout>
-        <BackButton></BackButton>
+        <FabBackButton></FabBackButton>
     </v-container>
 </template>
 
@@ -13,6 +13,6 @@
 </style>
 
 <script setup lang="ts">
-import BackButton from '~/components/BackButton.vue';
+import FabBackButton from '~/components/FabBackButton.vue';
 import DaySelectLayout from '~/layout/DaySelectLayout.vue';
 </script>

@@ -131,7 +131,7 @@ interface LoginData {
 const onClickLogin = async () => {
     isLoading.value = true;
 
-    if (!await validateForm()) {
+    if (!(await validateForm())) {
         isLoading.value = false;
         return;
     }
@@ -142,15 +142,17 @@ const onClickLogin = async () => {
             password: password.value
         }),
         NORMAL_STALL
-    ).then((response: ApiResponse) => {
-        if (response.status === 200) {
-            onLoginSuccess(response.data as LoginData);
-        } else {
-            onLoginError(response);
-        }
-    }).finally(() => {
-        isLoading.value = false;
-    });
+    )
+        .then((response: ApiResponse) => {
+            if (response.status === 200) {
+                onLoginSuccess(response.data as LoginData);
+            } else {
+                onLoginError(response);
+            }
+        })
+        .finally(() => {
+            isLoading.value = false;
+        });
 };
 
 const onLoginSuccess = async (data: LoginData) => {
@@ -175,18 +177,17 @@ const onLoginError = (response: ApiResponse) => {
 const onClickLogout = async () => {
     isLoading.value = true;
 
-    await stall(
-        api.post('/auth/logout'),
-        NORMAL_STALL
-    ).then((response: ApiResponse) => {
-        if (response.status === 200) {
-            onLogoutSuccess();
-        } else {
-            onLogoutError(response);
-        }
-    }).finally(() => {
-        isLoading.value = false;
-    });
+    await stall(api.post('/auth/logout'), NORMAL_STALL)
+        .then((response: ApiResponse) => {
+            if (response.status === 200) {
+                onLogoutSuccess();
+            } else {
+                onLogoutError(response);
+            }
+        })
+        .finally(() => {
+            isLoading.value = false;
+        });
 };
 
 const onLogoutSuccess = async () => {
@@ -196,7 +197,10 @@ const onLogoutSuccess = async () => {
 
     // Update user data.
     const profile = engine.getUserProfile();
-    await stall(engine.updateUserProfile({ ...DummyUserProfile, id: profile.id }), LONG_STALL);
+    await stall(
+        engine.updateUserProfile({ ...DummyUserProfile, id: profile.id }),
+        LONG_STALL
+    );
 
     router.back();
 };
@@ -204,5 +208,4 @@ const onLogoutSuccess = async () => {
 const onLogoutError = (response: ApiResponse) => {
     alertify.error(response.message);
 };
-
 </script>
