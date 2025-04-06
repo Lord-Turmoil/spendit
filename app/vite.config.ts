@@ -14,5 +14,10 @@ export default defineConfig({
     plugins: [vue(), vuetify({ autoImport: true })],
     resolve: {
         alias: [{ find: '~', replacement: path.resolve(__dirname, 'src') }]
+    },
+    server: {
+        proxy: {
+            '/api': process.env.SPENDIT_API
+        }
     }
 });

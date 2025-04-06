@@ -21,6 +21,41 @@ export abstract class Native {
     }
 
     /**
+     * Get the value of the given key in local storage.
+     *
+     * @param key Key of the cookie.
+     * @param value Value of the cookie.
+     * @param hours Expiration time of the cookie in hours.
+     */
+    public setCookies(key: string, value: string, hours: number) {
+        const expireDate = new Date();
+        expireDate.setTime(expireDate.getTime() + hours * 60 * 60 * 1000);
+        let expires = 'expires=' + expireDate.toUTCString();
+        document.cookie = name + '=' + value + ';' + expires + ';path=/';
+    }
+
+    /**
+     * Get the value of the given key in local storage.
+     *
+     * @param key Key of the cookie.
+     */
+    public getCookies(key: string): string | undefined {
+        key = key + '=';
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(key) == 0) {
+                return c.substring(key.length, c.length);
+            }
+        }
+        return undefined;
+    }
+
+    /**
      * Save the given file.
      *
      * @param filename The filename to save.

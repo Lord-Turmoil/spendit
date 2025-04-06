@@ -75,3 +75,44 @@
 #error-stack {
     font-size: xx-small;
 }
+
+/* Alertify */
+.alertify-notifier .ajs-message {
+    border-radius: 100px;
+    text-align: center;
+}
+
+.alertify-notifier .ajs-message.ajs-success {
+    color: white;
+    background: rgba(76, 175, 80, 1.0) !important;
+}
+
+.alertify-notifier .ajs-message.ajs-warning {
+    color: white;
+    background: rgba(251, 140, 0, 1.0) !important;
+}
+
+.alertify-notifier .ajs-message.ajs-error {
+    color: white;
+    background: rgba(244, 81, 30, 1.0) !important;
+}
+
+.alertify .ajs-dialog {
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.alertify .ajs-dialog .ajs-button {
+    border-radius: 10px;
+    background-color: #07C160;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.1);
+    color: white;
+    transition: 0.3s;
+}
+
+.alertify .ajs-dialog .ajs-button:hover {
+    opacity: 0.9;
+    box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.3);
+}

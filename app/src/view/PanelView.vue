@@ -32,6 +32,7 @@
 </style>
 
 <script setup lang="ts">
+import { engine } from '~/engine/engine';
 import router from '~/extensions/router';
 
 const menuList = [
@@ -40,6 +41,13 @@ const menuList = [
         icon: 'mdi-chart-bar',
         action: () => {
             router.push('/overview');
+        }
+    },
+    {
+        title: engine.isLoggedIn() ? '切换账号/登出' : '登录/注册',
+        icon: 'mdi-account',
+        action: () => {
+            router.push('/login');
         }
     }
     // {

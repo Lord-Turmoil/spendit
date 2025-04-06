@@ -107,13 +107,15 @@ export function getDummyDbTable(timestamp?: string): DbTable {
 export interface UserProfile {
     id: string;
     name: string;
-    title: string;
+    badge: string;
+    onlineId: number;
 }
 
 export const DummyUserProfile: UserProfile = {
     id: '',
-    name: 'mascota',
-    title: 'Internal User'
+    name: '未登录',
+    badge: '本地用户',
+    onlineId: 0
 };
 
 export interface UserProfileMeta {
@@ -133,7 +135,7 @@ export interface SystemProfile {
 
 export const CurrentSystemProfile: SystemProfile = {
     product: 'Spendit',
-    author: "Tony's Studio",
+    author: 'Tony\'s Studio',
     version: '0.1.3',
     code: 'Genesis'
 };

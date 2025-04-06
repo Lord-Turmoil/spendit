@@ -10,7 +10,7 @@
             <div class="ProfileCard__user">
                 <h2 class="text-h5">{{ userProfile.name }}</h2>
                 <!-- TODO: make it a chip badge -->
-                <span>{{ userProfile.title }}</span>
+                <span>{{ userProfile.badge }}</span>
             </div>
             <v-divider class="ProfileCard__divider"></v-divider>
             <div class="ProfileCard__system text-caption">

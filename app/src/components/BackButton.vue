@@ -20,6 +20,11 @@
 import router from '~/extensions/router';
 
 const onClickBack = () => {
-    router.back();
+    // check if there is a previous route
+    if (window.history.state.back === null) {
+        router.push('/home');
+    } else {
+        router.back();
+    }
 };
 </script>

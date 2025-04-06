@@ -15,5 +15,8 @@
 import router from '~/extensions/router';
 import HomeLayout from '~/layout/HomeLayout.vue';
 
-router.replace({ path: '/home' });
+const route = router.currentRoute.value;
+if (!route.path.endsWith('/home')) {
+    router.replace({ path: '/home' });
+}
 </script>

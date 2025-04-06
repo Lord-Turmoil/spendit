@@ -54,12 +54,16 @@ export class SpendEngine {
         }
     }
 
-    updateUserProfile(userProfile: UserProfile) {
-        this.profile.updateUserProfile(userProfile);
+    async updateUserProfile(userProfile: UserProfile): Promise<void> {
+        await this.profile.updateUserProfile(userProfile);
     }
 
     getSystemProfile() {
         return this.profile.getSystemProfile();
+    }
+
+    isLoggedIn(): boolean {
+        return this.profile.getUserProfile().onlineId !== 0;
     }
 
     // ========================================================================
