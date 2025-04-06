@@ -30,10 +30,10 @@ public class TagSyncService extends BaseService {
             String json = mappers.toJson(tags);
             Medias.save(getTagFilePath(id), json);
         } catch (JsonProcessingException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new BadRequestException("JSON 解析失败");
         } catch (IOException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new InternalServerErrorException("文件保存失败");
         }
     }
@@ -43,10 +43,10 @@ public class TagSyncService extends BaseService {
             String json = Medias.read(getTagFilePath(id));
             return mappers.fromJson(json, TagJson.class);
         } catch (JsonParseException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new BadRequestException("JSON 解析失败");
         } catch (IOException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new InternalServerErrorException("文件读取失败");
         }
     }
@@ -61,10 +61,10 @@ public class TagSyncService extends BaseService {
             Medias.save(getTagFilePath(id), newJson);
             return existingTags;
         } catch (JsonParseException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new BadRequestException("JSON 解析失败");
         } catch (IOException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new InternalServerErrorException("文件 I/O 失败");
         }
     }

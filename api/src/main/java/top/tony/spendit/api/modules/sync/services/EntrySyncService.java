@@ -44,10 +44,10 @@ public class EntrySyncService extends BaseService {
             }
             saveMeta(id, meta);
         } catch (JsonProcessingException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new InternalServerErrorException("JSON 解析失败");
         } catch (IOException e) {
-            log.error(e.getMessage());
+            log.error(e.getMessage(), e);
             throw new InternalServerErrorException("文件保存失败");
         }
     }
@@ -61,8 +61,10 @@ public class EntrySyncService extends BaseService {
             }
             return entries;
         } catch (JsonProcessingException e) {
+            log.error(e.getMessage(), e);
             throw new InternalServerErrorException("JSON 解析失败");
         } catch (IOException e) {
+            log.error(e.getMessage(), e);
             throw new InternalServerErrorException("文件读取失败");
         }
     }
@@ -88,8 +90,10 @@ public class EntrySyncService extends BaseService {
             }
             return mergeHint;
         } catch (JsonProcessingException e) {
+            log.error(e.getMessage(), e);
             throw new InternalServerErrorException("JSON 解析失败");
         } catch (IOException e) {
+            log.error(e.getMessage(), e);
             throw new InternalServerErrorException("文件读取失败");
         }
     }
@@ -106,6 +110,7 @@ public class EntrySyncService extends BaseService {
         try {
             return mergeImpl(id, hint, map);
         } catch (IOException e) {
+            log.error(e.getMessage(), e);
             throw new InternalServerErrorException("无云端数据，请先推送数据");
         }
     }
