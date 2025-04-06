@@ -82,7 +82,7 @@ import { VForm } from 'vuetify/components';
 import { engine } from '~/engine/engine';
 import alertify from '~/extensions/alertify';
 import router from '~/extensions/router';
-import { api, ApiResponse } from '~/utils/api';
+import { api, ApiResponse } from '~/extensions/api';
 import { delay, LONG_STALL, NORMAL_STALL, stall } from '~/utils/stall';
 
 const isRegister = defineModel<boolean>();

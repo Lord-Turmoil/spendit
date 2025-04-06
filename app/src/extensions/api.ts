@@ -18,7 +18,7 @@ class Api {
         if (!Object.hasOwn(err, 'response')) {
             return {
                 status: 101,
-                message: 'Connection error, try again later',
+                message: '网络异常，请稍后再试',
                 data: {
                     name: err.name,
                     message: err.message
@@ -57,7 +57,7 @@ class Api {
             });
     }
 
-    async get(url: string, params: object) {
+    async get(url: string, params: object = {}) {
         return await this._api
             .get(url, { params: params })
             .then((res) => {

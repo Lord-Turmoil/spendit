@@ -4,6 +4,8 @@
  * Provide tag support.
  */
 import { CategoryList, TagList } from '~/engine/models.js';
+import alertify from '~/extensions/alertify';
+import { api, ApiResponse } from '~/extensions/api';
 import { getNative, Native } from '~/utils/native.js';
 
 interface TagData {
@@ -43,13 +45,13 @@ export class TagsModule {
     }
 
     getFirstCategories(): string[] {
-        return this.data.categories.map((category) => category[0]);
+        return this.data.categories.map((category) => category.primary);
     }
 
     getSecondCategories(first: string): string[] {
         for (const category of this.data.categories) {
-            if (category[0] === first) {
-                return category[1];
+            if (category.primary === first) {
+                return category.secondaries;
             }
         }
         return [];
@@ -154,5 +156,42 @@ export class TagsModule {
     async saveTags(): Promise<void> {
         this.data.updated = new Date().toISOString();
         await this.native.saveFile(this.path, JSON.stringify(this.data));
+    }
+
+    // ========================================================================
+    // Sync
+    // ========================================================================
+
+    async push(): Promise<void> {
+        await api.post('/sync/tags/push', { tags: this.data })
+            .then((response: ApiResponse) => {
+                if (response.status !== 200) {
+                    throw new Error(response.message);
+                }
+            });
+    }
+
+    async pull(): Promise<void> {
+        await api.get('/sync/tags/pull')
+            .then((response: ApiResponse) => {
+                if (response.status === 200) {
+                    this.data = response.data;
+                    this.saveTags();
+                } else {
+                    throw new Error(response.message);
+                }
+            });
+    }
+
+    async merge(): Promise<void> {
+        await api.post('/sync/tags/merge', { tags: this.data })
+            .then((response: ApiResponse) => {
+                if (response.status === 200) {
+                    this.data = response.data;
+                    this.saveTags();
+                } else {
+                    throw new Error(response.message);
+                }
+            });
     }
 }

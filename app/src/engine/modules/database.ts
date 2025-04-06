@@ -12,6 +12,7 @@ import {
     getDummyDbTable,
     getDummyEntry
 } from '~/engine/models.js';
+import { api, ApiResponse } from '~/extensions/api';
 import { formatTimeISO } from '~/utils/format.js';
 import { getNative, Native } from '~/utils/native.js';
 import { EntryUpdateEvent, EntryUpdateTypes } from '~/engine/events.js';
@@ -48,6 +49,12 @@ meta.json:
 }
 */
 
+interface Hint {
+    modify: string[],
+    send: string[],
+    receive: string[]
+}
+
 export class DatabaseModule {
     private meta: DbMeta = getDummyDbMeta();
     private tables: Map<string, DbTable> = new Map();
@@ -58,6 +65,10 @@ export class DatabaseModule {
         this.userId = userId;
         // TODO: handle async result.
         this.loadMeta();
+
+        setInterval(() => {
+            this.clearCache();
+        }, 1000 * 60 * 5); // clear the cache every 5 minutes
     }
 
     /**
@@ -194,5 +205,80 @@ export class DatabaseModule {
         table.updated = formatTimeISO(new Date());
         const path = this.getFilePath(`${table.timestamp}.json`);
         await this.native.saveFile(path, JSON.stringify(table));
+    }
+
+    // ========================================================================
+    // Sync
+    // ========================================================================
+
+    clearCache(): void {
+        this.tables.clear();
+    }
+
+    async push(): Promise<void> {
+        const entries = [];
+        for (const timestamp of this.meta.entries) {
+            const table = await this.getTable(timestamp);
+            entries.push(table);
+        }
+        await api.post('/sync/entry/push', { entries: entries })
+            .then((response: ApiResponse) => {
+                if (response.status !== 200) {
+                    throw new Error(response.message);
+                }
+            });
+    }
+
+    async pull(): Promise<void> {
+        await api.get('/sync/entry/pull')
+            .then((response: ApiResponse) => {
+                if (response.status !== 200) {
+                    throw new Error(response.message);
+                }
+                const entries = response.data.entries as DbTable[];
+                this.meta.entries = [];
+                for (const entry of entries) {
+                    this.saveTable(entry);
+                }
+            });
+        this.clearCache();
+    }
+
+    async merge(): Promise<void> {
+        const hint = await this.getMergeHint();
+        const entries = [];
+        for (const timestamp of hint.modify) {
+            entries.push(await this.getTable(timestamp));
+        }
+        for (const timestamp of hint.send) {
+            entries.push(await this.getTable(timestamp));
+        }
+        await api.post('/sync/entry/merge', { hint: hint, entries: entries })
+            .then((response: ApiResponse) => {
+                if (response.status !== 200) {
+                    throw new Error(response.message);
+                }
+                const entries = response.data.entries as DbTable[];
+                for (const entry of entries) {
+                    this.saveTable(entry);
+                }
+            });
+        this.clearCache();
+    }
+
+    async getMergeHint(): Promise<Hint> {
+        const entries = [];
+        for (const timestamp of this.meta.entries) {
+            const table = await this.getTable(timestamp);
+            entries.push({ timestamp: timestamp, updated: table.updated });
+        }
+
+        return await api.post('/sync/entry/merge/hint', { meta: { entries: entries } })
+            .then((response: ApiResponse) => {
+                if (response.status !== 200) {
+                    throw new Error(response.message);
+                }
+                return response.data as Hint;
+            });
     }
 }

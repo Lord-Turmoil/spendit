@@ -86,7 +86,7 @@ import { engine } from '~/engine/engine';
 import { DummyUserProfile } from '~/engine/models';
 import alertify from '~/extensions/alertify';
 import router from '~/extensions/router';
-import { api, ApiResponse } from '~/utils/api';
+import { api, ApiResponse } from '~/extensions/api';
 import { LONG_STALL, NORMAL_STALL, stall } from '~/utils/stall';
 
 const isRegister = defineModel<boolean>();

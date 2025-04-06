@@ -58,4 +58,14 @@ const menuList = [
     //     }
     // }
 ];
+
+if (engine.isLoggedIn()) {
+    menuList.push({
+        title: '同步数据',
+        icon: 'mdi-sync',
+        action: () => {
+            router.push('/sync');
+        }
+    });
+}
 </script>

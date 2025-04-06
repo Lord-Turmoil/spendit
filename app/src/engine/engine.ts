@@ -4,6 +4,7 @@ import { DatabaseModule } from '~/engine/modules/database';
 import { EntryUpdateEvent, EntryUpdateTypes } from '~/engine/events';
 import { StatisticsModule } from '~/engine/modules/statistics';
 import { TagsModule } from '~/engine/modules/tags';
+import alertify from '~/extensions/alertify';
 
 export class SpendEngine {
     private profile: ProfileModule;
@@ -134,6 +135,25 @@ export class SpendEngine {
 
     getSelectedDates(): string[] {
         return this.selectedDates;
+    }
+
+    // ========================================================================
+    // Synchronization operations
+    // ========================================================================
+
+    async push(): Promise<void> {
+        await this.tags.push();
+        await this.database.push();
+    }
+
+    async pull(): Promise<void> {
+        await this.tags.pull();
+        await this.database.pull();
+    }
+
+    async merge(): Promise<void> {
+        await this.tags.merge();
+        await this.database.merge();
     }
 }
 
