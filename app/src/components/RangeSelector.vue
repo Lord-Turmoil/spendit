@@ -87,8 +87,9 @@
 </style>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { useDate } from 'vuetify';
+
 import { formatTimestamp, formatTimestampToSlash, parseTimestamp } from '~/utils/format';
 
 interface RangeSelectorModel {

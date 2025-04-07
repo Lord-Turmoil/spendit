@@ -1,12 +1,13 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import { engine } from '~/engine/engine';
-import alertify from '~/extensions/alertify';
-
 import HomeScreen from '~/screen/HomeScreen.vue';
 import DetailScreen from '~/screen/DetailScreen.vue';
 import LoginScreen from '~/screen/LoginScreen.vue';
 import OverviewScreen from '~/screen/OverviewScreen.vue';
 import SyncScreen from '~/screen/SyncScreen.vue';
+
+import { createRouter, createWebHistory } from 'vue-router';
+
+import { engine } from '~/engine/engine';
+import alertify from '~/extensions/alertify';
 
 const router = createRouter({
     history: createWebHistory(),

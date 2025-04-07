@@ -79,11 +79,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { VForm } from 'vuetify/components';
+
 import { engine } from '~/engine/engine';
 import alertify from '~/extensions/alertify';
 import router from '~/extensions/router';
 import { api, ApiResponse } from '~/extensions/api';
-import { delay, LONG_STALL, NORMAL_STALL, stall } from '~/utils/stall';
+import { LONG_STALL, stall } from '~/utils/stall';
 
 const isRegister = defineModel<boolean>();
 
@@ -191,7 +192,7 @@ const tryLogin = async (data: RegisterData) => {
             if (response.status === 200) {
                 onLoginSuccess(response.data as RegisterData);
             } else {
-                onLoginError(response);
+                onLoginError();
             }
         });
 };
@@ -207,7 +208,7 @@ const onLoginSuccess = async (data: RegisterData) => {
     router.back();
 };
 
-const onLoginError = (response: ApiResponse) => {
+const onLoginError = () => {
     alertify.error('自动登录失败，请手动登录');
     isRegister.value = false;
 };

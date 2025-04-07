@@ -65,9 +65,10 @@
 </style>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import PeopleChip from '~/components/PeopleChip.vue';
 import TagChip from '~/components/TagChip.vue';
+
+import { computed } from 'vue';
 
 import { Entry } from '~/engine/models';
 import { formatMoney } from '~/utils/format';

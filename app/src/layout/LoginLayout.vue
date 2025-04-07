@@ -17,8 +17,9 @@
 </style>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
+
 import { engine } from '~/engine/engine';
 import router from '~/extensions/router';
 import LoginView from '~/view/LoginView.vue';

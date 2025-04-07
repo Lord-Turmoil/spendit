@@ -1,4 +1,3 @@
-<!-- Top-level layout -->
 <template>
     <div class="HomeLayout">
         <DayLayout v-show="activeTab === 0" />

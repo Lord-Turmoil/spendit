@@ -1,18 +1,10 @@
-import { createApp, resolveTransitionHooks } from 'vue';
-import { zhHans } from 'vuetify/locale';
-import { engine } from '~/engine/engine';
-
-import App from './App.vue';
-
 // Vuetify
-import '@mdi/font/css/materialdesignicons.css';
-import 'vuetify/styles';
 import { createVuetify } from 'vuetify';
+import 'vuetify/styles';
+import '@mdi/font/css/materialdesignicons.css';
+import { zhHans } from 'vuetify/locale';
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
-
-// custom components
-import router from '~/extensions/router';
 
 const vuetify = createVuetify({
     components,
@@ -22,6 +14,18 @@ const vuetify = createVuetify({
         messages: { zhHans }
     }
 });
+
+// Vue
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from '~/extensions/router';
+
+function mountApp() {
+    createApp(App).use(vuetify).use(router).mount('#app');
+}
+
+// Startup
+import { engine } from '~/engine/engine';
 
 function showErrorPage(error: Error) {
     const app = document.getElementById('app');
@@ -47,21 +51,16 @@ function hideSplash() {
 async function startup() {
     // ensure engine is prepared before mounting the app
     await engine.init();
-    createApp(App).use(vuetify).use(router).mount('#app');
+    mountApp();
 }
 
-async function launch() {
-    await startup()
+window.onload = function () {
+    startup()
         .catch((err) => {
             showErrorPage(err);
         })
         .finally(() => {
             hideSplash();
+            window.onload = null;
         });
-}
-
-window.onload = function () {
-    launch().then(() => {
-        window.onload = null;
-    });
 };

@@ -12,8 +12,9 @@
 </style>
 
 <script setup lang="ts">
-import router from '~/extensions/router';
 import HomeLayout from '~/layout/HomeLayout.vue';
+
+import router from '~/extensions/router';
 
 const route = router.currentRoute.value;
 if (!route.path.endsWith('/home')) {

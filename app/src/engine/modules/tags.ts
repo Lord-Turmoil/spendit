@@ -4,7 +4,6 @@
  * Provide tag support.
  */
 import { CategoryList, TagList } from '~/engine/models.js';
-import alertify from '~/extensions/alertify';
 import { api, ApiResponse } from '~/extensions/api';
 import { getNative, Native } from '~/utils/native.js';
 

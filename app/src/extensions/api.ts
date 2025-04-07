@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
+
 import router from '~/extensions/router';
 
 // disable cache
