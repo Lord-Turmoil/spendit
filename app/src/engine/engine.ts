@@ -4,7 +4,6 @@ import { DatabaseModule } from '~/engine/modules/database';
 import { EntryUpdateEvent, EntryUpdateTypes } from '~/engine/events';
 import { StatisticsModule } from '~/engine/modules/statistics';
 import { TagsModule } from '~/engine/modules/tags';
-import { delay } from '~/utils/stall';
 
 export class SpendEngine {
     private readonly statistics: StatisticsModule;

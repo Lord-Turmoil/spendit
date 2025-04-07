@@ -86,10 +86,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useDate } from 'vuetify';
+
 import { engine } from '~/engine/engine';
 import alertify from '~/extensions/alertify';
 import { getNative } from '~/utils/native';
-import { delay, LONG_STALL, stall } from '~/utils/stall';
+import { LONG_STALL, stall } from '~/utils/stall';
 
 const native = getNative();
 

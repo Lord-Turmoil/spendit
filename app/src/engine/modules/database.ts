@@ -9,8 +9,7 @@ import {
     DbTable,
     Entry,
     getDummyDbMeta,
-    getDummyDbTable,
-    getDummyEntry
+    getDummyDbTable
 } from '~/engine/models.js';
 import { api, ApiResponse } from '~/extensions/api';
 import { formatTimeISO } from '~/utils/format.js';

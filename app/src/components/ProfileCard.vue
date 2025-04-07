@@ -55,10 +55,9 @@
 </style>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import { engine } from '~/engine/engine';
-import { DummyUserProfile } from '~/engine/models';
 
 // User information.
 const userProfile = ref(engine.getUserProfile());

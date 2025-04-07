@@ -47,7 +47,7 @@
                     :loading="isLoading"
                     :disabled="isDisabled"
                     @click="onClickLogout">
-                    登出
+                    退出登录（将无法与云端数据同步）
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -82,6 +82,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { VForm } from 'vuetify/components';
+
 import { engine } from '~/engine/engine';
 import { DummyUserProfile } from '~/engine/models';
 import alertify from '~/extensions/alertify';

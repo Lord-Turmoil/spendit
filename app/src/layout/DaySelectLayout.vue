@@ -29,12 +29,11 @@
 
 <script setup lang="ts">
 import RangeSelector from '~/components/RangeSelector.vue';
-import router from '~/extensions/router';
-import { getNative } from '~/utils/native';
 import OverviewView from '~/view/OverviewView.vue';
 
 import { ref, watch } from 'vue';
 
+import { getNative } from '~/utils/native';
 import { formatTimestamp } from '~/utils/format';
 
 const currentTimestamp = formatTimestamp(new Date());
