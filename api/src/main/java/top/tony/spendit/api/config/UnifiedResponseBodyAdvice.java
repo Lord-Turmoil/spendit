@@ -40,7 +40,7 @@ public class UnifiedResponseBodyAdvice implements ResponseBodyAdvice<Object> {
         }
 
         if (status != HttpStatus.OK.value()) {
-             response.setStatusCode(HttpStatus.valueOf(status));
+            response.setStatusCode(HttpStatus.valueOf(status));
             logRequest(request);
         }
 
