@@ -4,7 +4,7 @@
         variant="flat"
         color="purple-darken-1"
         link
-        href="https://spendit.tonys-studio.top/release/"
+        href="https://lord-turmoil.github.io/spendit/"
         target="_blank">
         <v-container>
             <div class="ProfileCard__user">
@@ -61,7 +61,7 @@ import { engine } from '~/engine/engine';
 import { DummyUserProfile } from '~/engine/models';
 
 // User information.
-const userProfile = ref(DummyUserProfile);
+const userProfile = ref(engine.getUserProfile());
 
 // System information.
 const systemProfile = ref(engine.getSystemProfile());
@@ -76,12 +76,5 @@ const displayCopyright = computed(() => {
         return `Copyright © 2025 ${systemProfile.value.author}`;
     }
     return `Copyright © 2025 - ${currentYear} ${systemProfile.value.author}`;
-});
-
-onMounted(() => {
-    // Fetch user profile from the engine.
-    engine.getUserProfile().then((profile) => {
-        userProfile.value = profile;
-    });
 });
 </script>
