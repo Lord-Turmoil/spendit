@@ -21,14 +21,7 @@
 #
 
 # Build first
-Write-Host "Building project" -ForegroundColor Yellow
-if (Test-Path dist) {
-    Remove-Item -Recurse -Force dist
-}
-New-Item -ItemType Directory -Force -Path dist
-Copy-Item index.html dist
-Copy-Item logo.png dist
-Write-Host "Build completed" -ForegroundColor Green
+./build.ps1
 
 # Read first and second line from .env file and raise error if not found
 $envFile = Get-Content .env
