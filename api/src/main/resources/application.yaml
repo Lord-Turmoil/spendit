@@ -21,8 +21,8 @@ springdoc:
     enabled: false
 cors:
   allowed-origins:
-    - http://${DOMAIN}
-    - https://${DOMAIN}
+    - http://${APP_DOMAIN}
+    - https://${APP_DOMAIN}
     - http://localhost:5173
   allowed-methods:
     - GET
@@ -30,14 +30,13 @@ cors:
     - PUT
     - DELETE
     - OPTIONS
-  allowed-headers: Authorization
   allow-credentials: true
 jwt:
   secret: ${JWT_SECRET}
   jwt-expiration: 86400  # 24 hours
   refresh-expiration: 604800  # 7 days
 cookies:
-  domain: ${DOMAIN}
+  domain: ${COOKIES_DOMAIN}
   http-only: true
   secure: false
 bucket:

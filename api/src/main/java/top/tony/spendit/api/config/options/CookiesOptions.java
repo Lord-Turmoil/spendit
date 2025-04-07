@@ -12,12 +12,8 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "cookies")
 @Data
 public class CookiesOptions {
-    public static final String JWT_COOKIE = "jwt";
-    public static final String JWT_REFRESH_COOKIE = "refresh";
-
-    public static final String COURSE_COOKIE = "course";
-
-    public static final String LANGUAGE_COOKIE = "language";
+    public static final String JWT_COOKIE = "spendit-jwt";
+    public static final String JWT_REFRESH_COOKIE = "spendit-refresh";
 
     public static final String PATH = "/";
 

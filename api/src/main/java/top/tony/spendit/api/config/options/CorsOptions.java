@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 public class CorsOptions {
     private String[] allowedOrigins;
     private String[] allowedMethods;
-    private String[] allowedHeaders;
     private boolean allowCredentials;
 }
 

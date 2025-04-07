@@ -12,9 +12,10 @@ You need to set up a MySQL database and configure the following environment vari
 - MYSQL_PORT
 - MYSQL_DATABASE (optional)
 
-Then, specify the domain of the front end app.
+Then, specify the domain of the front end app and the domain for Cookies.
 
-- DOMAIN
+- APP_DOMAIN
+- COOKIES_DOMAIN
 
 Finally, your 32 character JWT secret key.
 
