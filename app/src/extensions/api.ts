@@ -1,6 +1,11 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import router from '~/extensions/router';
 
+// disable cache
+axios.defaults.headers['Cache-Control'] = 'no-cache';
+axios.defaults.headers['Pragma'] = 'no-cache';
+axios.defaults.headers['Expires'] = '0';
+
 class Api {
     private readonly _api: AxiosInstance;
 

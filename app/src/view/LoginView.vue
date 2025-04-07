@@ -161,7 +161,7 @@ const onLoginSuccess = async (data: LoginData) => {
     alertify.success('欢迎回来！');
 
     // Update user data.
-    const profile = engine.getUserProfile();
+    const profile = await engine.getUserProfile();
     profile.name = data.username;
     profile.badge = data.badge;
     profile.onlineId = data.id;
@@ -196,7 +196,7 @@ const onLogoutSuccess = async () => {
     alertify.success('下次再见！');
 
     // Update user data.
-    const profile = engine.getUserProfile();
+    const profile = await engine.getUserProfile();
     await stall(
         engine.updateUserProfile({ ...DummyUserProfile, id: profile.id }),
         LONG_STALL
