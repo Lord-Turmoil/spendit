@@ -17,7 +17,7 @@
 </style>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { engine } from '~/engine/engine';
 import router from '~/extensions/router';
@@ -29,11 +29,6 @@ watch(isRegister, () => {
     router.replace({ query: { register: isRegister.value.toString() } });
 });
 
-const title = computed(() => {
-    return engine.isLoggedIn() ? '切换账号' : '登录';
-});
-
-const canLogout = computed(() => {
-    return engine.isLoggedIn();
-});
+const title = computed(() => (engine.isLoggedIn() ? '切换账号' : '登录'));
+const canLogout = computed(() => engine.isLoggedIn());
 </script>

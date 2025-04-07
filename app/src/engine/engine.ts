@@ -7,11 +7,11 @@ import { TagsModule } from '~/engine/modules/tags';
 import { delay } from '~/utils/stall';
 
 export class SpendEngine {
+    private readonly statistics: StatisticsModule;
+
     private profile: ProfileModule;
     private database: DatabaseModule;
     private tags: TagsModule;
-    private readonly statistics: StatisticsModule;
-    private ready: boolean = false;
 
     /**
      * The focused day in the home screen, in the format of 'YYYY-MM-DD'.
@@ -24,14 +24,16 @@ export class SpendEngine {
     private selectedDates: string[] = [];
 
     constructor() {
-        this.profile = new ProfileModule();
         this.statistics = new StatisticsModule();
+    }
 
-        this.profile.init().then(() => {
+    async init(): Promise<void> {
+        this.profile = new ProfileModule();
+
+        await this.profile.init().then(() => {
             this.database = new DatabaseModule(this.profile.getUserProfile().id);
             this.tags = new TagsModule(this.profile.getUserProfile().id);
             console.log('Powered by SpendEngine');
-            this.ready = true;
         });
     }
 
@@ -42,27 +44,8 @@ export class SpendEngine {
     // not expose the profile module directly.
     // ========================================================================
 
-    getAllUserProfiles(): UserProfile[] {
-        return this.profile.getUserProfiles();
-    }
-
-    async getUserProfile(): Promise<UserProfile> {
-        let retry = 0;
-        while (!this.ready) {
-            await delay(500);
-            retry++;
-            if (retry > 10) {
-                throw Error('用户配置文件加载失败，请重启应用');
-            }
-        }
+    getUserProfile(): UserProfile {
         return this.profile.getUserProfile();
-    }
-
-    selectUserProfile(userId: string) {
-        if (this.profile.selectUserProfile(userId)) {
-            this.database = new DatabaseModule(this.profile.getUserProfile().id);
-            this.tags = new TagsModule(this.profile.getUserProfile().id);
-        }
     }
 
     async updateUserProfile(userProfile: UserProfile): Promise<void> {
@@ -74,7 +57,7 @@ export class SpendEngine {
     }
 
     isLoggedIn(): boolean {
-        return this.profile.getUserProfile().onlineId !== 0;
+        return this.getUserProfile().onlineId !== 0;
     }
 
     // ========================================================================
@@ -86,15 +69,7 @@ export class SpendEngine {
     }
 
     async getTable(timestamp: string): Promise<DbTable> {
-        let retry = 0;
-        while (this.database === undefined) {
-            await delay(500);
-            retry++;
-            if (retry > 10) {
-                throw Error('数据库加载失败，请重启应用');
-            }
-        }
-        return await this.database.getTable(timestamp);
+        return this.getDatabase().getTable(timestamp);
     }
 
     setFocusDate(date: string): void {

@@ -32,10 +32,11 @@
 </style>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import { engine } from '~/engine/engine';
 import router from '~/extensions/router';
 
-const menuList = [
+const OFFLINE_LIST = [
     {
         title: '消费统计',
         icon: 'mdi-chart-bar',
@@ -44,28 +45,37 @@ const menuList = [
         }
     },
     {
-        title: engine.isLoggedIn() ? '切换账号/登出' : '登录/注册',
+        title: '登录/注册',
         icon: 'mdi-account',
         action: () => {
             router.push('/login');
         }
     }
-    // {
-    //     title: 'Settings',
-    //     icon: 'mdi-cog',
-    //     action: () => {
-    //         console.log('Settings clicked');
-    //     }
-    // }
 ];
 
-if (engine.isLoggedIn()) {
-    menuList.push({
-        title: '同步数据',
-        icon: 'mdi-sync',
+const ONLINE_LIST = [
+    {
+        title: '消费统计',
+        icon: 'mdi-chart-bar',
+        action: () => {
+            router.push('/overview');
+        }
+    },
+    {
+        title: '切换账号/登出',
+        icon: 'mdi-account',
+        action: () => {
+            router.push('/login');
+        }
+    },
+    {
+        title: '数据同步',
+        icon: 'mdi-cloud-upload',
         action: () => {
             router.push('/sync');
         }
-    });
-}
+    }
+];
+
+const menuList = ref(engine.isLoggedIn() ? ONLINE_LIST : OFFLINE_LIST);
 </script>
