@@ -198,7 +198,7 @@ const tryLogin = async (data: RegisterData) => {
 
 const onLoginSuccess = async (data: RegisterData) => {
     // Update user data.
-    const profile = engine.getUserProfile();
+    const profile = await engine.getUserProfile();
     profile.name = data.username;
     profile.badge = data.badge;
     profile.onlineId = data.id;

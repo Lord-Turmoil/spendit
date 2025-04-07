@@ -11,6 +11,7 @@ export class SpendEngine {
     private database: DatabaseModule;
     private tags: TagsModule;
     private readonly statistics: StatisticsModule;
+    private ready: boolean = false;
 
     /**
      * The focused day in the home screen, in the format of 'YYYY-MM-DD'.
@@ -30,6 +31,7 @@ export class SpendEngine {
             this.database = new DatabaseModule(this.profile.getUserProfile().id);
             this.tags = new TagsModule(this.profile.getUserProfile().id);
             console.log('Powered by SpendEngine');
+            this.ready = true;
         });
     }
 
@@ -44,7 +46,15 @@ export class SpendEngine {
         return this.profile.getUserProfiles();
     }
 
-    getUserProfile(): UserProfile {
+    async getUserProfile(): Promise<UserProfile> {
+        let retry = 0;
+        while (!this.ready) {
+            await delay(500);
+            retry++;
+            if (retry > 10) {
+                throw Error('用户配置文件加载失败，请重启应用');
+            }
+        }
         return this.profile.getUserProfile();
     }
 

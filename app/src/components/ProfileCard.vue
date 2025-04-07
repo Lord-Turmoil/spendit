@@ -55,12 +55,13 @@
 </style>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 import { engine } from '~/engine/engine';
+import { DummyUserProfile } from '~/engine/models';
 
 // User information.
-const userProfile = ref(engine.getUserProfile());
+const userProfile = ref(DummyUserProfile);
 
 // System information.
 const systemProfile = ref(engine.getSystemProfile());
@@ -75,5 +76,12 @@ const displayCopyright = computed(() => {
         return `Copyright © 2025 ${systemProfile.value.author}`;
     }
     return `Copyright © 2025 - ${currentYear} ${systemProfile.value.author}`;
+});
+
+onMounted(() => {
+    // Fetch user profile from the engine.
+    engine.getUserProfile().then((profile) => {
+        userProfile.value = profile;
+    });
 });
 </script>
