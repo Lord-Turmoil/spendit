@@ -14,12 +14,15 @@ public class EntryMetaJson {
     private List<EntryMeta> entries = new ArrayList<>();
 
     public void update(EntryMeta entry) {
+        if (entries.stream().noneMatch(e -> e.getTimestamp().equals(entry.getTimestamp()))) {
+            entries.add(entry);
+            return;
+        }
+
         entries.forEach(e -> {
             if (e.getTimestamp().equals(entry.getTimestamp())) {
                 e.setUpdated(entry.getUpdated());
-                return;
             }
         });
-        entries.add(entry);
     }
 }
