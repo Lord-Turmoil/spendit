@@ -24,31 +24,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install NodeJS
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20.x"
-
-      - name: Install Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
-
-      - name: Install Dependencies
-        working-directory: ${{ github.workspace }}/app
-        run: |
-          npm install
-
       - name: Build Project
-        working-directory: ${{ github.workspace }}/app
+        working-directory: ${{ github.workspace }}/release-page
         run: |
-          npm run build
-          python scripts/post_build.py
+          ./build.ps1
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ github.workspace }}/app/dist
+          path: ${{ github.workspace }}/release-page/dist
 
   # Deploy job to GitHub Pages
   deploy:
