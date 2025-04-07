@@ -16,7 +16,7 @@ export abstract class Native {
      * @param key The key to get from local storage.
      * @returns The value of the key in local storage, or null if not found.
      */
-    public getLocalStorage(key: string): string {
+    public getLocalStorage(key: string): string | null {
         return localStorage.getItem(key);
     }
 
@@ -31,7 +31,7 @@ export abstract class Native {
         const expireDate = new Date();
         expireDate.setTime(expireDate.getTime() + hours * 60 * 60 * 1000);
         let expires = 'expires=' + expireDate.toUTCString();
-        document.cookie = name + '=' + value + ';' + expires + ';path=/';
+        document.cookie = key + '=' + value + ';' + expires + ';path=/';
     }
 
     /**
@@ -104,7 +104,7 @@ export class MobileNative extends Native {
     private async exists(dirname: string): Promise<boolean> {
         return await Filesystem.stat({
             path: dirname,
-            directory: Directory.Data
+            directory: Directory.External
         })
             .then(() => {
                 return true;
@@ -126,7 +126,7 @@ export class MobileNative extends Native {
 
         await Filesystem.mkdir({
             path: dir,
-            directory: Directory.Data,
+            directory: Directory.External,
             recursive: true
         }).catch((error) => {
             console.error('Error creating directory', error);
@@ -139,7 +139,7 @@ export class MobileNative extends Native {
         await Filesystem.writeFile({
             path: filename,
             data: content,
-            directory: Directory.Data,
+            directory: Directory.External,
             encoding: Encoding.UTF8
         }).catch((error) => {
             console.error('Error saving file', error);
@@ -149,7 +149,7 @@ export class MobileNative extends Native {
     override async loadFile(filename: string): Promise<string | null> {
         return await Filesystem.readFile({
             path: filename,
-            directory: Directory.Data,
+            directory: Directory.External,
             encoding: Encoding.UTF8
         })
             .then((result) => {
@@ -164,7 +164,7 @@ export class MobileNative extends Native {
     override async deleteFile(filename: string): Promise<void> {
         await Filesystem.deleteFile({
             path: filename,
-            directory: Directory.Data
+            directory: Directory.External
         }).catch((error) => {
             console.error('Error deleting file', error);
         });

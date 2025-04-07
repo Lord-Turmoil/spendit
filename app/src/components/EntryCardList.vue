@@ -1,27 +1,29 @@
 <template>
-    <div v-if="entries.length > 0" class="EntryCardList scrollable">
-        <div class="EntryCardList__timestamp text-body-1" v-if="showDate">
-            {{ formatTimestampToSlash(date) }}
+    <div class="EntryCardList" :key="key">
+        <div v-if="entries.length > 0" class="EntryCardList__content scrollable">
+            <div class="EntryCardList__timestamp text-body-1" v-if="showDate">
+                {{ formatTimestampToSlash(date) }}
+            </div>
+            <EntryCard
+                v-for="(item, i) in entries"
+                :key="i"
+                :entry="item"
+                @click="onEditStart(item)"></EntryCard>
+            <v-dialog class="EntryCardList__dialog" v-model="dialogOpen" persistent>
+                <EditView
+                    title="编辑消费项目"
+                    :entry="editEntry"
+                    :on-close="onEditEnd"></EditView>
+            </v-dialog>
         </div>
-        <EntryCard
-            v-for="(item, i) in entries"
-            :key="i"
-            :entry="item"
-            @click="onEditStart(item)"></EntryCard>
-        <v-dialog class="EntryCardList__dialog" v-model="dialogOpen" persistent>
-            <EditView
-                title="编辑消费项目"
-                :entry="editEntry"
-                :on-close="onEditEnd"></EditView>
-        </v-dialog>
-    </div>
-    <div v-else-if="showEmpty" class="EntryCardList__empty">
-        <EmptyCard class="centered" show-hint></EmptyCard>
+        <div v-else-if="showEmpty" class="EntryCardList__empty">
+            <EmptyCard class="centered" show-hint></EmptyCard>
+        </div>
     </div>
 </template>
 
 <style scoped>
-.EntryCardList {
+.EntryCardList__content {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -62,6 +64,7 @@ import {
     EntryUpdateTypes
 } from '~/engine/events';
 import { bus } from '~/extensions/emitter';
+import alertify from '~/extensions/alertify';
 import { formatTimestampToSlash } from '~/utils/format';
 
 interface EntryCardListProps {
@@ -73,6 +76,7 @@ interface EntryCardListProps {
 const { date, showDate = true, showEmpty = false } = defineProps<EntryCardListProps>();
 
 const entries = ref<Entry[]>([]);
+const key = ref<number>(0);
 
 // dialog control
 const dialogOpen = ref(false);
@@ -119,10 +123,13 @@ const onEditEnd = () => {
 onMounted(() => {
     bus.on(BusEventTypes.ENTRY_UPDATE, onEntryUpdateEvent);
     engine
-        .getDatabase()
         .getTable(date)
         .then((table) => {
             entries.value = [...table.entries];
+            key.value++;
+        })
+        .catch((error) => {
+            alertify.error(error.message);
         });
 });
 

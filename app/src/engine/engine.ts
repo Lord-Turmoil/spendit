@@ -1,10 +1,10 @@
-import { Entry, getDummyEntry, UserProfile } from '~/engine/models';
+import { DbTable, Entry, getDummyEntry, UserProfile } from '~/engine/models';
 import { ProfileModule } from '~/engine/modules/profile';
 import { DatabaseModule } from '~/engine/modules/database';
 import { EntryUpdateEvent, EntryUpdateTypes } from '~/engine/events';
 import { StatisticsModule } from '~/engine/modules/statistics';
 import { TagsModule } from '~/engine/modules/tags';
-import alertify from '~/extensions/alertify';
+import { delay } from '~/utils/stall';
 
 export class SpendEngine {
     private profile: ProfileModule;
@@ -73,6 +73,18 @@ export class SpendEngine {
 
     getDatabase(): DatabaseModule {
         return this.database;
+    }
+
+    async getTable(timestamp: string): Promise<DbTable> {
+        let retry = 0;
+        while (this.database === undefined) {
+            await delay(500);
+            retry++;
+            if (retry > 10) {
+                throw Error('数据库加载失败，请重启应用');
+            }
+        }
+        return await this.database.getTable(timestamp);
     }
 
     setFocusDate(date: string): void {

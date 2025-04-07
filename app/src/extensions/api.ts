@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
+import router from '~/extensions/router';
 
 class Api {
     private readonly _api: AxiosInstance;
@@ -6,7 +7,7 @@ class Api {
     constructor() {
         this._api = axios.create({
             withCredentials: true,
-            baseURL: '/api'
+            baseURL: import.meta.env.VITE_SPENDIT_API || '/api'
         });
     }
 
@@ -14,7 +15,7 @@ class Api {
         return this._api;
     }
 
-    _getDto(err: AxiosError) {
+    _getDto(err: AxiosError): ApiResponse {
         if (!Object.hasOwn(err, 'response')) {
             return {
                 status: 101,
@@ -26,22 +27,22 @@ class Api {
             };
         }
         const response = err.response;
-        const ret = { status: response.status ?? 66, message: err.message, data: null };
+        const defaultDto = {
+            status: response.status ?? 66,
+            message: '服务器异常，请稍后再试',
+            data: null
+        };
 
         // no data
         if (!response.data || response.data === '') {
-            return ret;
+            return defaultDto;
         }
 
         const data: object = err.response.data as object;
-        if (Object.hasOwn(data, 'status')) {
-            return data;
+        if (Object.hasOwn(data, 'status') && Object.hasOwn(data, 'message')) {
+            return data as ApiResponse;
         } else {
-            return {
-                status: data['status'],
-                message: data['title'],
-                data: null
-            };
+            return defaultDto;
         }
     }
 
@@ -49,11 +50,17 @@ class Api {
         return await this._api
             .post(url, body)
             .then((res) => {
+                console.log(res);
                 // 200 must be our custom data
                 return res.data;
             })
             .catch((err) => {
-                return this._getDto(err);
+                console.log(err);
+                const dto = this._getDto(err);
+                if (dto.status === 401) {
+                    router.push('/login');
+                }
+                return dto;
             });
     }
 
@@ -65,7 +72,11 @@ class Api {
                 return res.data;
             })
             .catch((err) => {
-                return this._getDto(err);
+                const dto = this._getDto(err);
+                if (dto.status === 401) {
+                    router.push('/login');
+                }
+                return dto;
             });
     }
 }

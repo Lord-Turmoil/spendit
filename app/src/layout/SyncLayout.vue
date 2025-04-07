@@ -1,5 +1,5 @@
 <template>
-    <div class="SyncLayout">
+    <div class="SyncLayout scrollable">
         <v-card variant="flat" title="推送数据" prepend-icon="mdi-cloud-upload">
             <v-card-text>
                 <p>将本地数据上传至云端，推荐用于首次备份。</p>
@@ -36,7 +36,7 @@
 
         <v-card variant="flat" title="同步数据" prepend-icon="mdi-cloud-sync">
             <v-card-text>
-                <p>合并本地与云端数据，并更新本地数据。</p>
+                <p>合并本地与云端数据，首次同步请推送数据。</p>
             </v-card-text>
             <v-card-actions>
                 <v-btn
@@ -49,6 +49,12 @@
                 </v-btn>
             </v-card-actions>
         </v-card>
+
+        <div style="text-align: center; margin-top: 16px">
+            <span class="text-grey-darken-3 text-body-2">
+                上次同步时间：{{ lastSyncTime }}
+            </span>
+        </div>
 
         <v-dialog class="SyncLayout__popup" v-model="dialogOpen" persistent>
             <v-card variant="flat" title="同步中">
@@ -78,10 +84,14 @@
 </style>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useDate } from 'vuetify';
 import { engine } from '~/engine/engine';
 import alertify from '~/extensions/alertify';
+import { getNative } from '~/utils/native';
 import { delay, LONG_STALL, stall } from '~/utils/stall';
+
+const native = getNative();
 
 // dialog control
 const dialogOpen = ref(false);
@@ -97,11 +107,30 @@ const onSyncEnd = () => {
     dialogOpen.value = false;
 };
 
+const lastSyncTime = ref('');
+const adapter = useDate();
+
+const loadSyncTime = () => {
+    const value = native.getLocalStorage('lastSyncTime');
+    if (value === null) {
+        lastSyncTime.value = '没有同步记录';
+    } else {
+        lastSyncTime.value = adapter.format(new Date(value), 'fullDateTime24h');
+    }
+};
+
+const saveSyncTime = () => {
+    const now = new Date();
+    native.setLocalStorage('lastSyncTime', now.toISOString());
+    lastSyncTime.value = adapter.format(now, 'fullDateTime24h');
+};
+
 const onClickPush = async () => {
     onSyncBegin();
     await stall(engine.push(), LONG_STALL)
         .then(() => {
             alertify.success('数据推送成功');
+            saveSyncTime();
         })
         .catch((err) => {
             alertify.error(err.message);
@@ -114,6 +143,7 @@ const onClickPull = async () => {
     await stall(engine.pull(), LONG_STALL)
         .then(() => {
             alertify.success('数据拉取成功');
+            saveSyncTime();
         })
         .catch((err) => {
             alertify.error(err.message);
@@ -126,10 +156,15 @@ const onCLickMerge = async () => {
     await stall(engine.merge(), LONG_STALL)
         .then(() => {
             alertify.success('数据同步成功');
+            saveSyncTime();
         })
         .catch((err) => {
             alertify.error(err.message);
         });
     onSyncEnd();
 };
+
+onMounted(() => {
+    loadSyncTime();
+});
 </script>
