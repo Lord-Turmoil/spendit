@@ -99,7 +99,7 @@ const entries = ref<Entry[]>([]);
 const prepareStatistics = async () => {
     let list: Entry[] = [];
     for (const date of dates) {
-        const table = await engine.getDatabase().getTable(date);
+        const table = await engine.getTable(date);
         list.push(...table.entries);
     }
     statistics.value = engine.getStatistics().sum(list);

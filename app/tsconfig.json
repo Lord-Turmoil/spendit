@@ -13,6 +13,7 @@
             "DOM.Iterable",
             "ESNext"
         ],
+        "types": ["vite/client"],
         "skipLibCheck": true,
         "esModuleInterop": false,
         "moduleResolution": "Node",

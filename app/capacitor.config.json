@@ -8,7 +8,7 @@
     }
   },
   "server": {
-    "hostname": "spend.tonys-studio.top",
+    "hostname": "spendit.tonys-studio.top",
     "androidScheme": "https"
   }
 }
