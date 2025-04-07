@@ -52,7 +52,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             response.addCookie(jwtCookie);
             response.addCookie(refreshCookie);
         } catch (JwtVerifyException e) {
-            throw new UnauthorizedException("Invalid JWT token");
+            throw new UnauthorizedException("用户凭证失效，请重新登录");
         } catch (JwtIssueException e) {
             log.error("Failed to issue new JWT: {}", e.getMessage());
             throw new InternalServerErrorException("Failed to issue new JWT");
