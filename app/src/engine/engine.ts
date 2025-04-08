@@ -32,8 +32,11 @@ export class SpendEngine {
         await this.profile.init().then(() => {
             this.database = new DatabaseModule(this.profile.getUserProfile().id);
             this.tags = new TagsModule(this.profile.getUserProfile().id);
-            console.log('Powered by SpendEngine');
         });
+        await this.database.init();
+        await this.tags.init();
+
+        console.log('Powered by SpendEngine');
     }
 
     // ========================================================================
