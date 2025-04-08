@@ -62,8 +62,6 @@ export class DatabaseModule {
 
     constructor(userId: string) {
         this.userId = userId;
-        // TODO: handle async result.
-        this.loadMeta();
 
         setInterval(
             () => {
@@ -73,13 +71,17 @@ export class DatabaseModule {
         ); // clear the cache every 5 minutes
     }
 
+    async init(): Promise<void> {
+        await this.loadMeta();
+    }
+
     /**
      * Get the table for the given timestamp (YYYY-MM-DD).
      * @param timestamp The timestamp of the table.
      */
     async getTable(timestamp: string): Promise<DbTable> {
         if (this.tables.has(timestamp)) {
-            return this.tables.get(timestamp);
+            return Promise.resolve(this.tables.get(timestamp));
         }
         return await this.loadTable(timestamp);
     }
@@ -164,7 +166,7 @@ export class DatabaseModule {
 
         this.tables.set(timestamp, table);
 
-        return table;
+        return Promise.resolve(table);
     }
 
     private getFilePath(filename: string): string {

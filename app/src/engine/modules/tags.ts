@@ -31,8 +31,10 @@ export class TagsModule {
     constructor(userId: string) {
         this.path = `${userId}/${TAGS_FILE}`;
         this.data = DummyTagData;
-        // TODO: handle async result.
-        this.loadTags();
+    }
+
+    async init(): Promise<void> {
+        await this.loadTags();
     }
 
     // ========================================================================

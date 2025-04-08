@@ -55,7 +55,7 @@ import EditView from '~/view/EditView.vue';
 
 import { onMounted, onUnmounted, ref } from 'vue';
 
-import { Entry } from '~/engine/models';
+import { DbTable, Entry } from '~/engine/models';
 import { engine } from '~/engine/engine';
 import {
     BusEventTypes,
@@ -124,7 +124,7 @@ onMounted(() => {
     bus.on(BusEventTypes.ENTRY_UPDATE, onEntryUpdateEvent);
     engine
         .getTable(date)
-        .then((table) => {
+        .then((table: DbTable) => {
             entries.value = [...table.entries];
             key.value++;
         })
