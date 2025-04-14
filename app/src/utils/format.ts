@@ -51,10 +51,31 @@ export function formatMoney(money: number): string {
     return `${raw.slice(0, -2)}.${raw.slice(-2)}`;
 }
 
-export function parseMoney(money: string): number {
+const VALUE_REGEX = /^\d+(\.\d{0,2})?$/;
+const EXPR_REGEX = /^\s*\d+(\.\d{0,2})?\s*([+\-*/]\s*\d+(\.\d{0,2})?\s*)*$/;
+
+export function isValidMoney(money: string): boolean {
+    return money !== '' && (
+        VALUE_REGEX.test(money) ||
+        EXPR_REGEX.test(money)
+    );
+}
+
+function parseFixedMoney(money: string): number {
     const [integer, decimal] = money.split('.');
     if (decimal === undefined) {
         return parseInt(integer, 10) * 100;
     }
     return parseInt(integer, 10) * 100 + parseInt(decimal.padEnd(2, '0'), 10);
+}
+
+export function parseMoney(money: string): number {
+    if (VALUE_REGEX.test(money)) {
+        return parseFixedMoney(money);
+    } else if (EXPR_REGEX.test(money)) {
+        // evaluate the expression
+        return parseFixedMoney((eval(money) as number).toFixed(2).toString());
+    } else {
+        throw new Error('金额格式不正确');
+    }
 }

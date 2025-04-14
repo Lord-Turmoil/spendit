@@ -183,8 +183,9 @@ import { VForm } from 'vuetify/components';
 import { Entry } from '~/engine/models';
 import { BusEventTypes, EntryUpdateEvent, EntryUpdateTypes } from '~/engine/events';
 import { engine } from '~/engine/engine';
+import alertify from '~/extensions/alertify';
 import { bus } from '~/extensions/emitter';
-import { formatMoney, formatTimestampToSlash, parseMoney } from '~/utils/format';
+import { formatMoney, formatTimestampToSlash, isValidMoney, parseMoney } from '~/utils/format';
 import { stall } from '~/utils/stall';
 
 // ============================================================================
@@ -214,13 +215,7 @@ const rules = {
     ],
     money: [
         (v: string) => !!v || '消费金额不能为空',
-        (v: string) => {
-            // money must be in dd.dd format
-            if (v && v.length > 0 && /^\d+(\.\d{0,2})?$/.test(v)) {
-                return true;
-            }
-            return '消费金额格式不正确';
-        }
+        (v: string) => isValidMoney(v) || '消费金额为数字或表达式'
     ]
 };
 
@@ -331,6 +326,9 @@ const onClickConfirm = (isDelete: boolean) => {
                 invokeEmitEvent(event);
                 invokeOnClose();
             }
+        })
+        .catch((err: Error) => {
+            alertify.error(err.message);
         })
         .finally(() => {
             isLoading.value = false;
