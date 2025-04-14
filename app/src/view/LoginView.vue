@@ -47,7 +47,7 @@
                     :loading="isLoading"
                     :disabled="isDisabled"
                     @click="onClickLogout">
-                    退出登录（将无法与云端数据同步）
+                    退出登录
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -162,7 +162,7 @@ const onLoginSuccess = async (data: LoginData) => {
     alertify.success('欢迎回来！');
 
     // Update user data.
-    const profile = await engine.getUserProfile();
+    const profile = engine.getUserProfile();
     profile.name = data.username;
     profile.badge = data.badge;
     profile.onlineId = data.id;
@@ -197,7 +197,7 @@ const onLogoutSuccess = async () => {
     alertify.success('下次再见！');
 
     // Update user data.
-    const profile = await engine.getUserProfile();
+    const profile = engine.getUserProfile();
     await stall(
         engine.updateUserProfile({ ...DummyUserProfile, id: profile.id }),
         LONG_STALL

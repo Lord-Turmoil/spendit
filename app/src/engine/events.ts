@@ -17,11 +17,7 @@ export interface EntryUpdateEvent {
     entry: Entry;
 }
 
-export type EntryEventHandler = (event: EntryUpdateEvent) => void;
-export const DefaultEntryEventHandler = (event: EntryUpdateEvent) => {};
-
 export type EntryCallback = (entry: Entry) => void;
-export const DefaultEntryCallback = (entry: Entry) => {};
 
 export enum BusEventTypes {
     ENTRY_UPDATE = 'ENTRY_UPDATE'

@@ -117,19 +117,16 @@
                 </v-btn>
             </v-card-actions>
         </v-card>
-        <v-dialog v-model="confirmDialog">
-            <v-card class="EditView__confirm" prepend-icon="mdi-alert" title="确认删除">
-                <v-card-text>删除后将无法恢复，确定要删除这条记录吗？</v-card-text>
-                <v-card-actions>
-                    <v-btn color="error" size="large" @click="onConfirmDelete(true)">
-                        删除
-                    </v-btn>
-                    <v-btn color="primary" size="large" @click="onConfirmDelete(false)">
-                        取消
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+        <ConfirmDialog
+            v-model="confirmDialog"
+            title="确认删除"
+            message="删除后将无法恢复，确定要删除这条记录吗？"
+            confirm-text="删除"
+            confirm-color="error"
+            cancelText="取消"
+            cancel-color="primary"
+            @confirm="() => onConfirmDelete(true)"
+            @cancel="() => onConfirmDelete(false)"></ConfirmDialog>
     </div>
 </template>
 
@@ -173,16 +170,12 @@
 .EditView__form .date-and-money .money .input input {
     text-align: right;
 }
-
-.EditView__confirm {
-    width: 90%;
-    margin: 0 auto;
-}
 </style>
 
 <script setup lang="ts">
 import PeopleChip from '~/components/PeopleChip.vue';
 import TagChip from '~/components/TagChip.vue';
+import ConfirmDialog from '~/components/ConfirmDialog.vue';
 
 import { nextTick, ref, watch } from 'vue';
 import { VForm } from 'vuetify/components';
@@ -296,7 +289,7 @@ const invokeEmitEvent = (event: EntryUpdateEvent) => {
 
 const confirmDialog = ref(false);
 
-const showConfirmDialog = () => {
+const openConfirmDialog = () => {
     confirmDialog.value = true;
 };
 
@@ -322,7 +315,7 @@ const onClickCancel = () => {
 
 const onClickConfirm = (isDelete: boolean) => {
     if (isDelete) {
-        showConfirmDialog();
+        openConfirmDialog();
         return;
     }
 

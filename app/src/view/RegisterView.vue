@@ -174,15 +174,15 @@ const onClickRegister = async () => {
 const onRegisterSuccess = async (data: RegisterData) => {
     isDisabled.value = true;
 
-    alertify.success('欢迎来到 Spendit！');
-    await tryLogin(data);
+    alertify.success(`欢迎 ${data.username}！`);
+    await tryLogin();
 };
 
 const onRegisterError = (response: ApiResponse) => {
     alertify.error(response.message);
 };
 
-const tryLogin = async (data: RegisterData) => {
+const tryLogin = async () => {
     return await api
         .post('/auth/login', {
             username: username.value,

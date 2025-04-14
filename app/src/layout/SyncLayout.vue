@@ -69,6 +69,15 @@
                 </v-card-text>
             </v-card>
         </v-dialog>
+
+        <ConfirmDialog
+            v-model="confirmDialog"
+            :title="confirmDialogProps.title"
+            :message="confirmDialogProps.message"
+            :confirmText="confirmDialogProps.confirmText"
+            :cancelText="confirmDialogProps.cancelText"
+            :on-confirm="confirmDialogProps.onConfirm"
+            :on-cancel="confirmDialogProps.onCancel"></ConfirmDialog>
     </div>
 </template>
 
@@ -84,6 +93,8 @@
 </style>
 
 <script setup lang="ts">
+import ConfirmDialog, { ConfirmDialogProps } from '~/components/ConfirmDialog.vue';
+
 import { onMounted, ref } from 'vue';
 import { useDate } from 'vuetify';
 
@@ -94,7 +105,57 @@ import { LONG_STALL, stall } from '~/utils/stall';
 
 const native = getNative();
 
-// dialog control
+// sync time
+const loadSyncTime = () => {
+    const value = native.getLocalStorage('lastSyncTime');
+    if (value === null) {
+        lastSyncTime.value = '没有同步记录';
+    } else {
+        lastSyncTime.value = adapter.format(new Date(value), 'fullDateTime24h');
+    }
+};
+
+const saveSyncTime = () => {
+    const now = new Date();
+    native.setLocalStorage('lastSyncTime', now.toISOString());
+    lastSyncTime.value = adapter.format(now, 'fullDateTime24h');
+};
+
+onMounted(() => {
+    loadSyncTime();
+});
+
+// confirm dialog control
+const PUSH_CONFIRM = {
+    title: '确认推送数据',
+    message: '推送数据将会覆盖云端数据，未拉取到本地的数据将会丢失，是否继续？',
+    confirmText: '继续',
+    cancelText: '取消',
+    onConfirm: () => onConfirmPush(true),
+    onCancel: () => onConfirmPush(false)
+};
+
+const PULL_CONFIRM = {
+    title: '确认拉取数据',
+    message: '拉取数据将会覆盖本地数据，本地未推送的数据将会丢失，是否继续？',
+    confirmText: '继续',
+    cancelText: '取消',
+    onConfirm: () => onConfirmPull(true),
+    onCancel: () => onConfirmPull(false)
+};
+
+const confirmDialog = ref(false);
+const confirmDialogProps = ref<ConfirmDialogProps>(PUSH_CONFIRM);
+
+const openConfirmDialog = () => {
+    confirmDialog.value = true;
+};
+
+const closeConfirmDialog = () => {
+    confirmDialog.value = false;
+};
+
+// sync dialog control
 const dialogOpen = ref(false);
 const isLoading = ref(false);
 
@@ -111,22 +172,19 @@ const onSyncEnd = () => {
 const lastSyncTime = ref('');
 const adapter = useDate();
 
-const loadSyncTime = () => {
-    const value = native.getLocalStorage('lastSyncTime');
-    if (value === null) {
-        lastSyncTime.value = '没有同步记录';
-    } else {
-        lastSyncTime.value = adapter.format(new Date(value), 'fullDateTime24h');
+const onClickPush = async () => {
+    confirmDialogProps.value = PUSH_CONFIRM;
+    openConfirmDialog();
+};
+
+const onConfirmPush = (confirm: boolean) => {
+    closeConfirmDialog();
+    if (confirm) {
+        onClickPushConfirm();
     }
 };
 
-const saveSyncTime = () => {
-    const now = new Date();
-    native.setLocalStorage('lastSyncTime', now.toISOString());
-    lastSyncTime.value = adapter.format(now, 'fullDateTime24h');
-};
-
-const onClickPush = async () => {
+const onClickPushConfirm = async () => {
     onSyncBegin();
     await stall(engine.push(), LONG_STALL)
         .then(() => {
@@ -140,6 +198,18 @@ const onClickPush = async () => {
 };
 
 const onClickPull = async () => {
+    confirmDialogProps.value = PULL_CONFIRM;
+    openConfirmDialog();
+};
+
+const onConfirmPull = (confirm: boolean) => {
+    closeConfirmDialog();
+    if (confirm) {
+        onClickPullConfirm();
+    }
+};
+
+const onClickPullConfirm = async () => {
     onSyncBegin();
     await stall(engine.pull(), LONG_STALL)
         .then(() => {
@@ -164,8 +234,4 @@ const onCLickMerge = async () => {
         });
     onSyncEnd();
 };
-
-onMounted(() => {
-    loadSyncTime();
-});
 </script>
