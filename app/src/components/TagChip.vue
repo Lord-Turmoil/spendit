@@ -1,12 +1,12 @@
 <template>
-    <v-chip variant="outlined" color="blue-darken-1" size="x-small">
+    <v-chip v-bind="props" variant="outlined" color="blue-darken-1" size="x-small">
         <v-icon icon="mdi-pound"></v-icon>
-        {{ tag }}
+        &nbsp;{{ tag }}
     </v-chip>
 </template>
 
 <style scoped></style>
 
 <script setup lang="ts">
-const { tag } = defineProps<{ tag: string }>();
+const { tag, props } = defineProps<{ tag: string, props?: any }>();
 </script>

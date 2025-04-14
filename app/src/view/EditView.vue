@@ -61,7 +61,7 @@
                             closable-chips
                             multiple>
                             <template v-slot:chip="{ props, item }">
-                                <PeopleChip :name="item.raw"></PeopleChip>
+                                <PeopleChip :props="props" :name="item.raw"></PeopleChip>
                             </template>
                         </v-combobox>
                         <!-- tag list -->
@@ -76,7 +76,7 @@
                             closable-chips
                             multiple>
                             <template v-slot:chip="{ props, item }">
-                                <TagChip :tag="item.raw"></TagChip>
+                                <TagChip :props="props" :tag="item.raw"></TagChip>
                             </template>
                         </v-combobox>
                         <!-- note -->
@@ -243,17 +243,29 @@ watch(categoryChips, (value) => {
         categoryList.value = [];
     } else {
         // TODO: prompt a warning message
+        alertify.warning('最多只能选择两个分类');
         nextTick(() => categoryChips.value.pop());
     }
 });
 
 // tags
-const tagList = engine.getTags().getTags();
+const allTags = engine.getTags().getTags();
+const tagList = ref([...allTags]);
 const tagChips = ref(data.value.tags);
 
+watch(tagChips, (value) => {
+    tagList.value = allTags.filter((tag) => !value.includes(tag));
+});
+
+
 // people
-const peopleList = engine.getTags().getPeople();
+const allPeople = engine.getTags().getPeople();
+const peopleList = ref([...allPeople]);
 const peopleChips = ref(data.value.people);
+
+watch(peopleChips, (value) => {
+    peopleList.value = allPeople.filter((person) => !value.includes(person));
+});
 
 // ============================================================================
 // Action handlers.

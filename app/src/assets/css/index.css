@@ -77,6 +77,10 @@
 }
 
 /* Alertify */
+.alertify-notifier {
+    z-index: 3000 !important;
+}
+
 .alertify-notifier .ajs-message {
     border-radius: 100px;
     text-align: center;
