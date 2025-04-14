@@ -51,10 +51,11 @@ function hideSplash() {
 async function startup() {
     // ensure engine is prepared before mounting the app
     await engine.init();
+    await engine.ping();
     mountApp();
 }
 
-window.onload = function () {
+window.onload = function() {
     startup()
         .catch((err) => {
             showErrorPage(err);

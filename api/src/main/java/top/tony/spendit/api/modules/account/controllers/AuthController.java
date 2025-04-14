@@ -12,10 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import top.tony.spendit.api.aspect.ValidateParameters;
 import top.tony.spendit.api.common.dto.DataResponse;
 import top.tony.spendit.api.common.dto.MessageResponse;
@@ -82,6 +79,16 @@ public class AuthController extends BaseController {
         response.addCookie(authApi.cleanJwtCookie());
         response.addCookie(authApi.cleanRefreshCookie());
         return MessageResponse.ok("Logout successful");
+    }
+
+    @GetMapping("ping")
+    @Operation(summary = "Ping the server to check if the login status is valid")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Ping successful"),
+            @ApiResponse(responseCode = "401", description = "Not logged in"),
+    })
+    public MessageResponse ping() {
+        return MessageResponse.ok("pong");
     }
 
     private void issueJwt(HttpServletResponse response, Account account) {

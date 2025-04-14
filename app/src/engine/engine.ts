@@ -1,9 +1,12 @@
-import { DbTable, Entry, getDummyEntry, UserProfile } from '~/engine/models';
+import { DbTable, DummyUserProfile, Entry, getDummyEntry, UserProfile } from '~/engine/models';
 import { ProfileModule } from '~/engine/modules/profile';
 import { DatabaseModule } from '~/engine/modules/database';
 import { EntryUpdateEvent, EntryUpdateTypes } from '~/engine/events';
 import { StatisticsModule } from '~/engine/modules/statistics';
 import { TagsModule } from '~/engine/modules/tags';
+import alertify from '~/extensions/alertify';
+import { api, ApiResponse } from '~/extensions/api';
+import { LONG_STALL, stall } from '~/utils/stall';
 
 export class SpendEngine {
     private readonly statistics: StatisticsModule;
@@ -153,6 +156,23 @@ export class SpendEngine {
     async merge(): Promise<void> {
         await this.tags.merge();
         await this.database.merge();
+    }
+
+    // ========================================================================
+    // Extra requests
+    // ========================================================================
+
+    async ping(): Promise<void> {
+        api.get('/auth/ping').then((response: ApiResponse) => {
+            if (response.status === 200) {
+                // OK
+            } else if (response.status === 401) {
+                alertify.warning('登录已过期，请重新登录');
+                engine.updateUserProfile({ ...DummyUserProfile, id: this.getUserProfile().id });
+            }
+        }).catch((error: Error) => {
+            // nothing error
+        });
     }
 }
 
