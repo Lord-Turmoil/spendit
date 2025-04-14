@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import top.tony.spendit.api.common.dto.MessageResponse;
 
 @RestController
-@RequestMapping("health")
+@RequestMapping("api/health")
 @RequiredArgsConstructor
 @Slf4j
 public class HealthController {

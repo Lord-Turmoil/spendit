@@ -5,8 +5,6 @@
 package top.tony.spendit.api.modules.invitation.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +14,6 @@ import top.tony.spendit.api.aspect.Page;
 import top.tony.spendit.api.aspect.PageSize;
 import top.tony.spendit.api.aspect.ValidatePagination;
 import top.tony.spendit.api.common.dto.DataResponse;
-import top.tony.spendit.api.common.dto.MessageResponse;
 import top.tony.spendit.api.common.dto.PageListDto;
 import top.tony.spendit.api.common.requets.BaseController;
 import top.tony.spendit.api.models.Invitation;
@@ -28,7 +25,7 @@ import top.tony.spendit.api.modules.invitation.dto.ListInvitationRequest;
 import top.tony.spendit.api.modules.invitation.services.InvitationService;
 
 @RestController
-@RequestMapping("api/admin/invitation")
+@RequestMapping("api/invitation")
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Invitation Admin")
@@ -37,11 +34,6 @@ public class InvitationController extends BaseController {
 
     @PostMapping("create")
     @Operation(summary = "Create an invitation")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Invitation created successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "401", description = "Permission denied"),
-    })
     @ValidatePermission(AuthLevel.ADMIN)
     public DataResponse<Invitation> create(
             @RequestBody @Valid CreateInvitationRequest request
@@ -52,26 +44,16 @@ public class InvitationController extends BaseController {
 
     @PostMapping("invoke")
     @Operation(summary = "Invoke an invitation")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Invitation invoked successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "401", description = "Permission denied"),
-    })
     @ValidatePermission(AuthLevel.ADMIN)
-    public MessageResponse invoke(
+    public DataResponse<Invitation> invoke(
             @RequestBody @Valid InvokeInvitationRequest request
     ) {
-        invitationService.invoke(request);
-        return MessageResponse.ok("Invitation invoked");
+        Invitation invitation = invitationService.invoke(request);
+        return DataResponse.ok("Invitation invoked", invitation);
     }
 
     @GetMapping("list")
     @Operation(summary = "List all invitations")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Invitations listed successfully"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "401", description = "Permission denied"),
-    })
     @ValidatePermission(AuthLevel.ADMIN)
     @ValidatePagination
     public DataResponse<PageListDto<Invitation>> list(

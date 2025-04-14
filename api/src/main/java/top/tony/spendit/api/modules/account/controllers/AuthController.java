@@ -5,8 +5,6 @@
 package top.tony.spendit.api.modules.account.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -25,7 +23,6 @@ import top.tony.spendit.api.modules.account.dto.LoginRequest;
 import top.tony.spendit.api.modules.account.dto.RegisterRequest;
 import top.tony.spendit.api.modules.account.services.AccountService;
 import top.tony.spendit.api.modules.auth.api.AuthApi;
-import top.tony.spendit.api.modules.auth.aspect.ValidatePermission;
 import top.tony.spendit.api.modules.auth.models.AuthPayload;
 
 @RestController
@@ -39,11 +36,6 @@ public class AuthController extends BaseController {
 
     @PostMapping("register")
     @Operation(summary = "Register an account")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Registration successful"),
-            @ApiResponse(responseCode = "400", description = "Bad request, duplicated username"),
-            @ApiResponse(responseCode = "401", description = "Not invited"),
-    })
     @ValidateParameters
     public DataResponse<AccountDto> register(
             @RequestBody @Valid RegisterRequest request
@@ -54,11 +46,6 @@ public class AuthController extends BaseController {
 
     @PostMapping("login")
     @Operation(summary = "Login an account")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Login successful"),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "401", description = "Invalid username or password"),
-    })
     public DataResponse<AccountDto> login(
             @RequestBody @Valid LoginRequest request,
             HttpServletResponse response
@@ -70,11 +57,6 @@ public class AuthController extends BaseController {
 
     @PostMapping("logout")
     @Operation(summary = "Logout an account")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Logout successful"),
-            @ApiResponse(responseCode = "401", description = "Not logged in"),
-    })
-    @ValidatePermission
     public MessageResponse logout(HttpServletResponse response) {
         response.addCookie(authApi.cleanJwtCookie());
         response.addCookie(authApi.cleanRefreshCookie());
@@ -83,10 +65,6 @@ public class AuthController extends BaseController {
 
     @GetMapping("ping")
     @Operation(summary = "Ping the server to check if the login status is valid")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Ping successful"),
-            @ApiResponse(responseCode = "401", description = "Not logged in"),
-    })
     public MessageResponse ping() {
         return MessageResponse.ok("pong");
     }

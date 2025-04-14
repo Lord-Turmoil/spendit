@@ -32,7 +32,7 @@ public class InvitationService {
         return invitation;
     }
 
-    public void invoke(InvokeInvitationRequest request) {
+    public Invitation invoke(InvokeInvitationRequest request) {
         Optional<Invitation> result = invitationRepository.findById(request.getId());
         if (result.isEmpty()) {
             throw new NotFoundException("Invitation not found");
@@ -43,11 +43,13 @@ public class InvitationService {
             throw new ForbiddenException("Invitation accepted");
         }
         if (invitation.isInvoked()) {
-            return;
+            return invitation;
         }
 
         invitation.setInvokedAt(LocalDateTime.now());
         invitationRepository.save(invitation);
+
+        return invitation;
     }
 
     /**
