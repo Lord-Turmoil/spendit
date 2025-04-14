@@ -1,0 +1,31 @@
+{
+    "include": [
+        "src"
+    ],
+    "exclude": [
+        "**/*.test.ts"
+    ],
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "lib": [
+            "DOM",
+            "DOM.Iterable",
+            "ESNext"
+        ],
+        "types": ["vite/client"],
+        "skipLibCheck": true,
+        "esModuleInterop": false,
+        "moduleResolution": "Node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "outDir": "build",
+        "baseUrl": ".",
+        "paths": {
+            "~/*": [
+                "src/*"
+            ]
+        }
+    }
+}
