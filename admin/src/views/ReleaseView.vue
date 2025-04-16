@@ -56,12 +56,14 @@
                             label="Download URL"
                             placeholder="Download URL"
                             :rules="rules.url"></v-text-field>
-                        <v-text-field
+                        <v-textarea
                             v-model="request.description"
                             variant="outlined"
                             label="Description"
                             placeholder="Description"
-                            :rules="rules.description"></v-text-field>
+                            rows="2"
+                            auto-grow
+                            :rules="rules.description"></v-textarea>
                     </v-form>
                 </v-container>
                 <v-card-actions>
