@@ -10,6 +10,7 @@ import top.tony.spendit.api.common.Globals;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Data
@@ -28,10 +29,34 @@ public class EntryTableJson {
         if (!other.timestamp.equals(timestamp)) {
             return;
         }
-        for (Entry entry : other.entries) {
-            if (entries.stream().noneMatch(e -> e.getTimestamp().equals(entry.getTimestamp()))) {
-                entries.add(entry);
+
+        int index = 0;
+        for (Entry otherEntry : other.entries) {
+            if (otherEntry.getUpdated() == null) {
+                otherEntry.setUpdated(LocalDateTime.now());
             }
+
+            boolean isNew = true;
+            for (Entry entry : entries) {
+                if (entry.getUpdated() == null) {
+                    entry.setUpdated(LocalDateTime.now());
+                }
+
+                if (entry.getTimestamp().equals(otherEntry.getTimestamp())) {
+                    if (otherEntry.getUpdated().isAfter(entry.getUpdated())) {
+                        entries.set(index, otherEntry);
+                    }
+                    isNew = false;
+                }
+            }
+
+            if (isNew) {
+                entries.add(otherEntry);
+            }
+
+            index++;
         }
+
+        entries.sort(Comparator.comparing(Entry::getTimestamp));
     }
 }

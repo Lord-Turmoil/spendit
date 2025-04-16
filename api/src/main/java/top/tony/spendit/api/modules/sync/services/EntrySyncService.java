@@ -184,6 +184,13 @@ public class EntrySyncService extends BaseService {
     }
 
     private void saveEntry(String id, EntryTableJson entry) throws IOException {
+        // Patch the updated time to be compatible with the old version.
+        entry.getEntries().forEach(e -> {
+            if (e.getUpdated() == null) {
+                e.setUpdated(LocalDateTime.now());
+            }
+        });
+
         Medias.save(getEntryFilePath(id, entry.getTimestamp()), mappers.toJson(entry));
     }
 }
