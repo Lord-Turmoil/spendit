@@ -9,7 +9,9 @@
                 <li>使用过程中产生的账号和消费数据不会被用于同步之外的其他用途。</li>
                 <li>
                     最终解释权归
-                    <a href="https://www.tonys-studio.top">Tony's Studio</a>
+                    <a href="https://www.tonys-studio.top" target="_blank">
+                        Tony's Studio
+                    </a>
                     所有。
                 </li>
             </ul>

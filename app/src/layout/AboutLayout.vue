@@ -31,7 +31,6 @@
 <style scoped>
 .AboutLayout {
     flex-direction: column;
-    //min-height: 100%;
 }
 
 .AboutLayout .divider {

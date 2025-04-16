@@ -60,7 +60,7 @@ async function startup() {
     mountApp();
 }
 
-window.onload = function() {
+window.onload = function () {
     startup()
         .catch((error) => {
             showErrorPage(error);
