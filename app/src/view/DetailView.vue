@@ -5,7 +5,7 @@
             :key="i"
             :date="date"
             :show-date="showDate"
-            :show-empty="showEmpty"></EntryCardList>
+            :show-empty="showEmpty" />
     </div>
 </template>
 
@@ -17,7 +17,7 @@
 </style>
 
 <script setup lang="ts">
-import EntryCardList from '~/components/EntryCardList.vue';
+import EntryCardList from '~/components/entry/EntryCardList.vue';
 
 import { ref } from 'vue';
 

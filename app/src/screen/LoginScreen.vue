@@ -1,7 +1,7 @@
 <template>
     <v-container class="LoginScreen split-wrapper">
-        <LoginLayout class="split-primary"></LoginLayout>
-        <BackButton></BackButton>
+        <LoginLayout class="split-primary" />
+        <BackButton />
     </v-container>
 </template>
 

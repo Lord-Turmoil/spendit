@@ -18,7 +18,3 @@ export interface EntryUpdateEvent {
 }
 
 export type EntryCallback = (entry: Entry) => void;
-
-export enum BusEventTypes {
-    ENTRY_UPDATE = 'ENTRY_UPDATE'
-}

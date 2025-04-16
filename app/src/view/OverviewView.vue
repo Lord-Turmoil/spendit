@@ -14,16 +14,16 @@
             <v-divider class="divider"></v-divider>
             <div class="tags">
                 <span class="tag" v-for="(name, i) in statistics.people" :key="i">
-                    <PeopleChip :name="name"></PeopleChip>
+                    <PeopleChip :name="name" />
                 </span>
             </div>
             <div class="tags">
                 <span class="tag" v-for="(tag, i) in statistics.tags" :key="i">
-                    <TagChip :tag="tag"></TagChip>
+                    <TagChip :tag="tag" />
                 </span>
             </div>
             <v-divider class="divider"></v-divider>
-            <SpendList :spends="statistics.spends"></SpendList>
+            <SpendList :spends="statistics.spends" />
             <v-divider class="divider"></v-divider>
             <v-btn
                 class="detail"
@@ -35,7 +35,7 @@
             </v-btn>
         </v-card-text>
         <v-card-text v-else class="OverviewView__empty">
-            <EmptyCard></EmptyCard>
+            <EmptyCard />
         </v-card-text>
     </v-card>
 </template>
@@ -75,10 +75,10 @@
 </style>
 
 <script setup lang="ts">
-import EmptyCard from '~/components/EmptyCard.vue';
-import PeopleChip from '~/components/PeopleChip.vue';
+import EmptyCard from '~/components/entry/EmptyCard.vue';
+import PeopleChip from '~/components/chip/PeopleChip.vue';
 import SpendList from '~/components/SpendList.vue';
-import TagChip from '~/components/TagChip.vue';
+import TagChip from '~/components/chip/TagChip.vue';
 
 import { onMounted, ref } from 'vue';
 

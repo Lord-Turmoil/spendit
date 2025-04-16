@@ -17,22 +17,18 @@ class Api {
         });
     }
 
-    axios() {
-        return this._api;
-    }
-
-    _getDto(err: AxiosError): ApiResponse {
-        if (!Object.hasOwn(err, 'response')) {
+    _getDto(error: AxiosError): ApiResponse {
+        if (!Object.hasOwn(error, 'response')) {
             return {
                 status: 101,
                 message: '网络异常，请稍后再试',
                 data: {
-                    name: err.name,
-                    message: err.message
+                    name: error.name,
+                    message: error.message
                 }
             };
         }
-        const response = err.response;
+        const response = error.response;
         const defaultDto = {
             status: response.status ?? 66,
             message: '服务器异常，请稍后再试',
@@ -44,7 +40,7 @@ class Api {
             return defaultDto;
         }
 
-        const data: object = err.response.data as object;
+        const data: object = error.response.data as object;
         if (Object.hasOwn(data, 'status') && Object.hasOwn(data, 'message')) {
             return data as ApiResponse;
         } else {
@@ -52,34 +48,41 @@ class Api {
         }
     }
 
-    async post(url: string, body: object = {}) {
+    async post(
+        url: string,
+        body: object = {},
+        autoRedirect: boolean = true
+    ): Promise<ApiResponse> {
         return await this._api
             .post(url, body)
             .then((res) => {
-                console.log(res);
                 // 200 must be our custom data
                 return res.data;
             })
-            .catch((err) => {
-                console.log(err);
-                const dto = this._getDto(err);
-                if (dto.status === 401) {
+            .catch((error) => {
+                console.log(error);
+                const dto = this._getDto(error);
+                if (dto.status === 401 && autoRedirect) {
                     router.push('/login');
                 }
                 return dto;
             });
     }
 
-    async get(url: string, params: object = {}) {
+    async get(
+        url: string,
+        params: object = {},
+        autoRedirect: boolean = true
+    ): Promise<ApiResponse> {
         return await this._api
             .get(url, { params: params })
             .then((res) => {
                 // 200 must be our custom data
                 return res.data;
             })
-            .catch((err) => {
-                const dto = this._getDto(err);
-                if (dto.status === 401) {
+            .catch((error) => {
+                const dto = this._getDto(error);
+                if (dto.status === 401 && autoRedirect) {
                     router.push('/login');
                 }
                 return dto;

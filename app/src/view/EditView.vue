@@ -39,14 +39,7 @@
                             closable-chips
                             multiple>
                             <template v-slot:chip="{ props, item }">
-                                <v-chip
-                                    prepend-icon="mdi-slash-forward"
-                                    v-bind="props"
-                                    size="x-small"
-                                    color="green-darken-1"
-                                    variant="outlined">
-                                    {{ item.raw }}
-                                </v-chip>
+                                <CategoryChip :props="props" :name="item.raw" />
                             </template>
                         </v-combobox>
                         <!-- people list -->
@@ -61,7 +54,7 @@
                             closable-chips
                             multiple>
                             <template v-slot:chip="{ props, item }">
-                                <PeopleChip :props="props" :name="item.raw"></PeopleChip>
+                                <PeopleChip :props="props" :name="item.raw" />
                             </template>
                         </v-combobox>
                         <!-- tag list -->
@@ -76,7 +69,7 @@
                             closable-chips
                             multiple>
                             <template v-slot:chip="{ props, item }">
-                                <TagChip :props="props" :tag="item.raw"></TagChip>
+                                <TagChip :props="props" :tag="item.raw" />
                             </template>
                         </v-combobox>
                         <!-- note -->
@@ -126,7 +119,7 @@
             cancelText="取消"
             cancel-color="primary"
             @confirm="() => onConfirmDelete(true)"
-            @cancel="() => onConfirmDelete(false)"></ConfirmDialog>
+            @cancel="() => onConfirmDelete(false)" />
     </div>
 </template>
 
@@ -173,19 +166,25 @@
 </style>
 
 <script setup lang="ts">
-import PeopleChip from '~/components/PeopleChip.vue';
-import TagChip from '~/components/TagChip.vue';
+import CategoryChip from '~/components/chip/CategoryChip.vue';
+import PeopleChip from '~/components/chip/PeopleChip.vue';
+import TagChip from '~/components/chip/TagChip.vue';
 import ConfirmDialog from '~/components/ConfirmDialog.vue';
 
 import { nextTick, ref, watch } from 'vue';
 import { VForm } from 'vuetify/components';
 
 import { Entry } from '~/engine/models';
-import { BusEventTypes, EntryUpdateEvent, EntryUpdateTypes } from '~/engine/events';
+import { EntryUpdateEvent, EntryUpdateTypes } from '~/engine/events';
 import { engine } from '~/engine/engine';
 import alertify from '~/extensions/alertify';
 import { bus } from '~/extensions/emitter';
-import { formatMoney, formatTimestampToSlash, isValidMoney, parseMoney } from '~/utils/format';
+import {
+    formatMoney,
+    formatTimestampToSlash,
+    isValidMoney,
+    parseMoney
+} from '~/utils/format';
 import { stall } from '~/utils/stall';
 
 // ============================================================================
@@ -257,7 +256,6 @@ watch(tagChips, (value) => {
     tagList.value = allTags.filter((tag) => !value.includes(tag));
 });
 
-
 // people
 const allPeople = engine.getTags().getPeople();
 const peopleList = ref([...allPeople]);
@@ -291,7 +289,7 @@ const invokeOnClose = () => {
 };
 
 const invokeEmitEvent = (event: EntryUpdateEvent) => {
-    bus.emit(BusEventTypes.ENTRY_UPDATE, event);
+    bus.emit('entry-update', event);
 };
 
 const confirmDialog = ref(false);
@@ -339,8 +337,8 @@ const onClickConfirm = (isDelete: boolean) => {
                 invokeOnClose();
             }
         })
-        .catch((err: Error) => {
-            alertify.error(err.message);
+        .catch((error: Error) => {
+            alertify.error(error.message);
         })
         .finally(() => {
             isLoading.value = false;

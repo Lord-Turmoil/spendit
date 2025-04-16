@@ -1,3 +1,4 @@
+import AboutScreen from '~/screen/AboutScreen.vue';
 import HomeScreen from '~/screen/HomeScreen.vue';
 import DetailScreen from '~/screen/DetailScreen.vue';
 import LoginScreen from '~/screen/LoginScreen.vue';
@@ -35,6 +36,10 @@ const router = createRouter({
         {
             path: '/sync',
             component: SyncScreen
+        },
+        {
+            path: '/about',
+            component: AboutScreen
         },
         {
             path: '/:pathMatch(.*)*',

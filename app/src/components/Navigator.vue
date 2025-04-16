@@ -23,7 +23,7 @@
             color="green-darken-1"
             @click="openDialog"></v-btn>
         <v-dialog class="Navigator_dialog" v-model="dialogOpen" persistent>
-            <EditView title="新建消费记录" :on-close="closeDialog"></EditView>
+            <EditView title="新建消费记录" :on-close="closeDialog" />
         </v-dialog>
     </div>
 </template>

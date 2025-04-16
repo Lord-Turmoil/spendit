@@ -1,9 +1,17 @@
-import { DbTable, DummyUserProfile, Entry, getDummyEntry, UserProfile } from '~/engine/models';
+import {
+    DbTable,
+    DummyUserProfile,
+    Entry,
+    getDummyEntry,
+    UserProfile,
+    VersionMeta
+} from '~/engine/models';
 import { ProfileModule } from '~/engine/modules/profile';
 import { DatabaseModule } from '~/engine/modules/database';
 import { EntryUpdateEvent, EntryUpdateTypes } from '~/engine/events';
 import { StatisticsModule } from '~/engine/modules/statistics';
 import { TagsModule } from '~/engine/modules/tags';
+import { VersionModule } from '~/engine/modules/version';
 import alertify from '~/extensions/alertify';
 import { api, ApiResponse } from '~/extensions/api';
 import { LONG_STALL, stall } from '~/utils/stall';
@@ -14,6 +22,7 @@ export class SpendEngine {
     private profile: ProfileModule;
     private database: DatabaseModule;
     private tags: TagsModule;
+    private version: VersionModule;
 
     /**
      * The focused day in the home screen, in the format of 'YYYY-MM-DD'.
@@ -31,13 +40,14 @@ export class SpendEngine {
 
     async init(): Promise<void> {
         this.profile = new ProfileModule();
+        await this.profile.init();
 
-        await this.profile.init().then(() => {
-            this.database = new DatabaseModule(this.profile.getUserProfile().id);
-            this.tags = new TagsModule(this.profile.getUserProfile().id);
-        });
-        await this.database.init();
-        await this.tags.init();
+        this.version = new VersionModule(this.getSystemProfile().version);
+
+        this.database = new DatabaseModule(this.profile.getUserProfile().id);
+        this.tags = new TagsModule(this.profile.getUserProfile().id);
+
+        await Promise.all([this.database.init(), this.tags.init()]);
 
         console.log('Powered by SpendEngine');
     }
@@ -128,6 +138,14 @@ export class SpendEngine {
     }
 
     // ========================================================================
+    // Version operations
+    // ========================================================================
+
+    checkForUpdate(force: boolean): Promise<VersionMeta> {
+        return this.version.checkForUpdate(force);
+    }
+
+    // ========================================================================
     // Extra states
     // ========================================================================
 
@@ -156,23 +174,6 @@ export class SpendEngine {
     async merge(): Promise<void> {
         await this.tags.merge();
         await this.database.merge();
-    }
-
-    // ========================================================================
-    // Extra requests
-    // ========================================================================
-
-    async ping(): Promise<void> {
-        api.get('/auth/ping').then((response: ApiResponse) => {
-            if (response.status === 200) {
-                // OK
-            } else if (response.status === 401) {
-                alertify.warning('登录已过期，请重新登录');
-                engine.updateUserProfile({ ...DummyUserProfile, id: this.getUserProfile().id });
-            }
-        }).catch((error: Error) => {
-            // nothing error
-        });
     }
 }
 

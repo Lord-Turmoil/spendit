@@ -32,9 +32,10 @@
 </style>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 import { engine } from '~/engine/engine';
+import { bus } from '~/extensions/emitter';
 import router from '~/extensions/router';
 
 const OFFLINE_LIST = [
@@ -50,6 +51,13 @@ const OFFLINE_LIST = [
         icon: 'mdi-account',
         action: () => {
             router.push('/login');
+        }
+    },
+    {
+        title: '关于',
+        icon: 'mdi-information',
+        action: () => {
+            router.push('/about');
         }
     }
 ];
@@ -75,8 +83,27 @@ const ONLINE_LIST = [
         action: () => {
             router.push('/sync');
         }
+    },
+    {
+        title: '关于',
+        icon: 'mdi-information',
+        action: () => {
+            router.push('/about');
+        }
     }
 ];
 
 const menuList = ref(engine.isLoggedIn() ? ONLINE_LIST : OFFLINE_LIST);
+
+const onLoginExpired = () => {
+    menuList.value = OFFLINE_LIST;
+};
+
+onMounted(() => {
+    bus.on('login-expired', onLoginExpired);
+});
+
+onUnmounted(() => {
+    bus.off('login-expired', onLoginExpired);
+});
 </script>

@@ -1,6 +1,6 @@
 <template>
     <div class="DaySelectLayout">
-        <RangeSelector v-model="model"></RangeSelector>
+        <RangeSelector v-model="model" />
         <v-btn
             class="confirm"
             @click="onConfirmSelection"
@@ -10,10 +10,7 @@
             block>
             更新统计数据
         </v-btn>
-        <OverviewView
-            v-model="overviewReady"
-            :dates="selectedDates"
-            :key="key"></OverviewView>
+        <OverviewView v-model="overviewReady" :dates="selectedDates" :key="key" />
     </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
     <v-container class="OverviewScreen scrollable split-wrapper">
-        <DaySelectLayout class="split-primary"></DaySelectLayout>
-        <FabBackButton></FabBackButton>
+        <DaySelectLayout class="split-primary" />
+        <FabBackButton />
     </v-container>
 </template>
 

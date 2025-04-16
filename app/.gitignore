@@ -10,4 +10,5 @@ resources/android/**/*
 publish/
 
 .env
+.env.production
 secret.json

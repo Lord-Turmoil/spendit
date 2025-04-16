@@ -15,7 +15,7 @@
             <v-divider class="ProfileCard__divider"></v-divider>
             <div class="ProfileCard__system text-caption">
                 <span>{{ displayVersion }}</span>
-                <span>{{ displayCopyright }}</span>
+                <CopyrightText />
                 <v-icon class="icon" icon="mdi-open-in-new"></v-icon>
             </div>
         </v-container>
@@ -55,9 +55,11 @@
 </style>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
+import CopyrightText from '~/components/CopyrightText.vue';
 
 import { engine } from '~/engine/engine';
+import { bus } from '~/extensions/emitter';
 
 // User information.
 const userProfile = ref(engine.getUserProfile());
@@ -69,11 +71,15 @@ const displayVersion = computed(() => {
     return `${systemProfile.value.product} ${systemProfile.value.version} - ${systemProfile.value.code}`;
 });
 
-const displayCopyright = computed(() => {
-    const currentYear = new Date().getFullYear();
-    if (currentYear === 2025) {
-        return `Copyright © 2025 ${systemProfile.value.author}`;
-    }
-    return `Copyright © 2025 - ${currentYear} ${systemProfile.value.author}`;
+const onLoginExpired = () => {
+    userProfile.value = engine.getUserProfile();
+};
+
+onMounted(() => {
+    bus.on('login-expired', onLoginExpired);
+});
+
+onUnmounted(() => {
+    bus.off('login-expired', onLoginExpired);
 });
 </script>

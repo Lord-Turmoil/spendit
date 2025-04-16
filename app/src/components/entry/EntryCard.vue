@@ -14,10 +14,10 @@
             </div>
             <div class="EntryCard__body_tags tags">
                 <span class="tag" v-for="(name, i) in entry.people" :key="i">
-                    <PeopleChip :name="name"></PeopleChip>
+                    <PeopleChip :name="name" />
                 </span>
                 <span class="tag" v-for="(tag, i) in entry.tags" :key="i">
-                    <TagChip :tag="tag"></TagChip>
+                    <TagChip :tag="tag" />
                 </span>
             </div>
         </v-card-text>
@@ -65,8 +65,8 @@
 </style>
 
 <script setup lang="ts">
-import PeopleChip from '~/components/PeopleChip.vue';
-import TagChip from '~/components/TagChip.vue';
+import PeopleChip from '~/components/chip/PeopleChip.vue';
+import TagChip from '~/components/chip/TagChip.vue';
 
 import { computed } from 'vue';
 

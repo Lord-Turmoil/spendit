@@ -118,12 +118,14 @@ export class DatabaseModule {
                 return;
             }
         }
+        entry.updated = formatTimeISO(new Date());
         table.entries.push(entry);
         await this.saveTable(table);
     }
 
     private async handleUpdate(entry: Entry): Promise<void> {
         const table = await this.getTable(entry.date);
+        entry.updated = formatTimeISO(new Date());
         table.entries = table.entries.map((e) =>
             e.timestamp === entry.timestamp ? entry : e
         );

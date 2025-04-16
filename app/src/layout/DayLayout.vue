@@ -7,7 +7,7 @@
                 :dates="dates"
                 :show-date="false"
                 show-empty
-                :key="key"></DetailView>
+                :key="key" />
         </div>
     </div>
 </template>

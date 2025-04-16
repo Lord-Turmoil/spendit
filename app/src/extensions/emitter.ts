@@ -1,3 +1,9 @@
 import mitt from 'mitt';
+import { EntryUpdateEvent } from '~/engine/events';
 
-export const bus = mitt();
+type Events = {
+    'entry-update': EntryUpdateEvent;
+    'login-expired': void;
+};
+
+export const bus = mitt<Events>();

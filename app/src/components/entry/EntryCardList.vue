@@ -8,16 +8,13 @@
                 v-for="(item, i) in entries"
                 :key="i"
                 :entry="item"
-                @click="onEditStart(item)"></EntryCard>
+                @click="onEditStart(item)" />
             <v-dialog class="EntryCardList__dialog" v-model="dialogOpen" persistent>
-                <EditView
-                    title="编辑消费项目"
-                    :entry="editEntry"
-                    :on-close="onEditEnd"></EditView>
+                <EditView title="编辑消费项目" :entry="editEntry" :on-close="onEditEnd" />
             </v-dialog>
         </div>
         <div v-else-if="showEmpty" class="EntryCardList__empty">
-            <EmptyCard class="centered" show-hint></EmptyCard>
+            <EmptyCard class="centered" show-hint />
         </div>
     </div>
 </template>
@@ -49,20 +46,15 @@
 </style>
 
 <script setup lang="ts">
-import EmptyCard from '~/components/EmptyCard.vue';
-import EntryCard from '~/components/EntryCard.vue';
+import EmptyCard from '~/components/entry/EmptyCard.vue';
+import EntryCard from '~/components/entry/EntryCard.vue';
 import EditView from '~/view/EditView.vue';
 
 import { onMounted, onUnmounted, ref } from 'vue';
 
 import { DbTable, Entry } from '~/engine/models';
 import { engine } from '~/engine/engine';
-import {
-    BusEventTypes,
-    EntryCallback,
-    EntryUpdateEvent,
-    EntryUpdateTypes
-} from '~/engine/events';
+import { EntryCallback, EntryUpdateEvent, EntryUpdateTypes } from '~/engine/events';
 import { bus } from '~/extensions/emitter';
 import alertify from '~/extensions/alertify';
 import { formatTimestampToSlash } from '~/utils/format';
@@ -121,7 +113,7 @@ const onEditEnd = () => {
 
 // event listener
 onMounted(() => {
-    bus.on(BusEventTypes.ENTRY_UPDATE, onEntryUpdateEvent);
+    bus.on('entry-update', onEntryUpdateEvent);
     engine
         .getTable(date)
         .then((table: DbTable) => {
@@ -134,6 +126,6 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-    bus.off(BusEventTypes.ENTRY_UPDATE, onEntryUpdateEvent);
+    bus.off('entry-update', onEntryUpdateEvent);
 });
 </script>

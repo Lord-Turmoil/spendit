@@ -1,7 +1,7 @@
 <template>
     <v-container class="DetailScreen scrollable">
-        <DetailView :dates="dates" show-date style="margin-bottom: 36px"></DetailView>
-        <FabBackButton></FabBackButton>
+        <DetailView :dates="dates" show-date style="margin-bottom: 36px" />
+        <FabBackButton />
     </v-container>
 </template>
 

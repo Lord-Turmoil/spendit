@@ -17,6 +17,7 @@ const vuetify = createVuetify({
 
 // Vue
 import { createApp } from 'vue';
+import { LONG_STALL, stall } from '~/utils/stall';
 import App from './App.vue';
 import router from '~/extensions/router';
 
@@ -50,15 +51,19 @@ function hideSplash() {
 
 async function startup() {
     // ensure engine is prepared before mounting the app
-    await engine.init();
-    await engine.ping();
+    if ((import.meta.env.VITE_FAST_BOOT || 'true') === 'true') {
+        console.log('Fast boot enabled');
+        await engine.init();
+    } else {
+        await stall(engine.init(), LONG_STALL);
+    }
     mountApp();
 }
 
 window.onload = function() {
     startup()
-        .catch((err) => {
-            showErrorPage(err);
+        .catch((error) => {
+            showErrorPage(error);
         })
         .finally(() => {
             hideSplash();

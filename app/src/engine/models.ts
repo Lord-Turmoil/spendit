@@ -8,7 +8,7 @@
 // Data models
 // ========================================================================
 
-import { formatTimestamp } from '~/utils/format';
+import { formatTimeISO, formatTimestamp } from '~/utils/format';
 
 /**
  * The detailed information for a spend item.
@@ -30,6 +30,12 @@ export interface Entry {
      * Because this is only an edit time.
      */
     timestamp: number;
+
+    /**
+     * The time when this entry is updated, in ISO string.
+     * Used to determine the latest modified time.
+     */
+    updated: string;
 
     /**
      * Money is stored as integer, actual value is money / 100.
@@ -64,6 +70,7 @@ export function getDummyEntry(): Entry {
         title: '',
         date: formatTimestamp(timestamp),
         timestamp: timestamp.getTime(),
+        updated: formatTimeISO(timestamp),
         money: 0,
         categories: [],
         people: [],
@@ -135,7 +142,7 @@ export interface SystemProfile {
 
 export const CurrentSystemProfile: SystemProfile = {
     product: 'Spendit',
-    author: "Tony's Studio",
+    author: 'Tony\'s Studio',
     version: '0.2.5',
     code: 'Tornado'
 };
@@ -171,3 +178,28 @@ export const DummyStatistics: Statistics = {
     tags: [],
     spends: []
 };
+
+// ========================================================================
+// Version
+// ========================================================================
+
+export interface Version {
+    version: string;
+    code: string;
+    downloadUrl: string;
+    description: string;
+    timestamp: string;
+}
+
+export const DummyVersion: Version = {
+    version: '0.0.0',
+    code: '000000',
+    downloadUrl: '',
+    description: '',
+    timestamp: '2025-01-01 00:00:00'
+};
+
+export interface VersionMeta {
+    version?: Version;
+    updateAvailable: boolean;
+}

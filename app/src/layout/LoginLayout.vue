@@ -1,11 +1,7 @@
 <template>
     <div class="LoginLayout">
-        <RegisterView v-model="isRegister" v-if="isRegister"></RegisterView>
-        <LoginView
-            v-model="isRegister"
-            :type="title"
-            :can-logout="canLogout"
-            v-else></LoginView>
+        <RegisterView v-model="isRegister" v-if="isRegister" />
+        <LoginView v-model="isRegister" :type="title" :can-logout="canLogout" v-else />
     </div>
 </template>
 

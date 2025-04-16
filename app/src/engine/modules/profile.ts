@@ -1,3 +1,4 @@
+import { engine } from '~/engine/engine';
 import {
     CurrentSystemProfile,
     DummyUserProfile,
@@ -6,6 +7,9 @@ import {
     UserProfile,
     UserProfileMeta
 } from '~/engine/models.js';
+import alertify from '~/extensions/alertify';
+import { api, ApiResponse } from '~/extensions/api';
+import { bus } from '~/extensions/emitter';
 import { getNative, Native } from '~/utils/native.js';
 
 const PROFILE_FILE = 'profiles.json';
@@ -22,6 +26,9 @@ export class ProfileModule {
     async init(): Promise<void> {
         await this.loadProfileMeta();
         await this.loadProfile();
+        this.ping().then(() => {
+            console.log('Profile ping complete');
+        });
     }
 
     getUserProfiles(): UserProfile[] {
@@ -122,5 +129,23 @@ export class ProfileModule {
 
     private updateState(): void {
         this.native.setLocalStorage('user', this.userProfile.id);
+    }
+
+    private async ping(): Promise<void> {
+        if (this.userProfile.onlineId === 0) {
+            return;
+        }
+
+        const response = await api.get('/auth/ping', {}, false);
+        if (response.status === 200) {
+            // OK
+        } else if (response.status === 401) {
+            alertify.warning('登录已过期，请重新登录');
+            await this.updateUserProfile({
+                ...DummyUserProfile,
+                id: this.getUserProfile().id
+            });
+            bus.emit('login-expired');
+        }
     }
 }

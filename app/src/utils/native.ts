@@ -56,6 +56,11 @@ export abstract class Native {
     }
 
     /**
+     * Check if the current platform is web.
+     */
+    abstract isWeb(): boolean;
+
+    /**
      * Save the given file.
      *
      * @param filename The filename to save.
@@ -79,6 +84,10 @@ export abstract class Native {
 }
 
 export class WebNative extends Native {
+    override isWeb(): boolean {
+        return true;
+    }
+
     override async saveFile(filename: string, content: string): Promise<void> {
         localStorage.setItem(filename, content);
     }
@@ -93,6 +102,10 @@ export class WebNative extends Native {
 }
 
 export class MobileNative extends Native {
+    override isWeb(): boolean {
+        return false;
+    }
+
     private dirname(filename: string): string {
         const index = filename.lastIndexOf('/');
         if (index === -1) {

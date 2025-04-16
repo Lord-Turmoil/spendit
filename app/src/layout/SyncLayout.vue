@@ -77,7 +77,7 @@
             :confirmText="confirmDialogProps.confirmText"
             :cancelText="confirmDialogProps.cancelText"
             :on-confirm="confirmDialogProps.onConfirm"
-            :on-cancel="confirmDialogProps.onCancel"></ConfirmDialog>
+            :on-cancel="confirmDialogProps.onCancel" />
     </div>
 </template>
 
@@ -191,8 +191,8 @@ const onClickPushConfirm = async () => {
             alertify.success('数据推送成功');
             saveSyncTime();
         })
-        .catch((err) => {
-            alertify.error(err.message);
+        .catch((error) => {
+            alertify.error(error.message);
         });
     onSyncEnd();
 };
@@ -216,8 +216,8 @@ const onClickPullConfirm = async () => {
             alertify.success('数据拉取成功');
             saveSyncTime();
         })
-        .catch((err) => {
-            alertify.error(err.message);
+        .catch((error) => {
+            alertify.error(error.message);
         });
     onSyncEnd();
 };
@@ -229,8 +229,8 @@ const onCLickMerge = async () => {
             alertify.success('数据同步成功');
             saveSyncTime();
         })
-        .catch((err) => {
-            alertify.error(err.message);
+        .catch((error) => {
+            alertify.error(error.message);
         });
     onSyncEnd();
 };

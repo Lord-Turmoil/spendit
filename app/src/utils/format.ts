@@ -1,3 +1,8 @@
+function getLocalDate(date: Date): Date {
+    // Convert to local time zone
+    return new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+}
+
 /**
  * Format the given date to YYYY-MM-DD.
  *
@@ -5,9 +10,11 @@
  * @returns The formatted date as string.
  */
 export function formatTimestamp(date: Date): string {
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
+    const localDate = getLocalDate(date);
+
+    const year = localDate.getFullYear();
+    const month = localDate.getMonth() + 1;
+    const day = localDate.getDate();
     return `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`;
 }
 
@@ -36,7 +43,8 @@ export function formatTimestampToSlash(date: string): string {
  * @returns The formatted date as string.
  */
 export function formatTimeISO(date: Date): string {
-    return date.toISOString();
+    // Convert to local time zone
+    return getLocalDate(date).toISOString();
 }
 
 /**
@@ -55,10 +63,7 @@ const VALUE_REGEX = /^\d+(\.\d{0,2})?$/;
 const EXPR_REGEX = /^\s*\d+(\.\d{0,2})?\s*([+\-*/]\s*\d+(\.\d{0,2})?\s*)*$/;
 
 export function isValidMoney(money: string): boolean {
-    return money !== '' && (
-        VALUE_REGEX.test(money) ||
-        EXPR_REGEX.test(money)
-    );
+    return money !== '' && (VALUE_REGEX.test(money) || EXPR_REGEX.test(money));
 }
 
 function parseFixedMoney(money: string): number {

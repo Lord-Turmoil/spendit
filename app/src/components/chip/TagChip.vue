@@ -8,5 +8,5 @@
 <style scoped></style>
 
 <script setup lang="ts">
-const { tag, props } = defineProps<{ tag: string, props?: any }>();
+const { tag, props } = defineProps<{ tag: string; props?: any }>();
 </script>
