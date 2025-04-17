@@ -10,11 +10,10 @@ function getLocalDate(date: Date): Date {
  * @returns The formatted date as string.
  */
 export function formatTimestamp(date: Date): string {
-    const localDate = getLocalDate(date);
-
-    const year = localDate.getFullYear();
-    const month = localDate.getMonth() + 1;
-    const day = localDate.getDate();
+    // Here, there is no need to get local date.
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
     return `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`;
 }
 
