@@ -1,18 +1,15 @@
 <template>
-    <v-btn
-        class="BackButton"
-        @click="onClickBack"
-        variant="flat"
-        color="deep-orange-darken-1">
-        返回
-    </v-btn>
+    <div class="BackButton">
+        <v-btn @click="onClickBack" block variant="flat" color="deep-orange-darken-1">
+            返回
+        </v-btn>
+    </div>
 </template>
 
 <style scoped>
 .BackButton {
-    max-height: 44px;
-    margin-top: 16px;
     width: 100%;
+    padding: 0 8px;
 }
 </style>
 

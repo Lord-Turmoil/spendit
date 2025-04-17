@@ -20,7 +20,7 @@
                         @click:append="showPassword = !showPassword"></v-text-field>
                 </v-form>
             </v-container>
-            <v-card-actions class="actions" style="margin: 0 8px">
+            <v-card-actions class="actions">
                 <v-btn
                     variant="flat"
                     block

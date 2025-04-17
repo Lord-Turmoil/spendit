@@ -17,6 +17,7 @@ const vuetify = createVuetify({
 
 // Vue
 import { createApp } from 'vue';
+import alertify from '~/extensions/alertify';
 import { LONG_STALL, stall } from '~/utils/stall';
 import App from './App.vue';
 import router from '~/extensions/router';
@@ -57,7 +58,14 @@ async function startup() {
     } else {
         await stall(engine.init(), LONG_STALL);
     }
+
     mountApp();
+
+    engine.checkForUpdate(false).then((meta) => {
+        if (meta.updateAvailable) {
+            alertify.success('新版本可用，请前往关于页面更新');
+        }
+    });
 }
 
 window.onload = function () {

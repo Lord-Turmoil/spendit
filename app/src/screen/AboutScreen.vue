@@ -1,9 +1,7 @@
 <template>
     <v-container class="AboutScreen scrollable split-wrapper">
         <AboutLayout class="split-primary" />
-        <div style="width: 100%; padding: 0 8px">
-            <BackButton />
-        </div>
+        <BackButton />
     </v-container>
 </template>
 
