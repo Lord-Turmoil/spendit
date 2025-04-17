@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
 
 import router from '~/extensions/router';
+import alertify from '~/extensions/alertify';
 
 // disable cache
 axios.defaults.headers['Cache-Control'] = 'no-cache';
@@ -21,7 +22,7 @@ class Api {
         if (!Object.hasOwn(error, 'response')) {
             return {
                 status: 101,
-                message: '网络异常，请稍后再试',
+                message: 'Network Error, try again later',
                 data: {
                     name: error.name,
                     message: error.message
@@ -31,7 +32,7 @@ class Api {
         const response = error.response;
         const defaultDto = {
             status: response.status ?? 66,
-            message: '服务器异常，请稍后再试',
+            message: 'Server Error, try again later',
             data: null
         };
 
@@ -62,9 +63,7 @@ class Api {
             .catch((error) => {
                 console.log(error);
                 const dto = this._getDto(error);
-                if (dto.status === 401 && autoRedirect) {
-                    router.push('/login');
-                }
+                this.handlePermissionError(dto, autoRedirect);
                 return dto;
             });
     }
@@ -82,11 +81,23 @@ class Api {
             })
             .catch((error) => {
                 const dto = this._getDto(error);
-                if (dto.status === 401 && autoRedirect) {
-                    router.push('/login');
-                }
+                this.handlePermissionError(dto, autoRedirect);
                 return dto;
             });
+    }
+
+    private handlePermissionError(dto: ApiResponse, autoRedirect: boolean) {
+        if (dto.status === 401) {
+            alertify.error('Login required');
+            if (autoRedirect) {
+                router.push('/login');
+            }
+        } else if (dto.status === 403) {
+            alertify.error('Insolent boy');
+            if (autoRedirect) {
+                router.push('/login');
+            }
+        }
     }
 }
 
