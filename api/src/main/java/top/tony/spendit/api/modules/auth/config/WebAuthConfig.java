@@ -21,6 +21,7 @@ public class WebAuthConfig implements WebMvcConfigurer {
                 .addPathPatterns("/api/**")
                 .excludePathPatterns("/api/auth/register")
                 .excludePathPatterns("/api/auth/login")
+                .excludePathPatterns("/api/health/ping")
                 .excludePathPatterns("/api/version/latest");
     }
 }
