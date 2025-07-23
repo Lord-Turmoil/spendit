@@ -6,7 +6,7 @@
             :action="checkAll"></ActionHeader>
         <v-row>
             <v-col v-for="(api, index) in apiList" :key="index" cols="12" md="4">
-                <v-card class="api-card" :title="api.name" link target="_blank" :href="api.url">
+                <v-card class="api-card" :title="api.name">
                     <template v-slot:prepend>
                         <v-progress-circular
                             v-if="api.pending"
@@ -21,6 +21,9 @@
                     <v-card-subtitle v-if="api.pending">Checking...</v-card-subtitle>
                     <v-card-subtitle v-else>{{ api.status }}</v-card-subtitle>
                     <v-card-actions class="actions">
+                        <v-btn v-if="api.url" target="_blank" :href="api.url">
+                            Visit
+                        </v-btn>
                         <v-btn @click="() => checkApiStatus(api)" :disabled="api.pending">
                             Check Status
                         </v-btn>
@@ -77,7 +80,11 @@ async function checkApiStatus(status: ApiStatus) {
 }
 
 const apiList = ref<ApiStatus[]>([
-    initApiStatus('Server', checkServerStatus, "/api/health/ping"),
+    initApiStatus(
+        'Server',
+        checkServerStatus,
+        import.meta.env.VITE_SPENDIT_API + '/health/ping'
+    ),
     initApiStatus('Web App', checkWebAppStatus, import.meta.env.VITE_SPENDIT_WEBAPP),
     initApiStatus(
         'Release Page',
