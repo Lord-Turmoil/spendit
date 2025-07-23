@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
 
 import router from '~/extensions/router';
+import { hasProperty } from '~/utils/compatibility';
 
 // disable cache
 axios.defaults.headers['Cache-Control'] = 'no-cache';
@@ -18,7 +19,7 @@ class Api {
     }
 
     _getDto(error: AxiosError): ApiResponse {
-        if (!Object.hasOwn(error, 'response')) {
+        if (!hasProperty(error, 'response')) {
             return {
                 status: 101,
                 message: '网络异常，请稍后再试',
@@ -41,7 +42,7 @@ class Api {
         }
 
         const data: object = error.response.data as object;
-        if (Object.hasOwn(data, 'status') && Object.hasOwn(data, 'message')) {
+        if (hasProperty(data, 'status') && hasProperty(data, 'message')) {
             return data as ApiResponse;
         } else {
             return defaultDto;

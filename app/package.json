@@ -1,41 +1,41 @@
 {
-  "name": "spendit",
-  "private": true,
-  "version": "0.3.3",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc -b && vite build",
-    "format": "prettier --config .prettierrc *.ts src/**/*.ts src/**/*.vue --write",
-    "sync": "npm run build && cap sync",
-    "open": "cap open android",
-    "version": "python scripts/bump_version.py",
-    "deploy": "npm run build && pwsh deploy.ps1",
-    "publish": "npm run deploy && npm run sync && python scripts/publish.py"
-  },
-  "dependencies": {
-    "@capacitor/android": "^7.1.0",
-    "@capacitor/core": "^7.1.0",
-    "@capacitor/filesystem": "^7.0.0",
-    "@mdi/font": "^7.4.47",
-    "alertifyjs": "^1.14.0",
-    "axios": "^1.8.4",
-    "canvas-confetti": "^1.9.3",
-    "mitt": "^3.0.1",
-    "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
-  },
-  "devDependencies": {
-    "@capacitor/assets": "^3.0.5",
-    "@capacitor/cli": "^7.1.0",
-    "@vitejs/plugin-vue": "^5.2.1",
-    "@vue/tsconfig": "^0.7.0",
-    "prettier": "^3.5.3",
-    "typescript": "~5.7.2",
-    "vite": "^6.2.0",
-    "vite-plugin-vuetify": "^2.1.0",
-    "vue-eslint-parser": "^10.1.1",
-    "vue-tsc": "^2.2.4",
-    "vuetify": "^3.7.16"
-  }
+    "name": "spendit",
+    "private": true,
+    "version": "0.3.3",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vue-tsc -b && vite build && python scripts/post_build.py",
+        "format": "prettier --config .prettierrc *.ts src/**/*.ts src/**/*.vue --write",
+        "sync": "npm run build && cap sync",
+        "open": "cap open android",
+        "version": "python scripts/bump_version.py",
+        "deploy": "npm run build && pwsh deploy.ps1",
+        "publish": "npm run deploy && npm run sync && python scripts/publish.py"
+    },
+    "dependencies": {
+        "@capacitor/android": "^7.1.0",
+        "@capacitor/core": "^7.1.0",
+        "@capacitor/filesystem": "^7.0.0",
+        "@mdi/font": "^7.4.47",
+        "alertifyjs": "^1.14.0",
+        "axios": "^1.8.4",
+        "canvas-confetti": "^1.9.3",
+        "mitt": "^3.0.1",
+        "vue": "^3.5.13",
+        "vue-router": "^4.5.0"
+    },
+    "devDependencies": {
+        "@capacitor/assets": "^3.0.5",
+        "@capacitor/cli": "^7.1.0",
+        "@vitejs/plugin-vue": "^5.2.1",
+        "@vue/tsconfig": "^0.7.0",
+        "prettier": "^3.5.3",
+        "typescript": "~5.7.2",
+        "vite": "^6.2.0",
+        "vite-plugin-vuetify": "^2.1.0",
+        "vue-eslint-parser": "^10.1.1",
+        "vue-tsc": "^2.2.4",
+        "vuetify": "^3.7.16"
+    }
 }
