@@ -143,8 +143,8 @@ export interface SystemProfile {
 export const CurrentSystemProfile: SystemProfile = {
     product: 'Spendit',
     author: "Tony's Studio",
-    version: '0.3.3',
-    code: 'Requiem'
+    version: '0.4.0',
+    code: 'Tacitus'
 };
 
 // ========================================================================
