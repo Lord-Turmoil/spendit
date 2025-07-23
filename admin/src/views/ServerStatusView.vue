@@ -6,7 +6,7 @@
             :action="checkAll"></ActionHeader>
         <v-row>
             <v-col v-for="(api, index) in apiList" :key="index" cols="12" md="4">
-                <v-card class="api-card" :title="api.name">
+                <v-card class="api-card" :title="api.name" link target="_blank" :href="api.url">
                     <template v-slot:prepend>
                         <v-progress-circular
                             v-if="api.pending"
@@ -52,17 +52,20 @@ interface ApiStatus {
     status: string; // status code
     pending: boolean;
     action: (status: ApiStatus) => Promise<void>;
+    url: string; // URL to jump to if needed
 }
 
 function initApiStatus(
     name: string,
-    action: (status: ApiStatus) => Promise<void>
+    action: (status: ApiStatus) => Promise<void>,
+    url?: string
 ): ApiStatus {
     return {
         name,
         status: '',
         pending: true,
-        action
+        action,
+        url: url || '#'
     };
 }
 
@@ -74,9 +77,13 @@ async function checkApiStatus(status: ApiStatus) {
 }
 
 const apiList = ref<ApiStatus[]>([
-    initApiStatus('Server', checkServerStatus),
-    initApiStatus('Web App', checkWebAppStatus),
-    initApiStatus('Release Page', checkReleasePageStatus)
+    initApiStatus('Server', checkServerStatus, "/api/health/ping"),
+    initApiStatus('Web App', checkWebAppStatus, import.meta.env.VITE_SPENDIT_WEBAPP),
+    initApiStatus(
+        'Release Page',
+        checkReleasePageStatus,
+        import.meta.env.VITE_SPENDIT_RELEASE_PAGE
+    )
 ]);
 
 async function checkAll() {
@@ -95,7 +102,7 @@ async function checkServerStatus(status: ApiStatus): Promise<void> {
 
 async function checkWebAppStatus(status: ApiStatus): Promise<void> {
     await stall(
-        fetch('https://spendit.tonys-studio.top')
+        fetch(import.meta.env.VITE_SPENDIT_WEBAPP)
             .then((response) => {
                 status.status = response.status.toString();
             })
@@ -109,7 +116,7 @@ async function checkWebAppStatus(status: ApiStatus): Promise<void> {
 
 async function checkReleasePageStatus(status: ApiStatus): Promise<void> {
     await stall(
-        fetch('https://lord-turmoil.github.io/spendit/')
+        fetch(import.meta.env.VITE_SPENDIT_RELEASE_PAGE)
             .then((response) => {
                 status.status = response.status.toString();
             })
