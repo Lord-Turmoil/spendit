@@ -8,13 +8,13 @@
             <v-list>
                 <v-list-item v-for="(item, i) in versions" :key="i">
                     <div class="ReleaseView__item">
-                        <span class="title">
+                        <div class="title">
                             <span class="version">{{ item.version }}</span>
                             <span class="code">{{ item.code }}</span>
-                        </span>
-                        <span>
+                        </div>
+                        <div class="body">
                             <span class="description">
-                                {{ item.description }}
+                                <VersionDescription :description="item.description" />
                             </span>
                             <span class="actions">
                                 <v-btn
@@ -28,7 +28,10 @@
                                     :loading="isWithdrawing"
                                     @click="() => onClickWithDraw(item)"></v-btn>
                             </span>
-                        </span>
+                        </div>
+                    </div>
+                    <div style="text-align: right; margin: 8px">
+                        <a :href="item.downloadUrl">{{ item.downloadUrl }}</a>
                     </div>
                 </v-list-item>
             </v-list>
@@ -111,7 +114,7 @@
 }
 
 .ReleaseView__item .title {
-    flex: 1;
+    width: 20%;
 }
 
 .ReleaseView__item .title .version {
@@ -121,6 +124,18 @@
 
 .ReleaseView__item .title .code {
     font-style: italic;
+}
+
+.ReleaseView__item .body {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ReleaseView__item .body .description {
+    flex: 1;
 }
 
 .ReleaseView__item .description {
@@ -136,6 +151,7 @@ import { api } from '~/extensions/api';
 import alertify from '~/extensions/alertify';
 import { VForm } from 'vuetify/components';
 import { LONG_STALL, stall } from '~/extensions/stall';
+import VersionDescription from '~/components/VersionDescription.vue';
 
 const versions = ref<Version[]>([]);
 
@@ -213,7 +229,7 @@ const onSubmitRelease = async () => {
         return;
     }
     alertify.success('Release published');
-    versions.value.push(response.data);
+    versions.value.unshift(response.data);
     closeDialog();
 };
 
